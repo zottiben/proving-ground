@@ -20,17 +20,6 @@ curl -fsSL https://zottiben.github.io/proving-ground/install.sh | sh
 That puts `proving-ground` (and the short alias `pg`) on your PATH. Needs Python 3.10+
 and Unity 2022.3 or newer.
 
-While the repository is private the installer needs credentials for the release
-assets. It uses an authenticated `gh` automatically, or `GITHUB_TOKEN` if you set one:
-
-```sh
-gh auth login          # once
-curl -fsSL https://zottiben.github.io/proving-ground/install.sh | sh
-```
-
-Nothing changes when the repository goes public - the same one-liner just stops needing
-auth.
-
 ### Set up a game
 
 Go to your game and run setup. It has to be run from inside the project, and it will
@@ -100,13 +89,8 @@ If you would rather not run the installer.
 Add the package in Unity with **Package Manager > + > Add package from git URL**:
 
 ```
-git@github.com:zottiben/proving-ground.git?path=/packages/com.zottiben.provingground
+https://github.com/zottiben/proving-ground.git?path=/packages/com.zottiben.provingground
 ```
-
-The repository is private, so the SSH form is the one that works and it needs an SSH key
-Unity's git can use. If it is made public,
-`https://github.com/zottiben/proving-ground.git?path=/packages/com.zottiben.provingground`
-works with no credentials.
 
 One line is enough. The package declares the built-in modules it needs (physics, audio,
 UI, image conversion) and pulls in `com.unity.nuget.newtonsoft-json`. The Input System,
