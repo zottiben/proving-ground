@@ -19,6 +19,15 @@ STAGE="$(mktemp -d)"
 NAME="proving-ground-${VERSION}"
 trap 'rm -rf "$STAGE"' EXIT
 
+# The Editor's update notice compares package.json against the release tag, so a drift
+# between them shows every user a permanent phantom update. Catch it here.
+PACKAGE_VERSION="$(python3 -c "import json;print(json.load(open('$ROOT/packages/com.zottiben.provingground/package.json'))['version'])")"
+if [[ "${VERSION#v}" != "$PACKAGE_VERSION" ]]; then
+  echo "Version mismatch: tag is ${VERSION} but package.json says ${PACKAGE_VERSION}." >&2
+  echo "Update the package.json version to ${VERSION#v} and try again." >&2
+  exit 1
+fi
+
 mkdir -p "$STAGE/$NAME"
 
 # The layout the installed CLI expects: package/, skills/, mcp/, VERSION.

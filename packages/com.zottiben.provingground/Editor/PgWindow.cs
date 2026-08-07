@@ -28,12 +28,17 @@ namespace ProvingGround.EditorTools
             window.Show();
         }
 
-        void OnEnable() => LoadLatestReport();
+        void OnEnable()
+        {
+            LoadLatestReport();
+            PgUpdateCheck.Poll();
+        }
 
         void OnGUI()
         {
             _scroll = EditorGUILayout.BeginScrollView(_scroll);
 
+            DrawUpdateNotice();
             DrawStatus();
             EditorGUILayout.Space(6);
             DrawSetup();
@@ -47,6 +52,31 @@ namespace ProvingGround.EditorTools
             DrawReport();
 
             EditorGUILayout.EndScrollView();
+        }
+
+        void DrawUpdateNotice()
+        {
+            if (!PgUpdateCheck.UpdateAvailable) return;
+
+            EditorGUILayout.HelpBox(
+                $"Proving Ground {PgUpdateCheck.Latest} is available (you have {PgUpdateCheck.Installed}).\n" +
+                "Update from a terminal with:  proving-ground update",
+                MessageType.Info);
+
+            using (new EditorGUILayout.HorizontalScope())
+            {
+                if (GUILayout.Button("Copy command"))
+                    EditorGUIUtility.systemCopyBuffer = "proving-ground update";
+
+                if (GUILayout.Button("Release notes"))
+                    Application.OpenURL(
+                        "https://github.com/zottiben/proving-ground/releases/latest");
+
+                if (GUILayout.Button("Stop checking"))
+                    PgUpdateCheck.Enabled = false;
+            }
+
+            EditorGUILayout.Space(6);
         }
 
         void DrawStatus()

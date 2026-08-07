@@ -15,7 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from . import paths
+from . import paths, updates
 
 HARNESSES = ("claude", "codex", "pi")
 
@@ -389,12 +389,21 @@ def cmd_doctor(args: argparse.Namespace) -> int:
 
 
 def cmd_update(args: argparse.Namespace) -> int:
+    if args.check:
+        # Ask the network directly rather than trusting the daily cache: someone who
+        # typed this wants the current answer.
+        latest = updates.available(force=True)
+        current = paths.version()
+        if latest:
+            print(f"Proving Ground {current} -> {latest} available. Run: proving-ground update")
+            return 0
+        print(f"Proving Ground {current} is up to date.")
+        return 0
+
     script = paths.installed_root() / "install.sh"
     installer = str(script) if script.is_file() else None
 
     forwarded = []
-    if args.check:
-        forwarded.append("--check")
     if args.force:
         forwarded.append("--force")
     if args.version:
@@ -687,7 +696,17 @@ def main() -> int:
     if not args.command:
         parser.print_help()
         return 0
-    return args.func(args)
+
+    code = args.func(args)
+
+    # After the work, never before it, and never for the commands that would make it
+    # noise or a contradiction.
+    if args.command not in ("update", "version") and sys.stdout.isatty():
+        latest = updates.available()
+        if latest:
+            print(updates.banner(latest, colour=bool(BOLD)), file=sys.stderr)
+
+    return code
 
 
 if __name__ == "__main__":

@@ -5,6 +5,24 @@ All notable changes to this package are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this
 package adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.1] - 2026-08-07
+
+### Added
+
+- `proving-ground update` installs the latest release in place, so updating no longer
+  means re-running the install script from memory.
+- An update notice. The CLI prints one after a command when a newer release exists, and
+  the Editor window shows one too, since plenty of use never touches a terminal. Both
+  check at most once a day, never block, stay silent on failure, and can be switched
+  off - with `PG_NO_UPDATE_CHECK=1` and the window's "Stop checking" button.
+
+### Fixed
+
+- The installer no longer refuses to run on a stock Mac. macOS ships Python 3.9 at
+  /usr/bin/python3, so a usable interpreter that was not first on PATH went unnoticed.
+- Release builds now fail when package.json and the release tag disagree, which would
+  otherwise show every user a permanent phantom update.
+
 ## [0.1.0] - 2026-08-07
 
 First release.
