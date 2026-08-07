@@ -10,6 +10,11 @@ dependencies = [
     "httpx>=0.27",
 ]
 
+[project.optional-dependencies]
+# Kept out of the runtime dependencies so an install stays as small as it is now.
+# Run with: tools/test.sh python
+dev = ["pytest>=8"]
+
 # Works with both the 1.x FastMCP API and the 2.x MCPServer API; see server.py.
 
 [project.scripts]

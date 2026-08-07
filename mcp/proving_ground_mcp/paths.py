@@ -95,6 +95,21 @@ def mcp_launcher(root: Path | None = None) -> Path:
     return root / ".venv" / scripts / f"proving-ground-mcp{suffix}"
 
 
+def is_unity_project(path: Path) -> bool:
+    return (path / "Assets").is_dir() and (path / "ProjectSettings" / "ProjectVersion.txt").is_file()
+
+
+def find_project(start: Path) -> Path | None:
+    """Walks up from `start` looking for a Unity project."""
+    for candidate in (start, *start.parents):
+        if is_unity_project(candidate):
+            return candidate
+        if (candidate / ".git").is_dir() and candidate != start:
+            # Stop at the repository boundary rather than wandering into a parent project.
+            break
+    return None
+
+
 def version(root: Path | None = None) -> str:
     root = root or installed_root()
     marker = root / "VERSION"

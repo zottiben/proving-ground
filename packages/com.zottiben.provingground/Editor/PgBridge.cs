@@ -36,6 +36,7 @@ namespace ProvingGround.EditorTools
 
         static HttpListener _listener;
         static Thread _thread;
+        static bool _allowShutdownRoute;
         static readonly ConcurrentQueue<Action> MainThread = new ConcurrentQueue<Action>();
 
         public static bool Enabled
@@ -45,7 +46,7 @@ namespace ProvingGround.EditorTools
             {
                 EditorPrefs.SetBool(EnabledKey, value);
                 if (value) Start();
-                else Stop();
+                else Shutdown();
             }
         }
 
@@ -68,11 +69,21 @@ namespace ProvingGround.EditorTools
         /// <summary>
         /// Enables POST /shutdown. Only set by the headless serve entry point: an Editor a
         /// person is working in should not be closable from a socket.
+        ///
+        /// Mirrored into a plain field because the route is checked on the listener thread,
+        /// where SessionState throws. The throw was swallowed by the accept loop, so the
+        /// documented way to stop a headless serve answered nothing at all and the caller
+        /// hung until it timed out. SessionState still holds the value across the domain
+        /// reload a compile causes; the field is reloaded from it below.
         /// </summary>
         public static bool AllowShutdownRoute
         {
-            get => SessionState.GetBool(ShutdownRouteKey, false);
-            set => SessionState.SetBool(ShutdownRouteKey, value);
+            get => _allowShutdownRoute;
+            set
+            {
+                _allowShutdownRoute = value;
+                SessionState.SetBool(ShutdownRouteKey, value);
+            }
         }
 
         /// <summary>
@@ -93,9 +104,15 @@ namespace ProvingGround.EditorTools
 
         static PgBridge()
         {
+            _allowShutdownRoute = SessionState.GetBool(ShutdownRouteKey, false);
+
             EditorApplication.update += PumpMainThread;
+
+            // Stop, not Shutdown: a compile reloads the domain and the listener comes back
+            // on the same port moments later, so the published address stays valid and a
+            // client polling across the reload keeps looking in the right place.
             AssemblyReloadEvents.beforeAssemblyReload += Stop;
-            EditorApplication.quitting += Stop;
+            EditorApplication.quitting += Shutdown;
 
             // Restart after a domain reload for either reason it might have been running.
             if (Enabled || Serving) EditorApplication.delayCall += Start;
@@ -126,6 +143,7 @@ namespace ProvingGround.EditorTools
                 _thread = new Thread(Listen) { IsBackground = true, Name = "ProvingGround.Bridge" };
                 _thread.Start();
 
+                PgBridgeRegistry.Publish(Port);
                 Debug.Log($"[ProvingGround] Agent bridge listening on http://127.0.0.1:{Port}");
             }
             catch (Exception e)
@@ -135,6 +153,20 @@ namespace ProvingGround.EditorTools
             }
         }
 
+        /// <summary>
+        /// Stops the bridge and withdraws its published address.
+        ///
+        /// For when the bridge is going away and not coming back on its own - the user
+        /// disabling it, or the Editor quitting. Leaving the address behind would send the
+        /// next client to a port nobody is listening on.
+        /// </summary>
+        public static void Shutdown()
+        {
+            Stop();
+            PgBridgeRegistry.Withdraw();
+        }
+
+        /// <summary>Stops listening, leaving the published address in place.</summary>
         public static void Stop()
         {
             if (_listener == null) return;

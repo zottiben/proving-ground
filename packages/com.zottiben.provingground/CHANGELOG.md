@@ -5,6 +5,29 @@ All notable changes to this package are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this
 package adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.5] - 2026-08-08
+
+### Added
+
+- The Editor now records the address its agent bridge is listening on, and the CLI and
+  the MCP server read it. The port is Editor-side state and need not be the default, so a
+  bridge moved off 8787 was reported as "could not reach the Editor, enable the Agent
+  Bridge" while it was running perfectly well - an error that sends you to fix the one
+  thing that is not broken. With several projects open, each agent reaches the Editor
+  holding its own project.
+
+### Fixed
+
+- A refresh that found nothing to rebuild never settled. The status waited on a compile
+  generation that was never coming, so a caller polled a completely idle Editor until it
+  gave up and then reported it as hung. Writing a script or asking for a refresh were the
+  usual ways to land on it.
+- `POST /shutdown` read its own feature flag from the listener thread, where SessionState
+  throws. The accept loop swallowed the exception, so the documented way to stop a
+  headless serve answered nothing at all and the caller waited until it timed out.
+- Giving up on a compile now reports that the Editor is idle and answering, instead of
+  asserting it is still compiling.
+
 ## [0.1.4] - 2026-08-07
 
 ### Changed

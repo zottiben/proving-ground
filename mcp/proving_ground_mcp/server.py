@@ -16,6 +16,8 @@ from typing import Any
 
 import httpx
 
+from . import bridge
+
 # The SDK renamed FastMCP to MCPServer in 2.0 while keeping the same decorator and run
 # surface. Supporting both means this server works with whichever generation the user
 # already has installed, rather than forcing an upgrade to use one tool.
@@ -24,26 +26,45 @@ try:
 except ImportError:  # pragma: no cover - depends on the installed SDK
     from mcp.server.fastmcp import FastMCP as _Server
 
-BRIDGE_URL = os.environ.get("PROVING_GROUND_URL", "http://127.0.0.1:8787")
 TIMEOUT = float(os.environ.get("PROVING_GROUND_TIMEOUT", "600"))
 
 mcp = _Server("proving-ground")
+
+_bridge_url: str | None = None
 
 
 class BridgeError(RuntimeError):
     pass
 
 
+def bridge_url(refresh: bool = False) -> str:
+    """Where the Editor is listening, resolved once and remembered.
+
+    This server outlives many Editor sessions, so the answer is re-resolved whenever a
+    connection fails rather than only at start-up: an Editor reopened on a different port
+    should not require restarting the agent.
+    """
+    global _bridge_url
+    if refresh or _bridge_url is None:
+        _bridge_url = bridge.resolve()
+    return _bridge_url
+
+
 def _call(method: str, **args: Any) -> str:
     """Invokes a PgApi method in the Editor and returns its raw response."""
     payload = {"method": method, "args": {k: v for k, v in args.items() if v is not None}}
+    url = bridge_url()
+
     try:
-        response = httpx.post(f"{BRIDGE_URL}/call", json=payload, timeout=TIMEOUT)
+        response = httpx.post(f"{url}/call", json=payload, timeout=TIMEOUT)
     except httpx.ConnectError as exc:
-        raise BridgeError(
-            f"Could not reach the Unity Editor at {BRIDGE_URL}. Open the project and "
-            "enable Tools > Proving Ground > Agent Bridge > Enable."
-        ) from exc
+        moved = bridge_url(refresh=True)
+        if moved == url:
+            raise BridgeError(bridge.unreachable_message(url)) from exc
+        try:
+            response = httpx.post(f"{moved}/call", json=payload, timeout=TIMEOUT)
+        except httpx.ConnectError:
+            raise BridgeError(bridge.unreachable_message(moved)) from exc
 
     if response.status_code >= 400:
         raise BridgeError(f"{method} failed: {response.text}")
@@ -61,6 +82,7 @@ def _await_compile(timeout_seconds: int = 300) -> str:
     """
     deadline = time.time() + timeout_seconds
     saw_disconnect = False
+    status: dict[str, Any] = {}
 
     while time.time() < deadline:
         try:
@@ -78,6 +100,18 @@ def _await_compile(timeout_seconds: int = 300) -> str:
             return f"Compiled cleanly{note}."
 
         time.sleep(0.5)
+
+    # Report what the Editor last said rather than asserting it is still compiling. An
+    # idle Editor that never settles is a different problem from a slow one, and calling
+    # both "still compiling" sent callers hunting for a hung Unity that was answering
+    # every request put to it.
+    if status and not status.get("isCompiling") and not status.get("isUpdating"):
+        return (
+            f"Gave up after {timeout_seconds}s. The Editor is idle and answering, but its "
+            f"compile status never settled (generation {status.get('generation')}, "
+            f"requested at {status.get('requestedAt')}). Nothing is compiling - this is a "
+            "stuck status, not a busy Editor."
+        )
 
     return f"Unity was still compiling after {timeout_seconds}s. Poll pg_compile_status."
 
@@ -326,13 +360,11 @@ def pg_batch(operations: str, stop_on_error: bool = True) -> str:
 @mcp.tool()
 def pg_health() -> str:
     """Check whether the Unity Editor is reachable and what state it is in."""
+    url = bridge_url(refresh=True)
     try:
-        return httpx.get(f"{BRIDGE_URL}/health", timeout=15).text
+        return f"{url} {httpx.get(f'{url}/health', timeout=15).text}"
     except httpx.ConnectError:
-        return (
-            f"No Editor at {BRIDGE_URL}. Open the Unity project and enable "
-            "Tools > Proving Ground > Agent Bridge > Enable."
-        )
+        return bridge.unreachable_message(url)
 
 
 @mcp.tool()

@@ -27,7 +27,9 @@ Then register the server with your harness. Claude Code:
 }
 ```
 
-Set `PROVING_GROUND_URL` if you changed the port.
+The Editor records where it is listening, so the server finds it on whatever port it is
+using, and picks the Editor holding this project when several are open. Set
+`PROVING_GROUND_URL` to point somewhere else entirely.
 
 ## Why it talks to a running Editor
 

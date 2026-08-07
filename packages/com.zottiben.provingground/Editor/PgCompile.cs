@@ -43,11 +43,22 @@ namespace ProvingGround.EditorTools
 
         static readonly List<PgCompileMessage> Pending = new List<PgCompileMessage>();
 
+        // Statics, not SessionState: they only describe a request that is still in flight,
+        // and a domain reload can only happen because the compile they were tracking
+        // started - at which point the generation answers the question instead.
+        static bool _requestOutstanding;
+        static bool _compileStarted;
+        static bool _forcedCompile;
+
         static PgCompile()
         {
             CompilationPipeline.compilationStarted += OnCompilationStarted;
             CompilationPipeline.assemblyCompilationFinished += OnAssemblyFinished;
             CompilationPipeline.compilationFinished += OnCompilationFinished;
+
+            // An import that turns out to need no rebuild leaves the request unresolved,
+            // and nothing else will ever come along to close it.
+            EditorApplication.update += ResolveSatisfiedRequest;
         }
 
         /// <summary>Increments every time a compilation completes. Survives domain reload.</summary>
@@ -83,10 +94,36 @@ namespace ProvingGround.EditorTools
             var before = Generation;
             SessionState.SetInt(RequestedKey, before);
 
+            _requestOutstanding = true;
+            _compileStarted = false;
+            _forcedCompile = forceRecompile;
+
             AssetDatabase.Refresh(ImportAssetOptions.Default);
             if (forceRecompile) CompilationPipeline.RequestScriptCompilation();
 
+            ResolveSatisfiedRequest();
             return before;
+        }
+
+        /// <summary>
+        /// Closes a request that no compilation is ever going to satisfy.
+        ///
+        /// A refresh imports and starts any rebuild synchronously, so an Editor that is idle
+        /// afterwards, having started nothing, had nothing to rebuild. Left open, the
+        /// request waits on a generation bump that is not coming: `settled` stays false
+        /// against a perfectly healthy Editor and every caller polls until it times out,
+        /// which reads exactly like Unity has hung.
+        ///
+        /// Also runs on the update loop, for the case where the import is still draining
+        /// when the refresh returns and no compile follows it.
+        /// </summary>
+        static void ResolveSatisfiedRequest()
+        {
+            if (!_requestOutstanding) return;
+            if (_forcedCompile || _compileStarted || IsBusy) return;
+
+            SessionState.SetInt(RequestedKey, -1);
+            _requestOutstanding = false;
         }
 
         /// <summary>
@@ -121,10 +158,17 @@ namespace ProvingGround.EditorTools
         {
             SessionState.SetString(ErrorsKey, "[]");
             SessionState.SetInt(RequestedKey, -1);
+            _requestOutstanding = false;
+            _compileStarted = false;
+            _forcedCompile = false;
             Pending.Clear();
         }
 
-        static void OnCompilationStarted(object context) => Pending.Clear();
+        static void OnCompilationStarted(object context)
+        {
+            _compileStarted = true;
+            Pending.Clear();
+        }
 
         static void OnAssemblyFinished(string assemblyPath, CompilerMessage[] messages)
         {
@@ -147,6 +191,7 @@ namespace ProvingGround.EditorTools
         {
             SessionState.SetString(ErrorsKey, JsonConvert.SerializeObject(Pending));
             SessionState.SetInt(GenerationKey, Generation + 1);
+            _requestOutstanding = false;
             Pending.Clear();
         }
     }

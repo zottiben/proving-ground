@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Runs the package test suites in the test project and prints a summary.
-# Usage: tools/test.sh [editmode|playmode|all]
+# Usage: tools/test.sh [editmode|playmode|python|all]
 set -uo pipefail
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -8,6 +8,24 @@ UNITY="${UNITY_PATH:-/Applications/Unity/Hub/Editor/6000.3.16f1/Unity.app/Conten
 PROJECT="$ROOT/testproject"
 MODE="${1:-all}"
 STATUS=0
+
+run_python() {
+  local python="$ROOT/mcp/.venv/bin/python"
+  if [[ ! -x "$python" ]]; then
+    echo "python: no venv at $python. Run install.sh, or: uv venv mcp/.venv"
+    return 1
+  fi
+  if ! "$python" -c "import pytest" 2>/dev/null; then
+    echo "python: pytest missing. Run: uv pip install --python $python -e '$ROOT/mcp[dev]'"
+    return 1
+  fi
+  (cd "$ROOT/mcp" && "$python" -m pytest tests -q)
+}
+
+if [[ "$MODE" == "python" ]]; then
+  run_python || STATUS=1
+  exit $STATUS
+fi
 
 if [[ ! -x "$UNITY" ]]; then
   echo "Unity not found at $UNITY. Set UNITY_PATH." >&2
@@ -51,5 +69,6 @@ PY
 
 [[ "$MODE" == "all" || "$MODE" == "editmode" ]] && { run_platform EditMode || STATUS=1; }
 [[ "$MODE" == "all" || "$MODE" == "playmode" ]] && { run_platform PlayMode || STATUS=1; }
+[[ "$MODE" == "all" ]] && { run_python || STATUS=1; }
 
 exit $STATUS

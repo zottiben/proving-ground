@@ -79,6 +79,10 @@ Open the project in Unity, then **Tools > Proving Ground > Agent Bridge > Enable
 It binds to `127.0.0.1:8787`, stays off until you enable it, and can only invoke named
 methods on one class. There is no arbitrary code execution route.
 
+The Editor records the address it is listening on, so the CLI and the MCP server find it
+without being told, including on a non-default port and with several projects open at
+once. Each agent talks to the Editor holding its own project.
+
 ### First prompt
 
 Start your agent in the project directory and ask for something:
@@ -184,7 +188,8 @@ Then copy `skills/proving-ground/SKILL.md` to wherever your harness reads skills
 Without it an agent has the API but not the discipline, and will reach for screenshots
 anyway.
 
-Set `PROVING_GROUND_URL` if you moved the bridge off port 8787.
+Set `PROVING_GROUND_URL` to override the address entirely. You do not need it just
+because the bridge is on another port - that is discovered.
 
 ---
 

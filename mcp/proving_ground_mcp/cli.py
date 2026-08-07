@@ -15,7 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from . import paths, unity, updates
+from . import bridge, paths, unity, updates
 
 HARNESSES = ("claude", "codex", "pi")
 
@@ -64,20 +64,10 @@ def confirm(question: str, default: bool = True) -> bool:
 
 # --- project discovery ---------------------------------------------------------------
 
-
-def is_unity_project(path: Path) -> bool:
-    return (path / "Assets").is_dir() and (path / "ProjectSettings" / "ProjectVersion.txt").is_file()
-
-
-def find_project(start: Path) -> Path | None:
-    """Walks up from `start` looking for a Unity project."""
-    for candidate in (start, *start.parents):
-        if is_unity_project(candidate):
-            return candidate
-        if (candidate / ".git").is_dir() and candidate != start:
-            # Stop at the repository boundary rather than wandering into a parent project.
-            break
-    return None
+# Walking up to a project root is shared with the bridge resolver, which needs to know
+# which Editor to talk to, so it lives in paths alongside the rest of the disk layout.
+is_unity_project = paths.is_unity_project
+find_project = paths.find_project
 
 
 def find_nested_projects(start: Path, depth: int = 3) -> list[Path]:
@@ -493,15 +483,13 @@ def cmd_doctor(args: argparse.Namespace) -> int:
                 ok(f"{name}: MCP server registered")
 
     heading("Bridge")
-    url = os.environ.get("PROVING_GROUND_URL", "http://127.0.0.1:8787")
-    try:
-        import httpx
-
-        response = httpx.get(f"{url}/health", timeout=5)
+    url = bridge.resolve(project)
+    reported = bridge.health(url, timeout=5)
+    if reported:
         ok(f"Editor reachable at {url}")
-        print(f"       {DIM}{response.text.strip()}{OFF}")
-    except Exception:
-        note(f"No Editor at {url}. Open Unity and enable Tools > Proving Ground > Agent Bridge.")
+        print(f"       {DIM}{json.dumps(reported)}{OFF}")
+    else:
+        note(bridge.unreachable_message(url, project))
 
     print()
     return 0 if healthy else 1
@@ -560,17 +548,13 @@ def cmd_update(args: argparse.Namespace) -> int:
 def bridge_call(method: str, **arguments) -> str:
     import httpx
 
-    url = os.environ.get("PROVING_GROUND_URL", "http://127.0.0.1:8787")
+    url = bridge.resolve()
     payload = {"method": method, "args": {k: v for k, v in arguments.items() if v is not None}}
 
     try:
         response = httpx.post(f"{url}/call", json=payload, timeout=900)
     except Exception:
-        print(
-            f"No Editor at {url}.\n"
-            "Open the Unity project and enable Tools > Proving Ground > Agent Bridge > Enable.",
-            file=sys.stderr,
-        )
+        print(bridge.unreachable_message(url), file=sys.stderr)
         raise SystemExit(2)
 
     if response.status_code >= 400:

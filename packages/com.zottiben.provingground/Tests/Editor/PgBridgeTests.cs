@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using UnityEngine.TestTools;
@@ -25,12 +28,22 @@ namespace ProvingGround.Tests
         static readonly HttpClient Client = new HttpClient { Timeout = System.TimeSpan.FromSeconds(20) };
         static bool _wasEnabled;
         static int _previousPort;
+        static string _previousDataHome;
+        static string _sandbox;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
             _wasEnabled = PgBridge.Enabled;
             _previousPort = PgBridge.Port;
+
+            // Publish into a sandbox: these tests run on a machine that may have real
+            // Editors registered, and pointing an agent at a test port would be a nasty
+            // way to find out that the suite had run.
+            _previousDataHome = Environment.GetEnvironmentVariable("XDG_DATA_HOME");
+            _sandbox = Path.Combine(Path.GetTempPath(), "pg-bridge-tests-" + Guid.NewGuid().ToString("n"));
+            Environment.SetEnvironmentVariable("XDG_DATA_HOME", _sandbox);
+
             PgBridge.Stop();
             PgBridge.Port = TestPort;
             PgBridge.Start();
@@ -39,7 +52,18 @@ namespace ProvingGround.Tests
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            PgBridge.Stop();
+            PgBridge.Shutdown();
+            Environment.SetEnvironmentVariable("XDG_DATA_HOME", _previousDataHome);
+
+            try
+            {
+                if (Directory.Exists(_sandbox)) Directory.Delete(_sandbox, true);
+            }
+            catch (IOException)
+            {
+                // A leftover temp directory is not worth failing the run over.
+            }
+
             PgBridge.Port = _previousPort;
             if (_wasEnabled) PgBridge.Start();
         }
@@ -48,6 +72,99 @@ namespace ProvingGround.Tests
         public void TheBridgeBindsItsPort()
         {
             Assert.IsTrue(PgBridge.IsRunning, "the bridge did not start listening");
+        }
+
+        /// <summary>
+        /// The port is not always the default, and a client that assumes it is reports a
+        /// running Editor as unreachable. Writing the address down is what makes it
+        /// findable.
+        /// </summary>
+        [Test]
+        public void StartingPublishesTheAddressItIsListeningOn()
+        {
+            Assert.IsTrue(File.Exists(PgBridgeRegistry.EntryPath),
+                $"no entry was published at {PgBridgeRegistry.EntryPath}");
+
+            var entry = JObject.Parse(File.ReadAllText(PgBridgeRegistry.EntryPath));
+            Assert.AreEqual(TestPort, entry["port"].Value<int>());
+            Assert.AreEqual($"http://127.0.0.1:{TestPort}", entry["url"].Value<string>());
+        }
+
+        [Test]
+        public void ThePublishedAddressNamesItsProject()
+        {
+            var entry = JObject.Parse(File.ReadAllText(PgBridgeRegistry.EntryPath));
+            var recorded = entry["project"].Value<string>();
+
+            Assert.AreEqual(
+                Path.GetFullPath(PgPaths.ProjectRoot).Replace('\\', '/').TrimEnd('/'),
+                recorded,
+                "a client tells one Editor from another by project path");
+            Assert.Greater(entry["pid"].Value<int>(), 0);
+        }
+
+        /// <summary>
+        /// A compile reloads the domain, which tears the listener down and rebuilds it on
+        /// the same port. A client polling across that window must keep the address, or it
+        /// falls back to the default port and never reconnects.
+        /// </summary>
+        [Test]
+        public void StoppingForADomainReloadKeepsTheAddress()
+        {
+            PgBridge.Stop();
+            try
+            {
+                Assert.IsTrue(File.Exists(PgBridgeRegistry.EntryPath),
+                    "the address was withdrawn during a reload the bridge comes back from");
+            }
+            finally
+            {
+                PgBridge.Start();
+            }
+        }
+
+        /// <summary>
+        /// The shutdown route is checked on the listener thread, where reading the flag used
+        /// to throw; the accept loop swallowed it, so POST /shutdown answered nothing and
+        /// the caller hung. Calling the route here would exit the Editor mid-run, so this
+        /// covers the read that was actually broken.
+        /// </summary>
+        [UnityTest]
+        public IEnumerator TheShutdownFlagIsReadableFromTheListenerThread()
+        {
+            var previous = PgBridge.AllowShutdownRoute;
+            PgBridge.AllowShutdownRoute = true;
+
+            bool observed = false;
+            Exception failure = null;
+            var reader = new Thread(() =>
+            {
+                try { observed = PgBridge.AllowShutdownRoute; }
+                catch (Exception e) { failure = e; }
+            });
+
+            reader.Start();
+            while (reader.IsAlive) yield return null;
+
+            PgBridge.AllowShutdownRoute = previous;
+
+            Assert.IsNull(failure, failure?.Message);
+            Assert.IsTrue(observed, "the listener thread could not see the flag");
+        }
+
+        [Test]
+        public void ShuttingDownWithdrawsTheAddress()
+        {
+            PgBridge.Shutdown();
+            try
+            {
+                Assert.IsFalse(File.Exists(PgBridgeRegistry.EntryPath),
+                    "a bridge that is gone for good must not leave clients an address");
+            }
+            finally
+            {
+                PgBridge.Start();
+            }
         }
 
         [UnityTest]
