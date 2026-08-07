@@ -20,7 +20,7 @@ namespace ProvingGround.EditorTools
     /// These are also the methods the menu items and the window call, so there is exactly
     /// one implementation of each operation regardless of who asked for it.
     /// </summary>
-    public static class PgApi
+    public static partial class PgApi
     {
         /// <summary>Creates the folder layout and starter contracts.</summary>
         public static string Init(string genre = "fps") => Emit(PgSetup.Initialise(genre));

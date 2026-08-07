@@ -58,8 +58,13 @@ namespace ProvingGround.Verification
         PgUiFacts FactsFor(Graphic graphic, Camera camera)
         {
             var rectTransform = graphic.rectTransform;
-            var facts = FactsForRect(rectTransform, camera, graphic.name,
-                graphic.GetComponent<Selectable>()?.IsInteractable() ?? false);
+            // Explicit check rather than '?.': Unity's overloaded == means a Selectable
+            // that is absent or destroyed is not reliably CLR-null, and '?.' would call
+            // straight into it.
+            var selectable = graphic.GetComponent<Selectable>();
+            var interactable = selectable != null && selectable.IsInteractable();
+
+            var facts = FactsForRect(rectTransform, camera, graphic.name, interactable);
 
             facts.Color = PgColor.ToHex(graphic.color);
             facts.Opacity = ResolvedAlpha(graphic);

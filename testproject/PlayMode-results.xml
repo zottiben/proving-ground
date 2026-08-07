@@ -1,58 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<test-run id="2" testcasecount="10" result="Passed" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.2445844">
-  <test-suite type="TestSuite" id="1018" name="testproject" fullname="testproject" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.244584" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+<test-run id="2" testcasecount="11" result="Passed" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-07 03:51:37Z" end-time="2026-08-07 03:51:38Z" duration="0.2834668">
+  <test-suite type="TestSuite" id="1019" name="testproject" fullname="testproject" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-08-07 03:51:37Z" end-time="2026-08-07 03:51:38Z" duration="0.283467" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="PlayMode" />
     </properties>
-    <test-suite type="Assembly" id="1013" name="ProvingGround.Tests.Runtime.dll" fullname="/Users/medusa/Developer/unity-plugin/testproject/Library/ScriptAssemblies/ProvingGround.Tests.Runtime.dll" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.240044" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1014" name="ProvingGround.Tests.Runtime.dll" fullname="/Users/medusa/Developer/unity-plugin/testproject/Library/ScriptAssemblies/ProvingGround.Tests.Runtime.dll" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-08-07 03:51:37Z" end-time="2026-08-07 03:51:38Z" duration="0.279083" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
-        <property name="_PID" value="83760" />
+        <property name="_PID" value="6070" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="PlayMode" />
         <property name="EditorOnly" value="False" />
       </properties>
-      <test-suite type="TestSuite" id="1014" name="ProvingGround" fullname="ProvingGround" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.239829" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1015" name="ProvingGround" fullname="ProvingGround" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-08-07 03:51:37Z" end-time="2026-08-07 03:51:38Z" duration="0.278812" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <test-suite type="TestSuite" id="1015" name="Tests" fullname="ProvingGround.Tests" runstate="Runnable" testcasecount="10" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.239732" total="10" passed="10" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1016" name="Tests" fullname="ProvingGround.Tests" runstate="Runnable" testcasecount="11" result="Passed" start-time="2026-08-07 03:51:37Z" end-time="2026-08-07 03:51:38Z" duration="0.278714" total="11" passed="11" failed="0" inconclusive="0" skipped="0" asserts="0">
           <properties />
-          <test-suite type="TestFixture" id="1001" name="PgEndToEndTests" fullname="ProvingGround.Tests.PgEndToEndTests" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.235190" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1001" name="PgEndToEndTests" fullname="ProvingGround.Tests.PgEndToEndTests" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" testcasecount="7" result="Passed" start-time="2026-08-07 03:51:37Z" end-time="2026-08-07 03:51:38Z" duration="0.272736" total="7" passed="7" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1004" name="AScenarioRunsEndToEndAndProducesAReport" fullname="ProvingGround.Tests.PgEndToEndTests.AScenarioRunsEndToEndAndProducesAReport" methodname="AScenarioRunsEndToEndAndProducesAReport" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="234813355" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.119284" asserts="0">
+            <test-case id="1004" name="AScenarioRunsEndToEndAndProducesAReport" fullname="ProvingGround.Tests.PgEndToEndTests.AScenarioRunsEndToEndAndProducesAReport" methodname="AScenarioRunsEndToEndAndProducesAReport" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="276184258" result="Passed" start-time="2026-08-07 03:51:37Z" end-time="2026-08-07 03:51:38Z" duration="0.126679" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1002" name="InjectedInputMovesTheRealController" fullname="ProvingGround.Tests.PgEndToEndTests.InjectedInputMovesTheRealController" methodname="InjectedInputMovesTheRealController" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="1725631593" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.011247" asserts="0">
+            <test-case id="1002" name="InjectedInputMovesTheRealController" fullname="ProvingGround.Tests.PgEndToEndTests.InjectedInputMovesTheRealController" methodname="InjectedInputMovesTheRealController" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="2059240824" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.013295" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1007" name="RecordingALiveSessionProducesAReplayableScenario" fullname="ProvingGround.Tests.PgEndToEndTests.RecordingALiveSessionProducesAReplayableScenario" methodname="RecordingALiveSessionProducesAReplayableScenario" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="1159519850" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.032621" asserts="0">
+            <test-case id="1008" name="RecordingALiveSessionProducesAReplayableScenario" fullname="ProvingGround.Tests.PgEndToEndTests.RecordingALiveSessionProducesAReplayableScenario" methodname="RecordingALiveSessionProducesAReplayableScenario" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="1701461956" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.039355" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1003" name="TheFeelProbeMeasuresSpeedAndJumpFromObservedMotion" fullname="ProvingGround.Tests.PgEndToEndTests.TheFeelProbeMeasuresSpeedAndJumpFromObservedMotion" methodname="TheFeelProbeMeasuresSpeedAndJumpFromObservedMotion" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="953882655" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.032226" asserts="0">
+            <test-case id="1007" name="SettlingFromASpawnIsNotMeasuredAsAJump" fullname="ProvingGround.Tests.PgEndToEndTests.SettlingFromASpawnIsNotMeasuredAsAJump" methodname="SettlingFromASpawnIsNotMeasuredAsAJump" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="1391515690" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.013809" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1006" name="TheProbeBotReportsCleanlyOnAWorkingLevel" fullname="ProvingGround.Tests.PgEndToEndTests.TheProbeBotReportsCleanlyOnAWorkingLevel" methodname="TheProbeBotReportsCleanlyOnAWorkingLevel" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="10220027" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.031663" asserts="0">
+            <test-case id="1003" name="TheFeelProbeMeasuresSpeedAndJumpFromObservedMotion" fullname="ProvingGround.Tests.PgEndToEndTests.TheFeelProbeMeasuresSpeedAndJumpFromObservedMotion" methodname="TheFeelProbeMeasuresSpeedAndJumpFromObservedMotion" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="439865695" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.035526" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1005" name="TheSceneDigestReportsObjectsThatActuallyExist" fullname="ProvingGround.Tests.PgEndToEndTests.TheSceneDigestReportsObjectsThatActuallyExist" methodname="TheSceneDigestReportsObjectsThatActuallyExist" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="725635544" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.001593" asserts="0">
+            <test-case id="1006" name="TheProbeBotReportsCleanlyOnAWorkingLevel" fullname="ProvingGround.Tests.PgEndToEndTests.TheProbeBotReportsCleanlyOnAWorkingLevel" methodname="TheProbeBotReportsCleanlyOnAWorkingLevel" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="474531790" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.034879" asserts="0">
+              <properties>
+                <property name="_JOINTYPE" value="UnityCombinatorial" />
+                <property name="retryIteration" value="0" />
+                <property name="repeatIteration" value="0" />
+              </properties>
+            </test-case>
+            <test-case id="1005" name="TheSceneDigestReportsObjectsThatActuallyExist" fullname="ProvingGround.Tests.PgEndToEndTests.TheSceneDigestReportsObjectsThatActuallyExist" methodname="TheSceneDigestReportsObjectsThatActuallyExist" classname="ProvingGround.Tests.PgEndToEndTests" runstate="Runnable" seed="1537516933" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.002027" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
@@ -60,30 +67,30 @@
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1008" name="PgInputPathTests" fullname="ProvingGround.Tests.PgInputPathTests" classname="ProvingGround.Tests.PgInputPathTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.003959" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1009" name="PgInputPathTests" fullname="ProvingGround.Tests.PgInputPathTests" classname="ProvingGround.Tests.PgInputPathTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.005332" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1011" name="ASessionMakesTheClockAdvanceInHeadlessRuns" fullname="ProvingGround.Tests.PgInputPathTests.ASessionMakesTheClockAdvanceInHeadlessRuns" methodname="ASessionMakesTheClockAdvanceInHeadlessRuns" classname="ProvingGround.Tests.PgInputPathTests" runstate="Runnable" seed="1191061272" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.000634" asserts="0">
+            <test-case id="1012" name="ASessionMakesTheClockAdvanceInHeadlessRuns" fullname="ProvingGround.Tests.PgInputPathTests.ASessionMakesTheClockAdvanceInHeadlessRuns" methodname="ASessionMakesTheClockAdvanceInHeadlessRuns" classname="ProvingGround.Tests.PgInputPathTests" runstate="Runnable" seed="1288290608" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.000744" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1009" name="QueuedStateEventsReachTheDevice" fullname="ProvingGround.Tests.PgInputPathTests.QueuedStateEventsReachTheDevice" methodname="QueuedStateEventsReachTheDevice" classname="ProvingGround.Tests.PgInputPathTests" runstate="Runnable" seed="2103514101" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.001223" asserts="0">
+            <test-case id="1010" name="QueuedStateEventsReachTheDevice" fullname="ProvingGround.Tests.PgInputPathTests.QueuedStateEventsReachTheDevice" methodname="QueuedStateEventsReachTheDevice" classname="ProvingGround.Tests.PgInputPathTests" runstate="Runnable" seed="1758744670" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.001615" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1010" name="TheBackendDrivesTheDeviceTheGameReads" fullname="ProvingGround.Tests.PgInputPathTests.TheBackendDrivesTheDeviceTheGameReads" methodname="TheBackendDrivesTheDeviceTheGameReads" classname="ProvingGround.Tests.PgInputPathTests" runstate="Runnable" seed="1721554406" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.001026" asserts="0">
+            <test-case id="1011" name="TheBackendDrivesTheDeviceTheGameReads" fullname="ProvingGround.Tests.PgInputPathTests.TheBackendDrivesTheDeviceTheGameReads" methodname="TheBackendDrivesTheDeviceTheGameReads" classname="ProvingGround.Tests.PgInputPathTests" runstate="Runnable" seed="1200227519" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.001410" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1012" name="TheSessionRestoresTheClockWhenItEnds" fullname="ProvingGround.Tests.PgInputPathTests.TheSessionRestoresTheClockWhenItEnds" methodname="TheSessionRestoresTheClockWhenItEnds" classname="ProvingGround.Tests.PgInputPathTests" runstate="Runnable" seed="1235861351" result="Passed" start-time="2026-08-07 02:21:06Z" end-time="2026-08-07 02:21:06Z" duration="0.000578" asserts="0">
+            <test-case id="1013" name="TheSessionRestoresTheClockWhenItEnds" fullname="ProvingGround.Tests.PgInputPathTests.TheSessionRestoresTheClockWhenItEnds" methodname="TheSessionRestoresTheClockWhenItEnds" classname="ProvingGround.Tests.PgInputPathTests" runstate="Runnable" seed="188659530" result="Passed" start-time="2026-08-07 03:51:38Z" end-time="2026-08-07 03:51:38Z" duration="0.000706" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />

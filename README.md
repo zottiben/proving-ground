@@ -97,6 +97,56 @@ discipline, not just the API.
 
 ---
 
+## Authoring: scene recipes
+
+Every other Unity agent bridge authors by imperative mutation - create an object, add a
+component, set a property, several hundred times. That works, but the result exists only
+as serialized YAML: it cannot be reviewed, cannot be rebuilt, and cannot be diffed when
+someone changes it.
+
+Proving Ground's primary authoring path is a **recipe**: the level as a document.
+
+```json
+{
+  "name": "arena", "seed": 7,
+  "objects": [
+    { "id": "Floor", "primitive": "Cube", "scale": [60, 1, 60],
+      "position": [0, -0.5, 0], "static": true, "material": "#6E7378" },
+
+    { "id": "Pillar", "primitive": "Cylinder", "position": [0, 2, 0], "scale": [2, 2, 2],
+      "material": "#8A6F4E", "repeat": { "count": 6, "ring": 12 } },
+
+    { "id": "Player", "position": [0, 1.2, -20], "tag": "Player",
+      "components": [
+        { "type": "CharacterController", "set": { "height": 1.8, "radius": 0.35 } },
+        { "type": "FpsController", "set": { "MoveSpeed": 6.0, "JumpHeight": 1.15 } }
+      ],
+      "children": [
+        { "id": "Eye", "position": [0, 0.7, 0], "tag": "MainCamera",
+          "components": [{ "type": "Camera", "set": { "fieldOfView": 75 } }] }
+      ] }
+  ]
+}
+```
+
+One round trip instead of two hundred. **Idempotent** - re-running converges rather than
+duplicating, applies changed values, and removes objects the recipe no longer declares.
+**Seeded**, so `jitter` rebuilds identically. And it only touches what it owns, so
+hand-placed work in the same scene survives.
+
+Direct editing (`pg_create`, `pg_modify`, `pg_component`) is there for iterating on what
+a recipe produced.
+
+Two things this fixes that the alternatives are documented to get wrong:
+
+- **Compilation is awaited, not slept through.** Editing a script reloads the app domain,
+  which drops the agent's connection, and the usual workaround is a fixed sleep that is
+  both too long and not long enough. `pg_script` tracks a generation counter across the
+  reload, reconnects, and returns the actual compiler errors.
+- **Property names are the documented ones.** `fieldOfView`, `isTrigger`, `mass` - not
+  Unity's internal `m_FieldOfView`. Values convert to the field's real type, so colours
+  take `#RRGGBB`, vectors take `[x, y, z]`, and enums take their name.
+
 ## Two ways in
 
 ### A new game
@@ -105,10 +155,20 @@ discipline, not just the API.
 pg init fps            # contracts seeded from measured genre norms
                        # write Design/pillars.md and one-pager.md
 pg norms fps           # reference values, with the reasoning attached
-                       # build the smallest thing that exercises the loop
+pg check project       # catch settings that stop gameplay working at all
+                       # write the controller, build the level from a recipe
 pg scenario smoke      # drive it
 pg milestone prototype # judged on evidence, not on your say-so
 ```
+
+`tools/demo_fps.py` and `tools/demo_play.py` run exactly this end to end against a live
+Editor: empty scene, write a controller, await the compile, build a 23-object arena from
+a recipe, rebuild to prove idempotency, save it, add it to the build settings, verify the
+level, then enter play mode and turn the probe bot loose.
+
+The last run reported `moveSpeed 6.0001` against a recipe asking for 6.0,
+`timeToApex 0.335` against a controller configured for 0.35, `input.moveLatency` of one
+frame, and a probe that passed clean.
 
 ### A game that already exists
 
@@ -135,6 +195,7 @@ intentions.
 | Layer | What it does |
 |---|---|
 | **0 Contracts** | Design intent as JSON: feel spec, UI manifest, audio contract, content rules, quality gates |
+| **A Authoring** | Declarative scene recipes, direct object and component editing, script writing with real compile awaiting, batching |
 | **1 Perception** | Scene digest, camera view, annotated capture, frame-stamped event timeline |
 | **2 Actuation** | Input injection, deterministic sessions, scenarios, probe bots, session recording and deterministic replay |
 | **3 Verification** | Feel metrics, UI conformance, visual regression, scene truth, audio wiring, content and project audits, balance simulation |

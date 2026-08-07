@@ -22,8 +22,17 @@ namespace ProvingGround.Actuation
         /// <summary>Below this speed while being told to move, the player counts as stuck.</summary>
         public float StuckSpeedThreshold = 0.15f;
 
-        /// <summary>Seconds of being stuck before it is reported.</summary>
+        /// <summary>Seconds of being stuck before the bot tries a different heading.</summary>
         public float StuckDuration = 2.5f;
+
+        /// <summary>
+        /// How many different headings must all fail before it is reported.
+        ///
+        /// One blocked heading means the bot walked into a wall, which is what walls are
+        /// for. Reporting that would bury the real defect in noise, and a checker that
+        /// cries wolf stops being read.
+        /// </summary>
+        public int StuckHeadingsBeforeReporting = 3;
 
         /// <summary>Falling below this Y counts as leaving the world.</summary>
         public float KillPlaneY = -100f;
@@ -72,6 +81,8 @@ namespace ProvingGround.Actuation
             var endTime = Time.time + seconds;
             var nextDecision = 0f;
             var stuckSince = -1f;
+            var blockedHeadings = 0;
+            var stuckOrigin = player.position;
             var lastPosition = player.position;
             var visited = new List<Vector3>();
 
@@ -122,16 +133,44 @@ namespace ProvingGround.Actuation
                     if (stuckSince < 0f) stuckSince = Time.time;
                     else if (Time.time - stuckSince > StuckDuration)
                     {
-                        Once("probe.stuck." + Describe(position), PgFinding
-                            .Fail("probe.stuck", $"Player was unable to move for {StuckDuration}s while input was held")
-                            .At(Describe(position))
-                            .Fix("Geometry the character controller cannot climb or slide off. Check step offset, slope limit and collider seams."));
+                        blockedHeadings++;
                         stuckSince = -1f;
-                        // Break out by turning around rather than ending the run.
-                        if (inputAvailable) PgInput.Look(new Vector2(1f, 0f));
+
+                        if (blockedHeadings >= StuckHeadingsBeforeReporting)
+                        {
+                            Once("probe.stuck." + Describe(stuckOrigin), PgFinding
+                                .Fail("probe.stuck",
+                                    $"Player could not move in {blockedHeadings} different directions over about {StuckDuration * blockedHeadings:0}s")
+                                .At(Describe(stuckOrigin))
+                                .Fix("Wedged on geometry the character controller cannot climb or slide off. Check step offset, slope limit and collider seams."));
+                            blockedHeadings = 0;
+                        }
+
+                        // Pick a fresh heading at once rather than waiting for the next
+                        // decision tick, so a blocked bot does not spend the rest of the run
+                        // pressed against a wall.
+                        if (inputAvailable)
+                        {
+                            var escape = (float)(random.NextDouble() * Mathf.PI * 2f);
+                            PgInput.Move(new Vector2(Mathf.Sin(escape), Mathf.Cos(escape)).normalized);
+                            PgInput.Look(new Vector2(1f, 0f));
+                        }
+
+                        nextDecision = Time.time + DecisionInterval;
                     }
                 }
-                else stuckSince = -1f;
+                else
+                {
+                    // Moving again means that heading was merely blocked, not that the
+                    // player is trapped, so the count starts over.
+                    if (speed > StuckSpeedThreshold)
+                    {
+                        blockedHeadings = 0;
+                        stuckOrigin = position;
+                    }
+
+                    stuckSince = -1f;
+                }
 
                 if (Time.time >= nextDecision && inputAvailable)
                 {
@@ -161,6 +200,12 @@ namespace ProvingGround.Actuation
             Report.Datum("coverageRadius", CoverageRadius(visited));
 
             foreach (var pair in Feel.Results()) Report.Datum("feel." + pair.Key, pair.Value);
+
+            if (!Feel.PerformanceIsRepresentative)
+                Report.Add(PgFinding
+                    .Info("probe.perfNotRepresentative",
+                        "Frame timings here describe the host machine, not real performance")
+                    .Fix("This run used a captured clock or had no renderer. Measure from the Editor or a player build."));
 
             foreach (var error in _errors)
                 Report.Add(new PgFinding

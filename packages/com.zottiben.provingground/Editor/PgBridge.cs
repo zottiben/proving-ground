@@ -29,6 +29,9 @@ namespace ProvingGround.EditorTools
     {
         public const string EnabledKey = "ProvingGround.Bridge.Enabled";
         public const string PortKey = "ProvingGround.Bridge.Port";
+        const string ServingKey = "ProvingGround.Bridge.Serving";
+        const string ShutdownRouteKey = "ProvingGround.Bridge.AllowShutdown";
+        const string SessionPortKey = "ProvingGround.Bridge.SessionPort";
         public const int DefaultPort = 8787;
 
         static HttpListener _listener;
@@ -48,8 +51,16 @@ namespace ProvingGround.EditorTools
 
         public static int Port
         {
-            get => EditorPrefs.GetInt(PortKey, DefaultPort);
-            set => EditorPrefs.SetInt(PortKey, value);
+            // Serve mode keeps its port in SessionState so a headless run on a custom port
+            // does not rewrite the port the user's Editor will use next time.
+            get => Serving
+                ? SessionState.GetInt(SessionPortKey, DefaultPort)
+                : EditorPrefs.GetInt(PortKey, DefaultPort);
+            set
+            {
+                if (Serving) SessionState.SetInt(SessionPortKey, value);
+                else EditorPrefs.SetInt(PortKey, value);
+            }
         }
 
         public static bool IsRunning => _listener != null && _listener.IsListening;
@@ -58,7 +69,27 @@ namespace ProvingGround.EditorTools
         /// Enables POST /shutdown. Only set by the headless serve entry point: an Editor a
         /// person is working in should not be closable from a socket.
         /// </summary>
-        public static bool AllowShutdownRoute { get; set; }
+        public static bool AllowShutdownRoute
+        {
+            get => SessionState.GetBool(ShutdownRouteKey, false);
+            set => SessionState.SetBool(ShutdownRouteKey, value);
+        }
+
+        /// <summary>
+        /// Headless serve mode, remembered across domain reloads but not across Editor
+        /// restarts.
+        ///
+        /// Compiling a script reloads the app domain, which aborts the listener thread and
+        /// wipes every static field. The GUI path recovers because Enabled lives in
+        /// EditorPrefs, but serve mode must not write EditorPrefs - that would silently
+        /// leave the bridge switched on in the user's own Editor afterwards. SessionState
+        /// has exactly the right lifetime.
+        /// </summary>
+        public static bool Serving
+        {
+            get => SessionState.GetBool(ServingKey, false);
+            set => SessionState.SetBool(ServingKey, value);
+        }
 
         static PgBridge()
         {
@@ -66,7 +97,8 @@ namespace ProvingGround.EditorTools
             AssemblyReloadEvents.beforeAssemblyReload += Stop;
             EditorApplication.quitting += Stop;
 
-            if (Enabled) EditorApplication.delayCall += Start;
+            // Restart after a domain reload for either reason it might have been running.
+            if (Enabled || Serving) EditorApplication.delayCall += Start;
         }
 
         [MenuItem("Tools/Proving Ground/Agent Bridge/Enable", priority = 120)]
@@ -250,6 +282,16 @@ namespace ProvingGround.EditorTools
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentException("Pass a 'method' name. GET /methods lists them.");
 
+            return InvokeMethod(name, request["args"] as JObject ?? new JObject());
+        }
+
+        /// <summary>
+        /// Dispatches to a named <see cref="PgApi"/> method. Shared with
+        /// <see cref="PgApi.Batch"/> so a batched call and a direct call resolve and bind
+        /// arguments identically.
+        /// </summary>
+        public static string InvokeMethod(string name, JObject args)
+        {
             var method = Methods().FirstOrDefault(m =>
                 string.Equals(m.Name, name, StringComparison.OrdinalIgnoreCase));
 
@@ -257,7 +299,7 @@ namespace ProvingGround.EditorTools
                 throw new ArgumentException(
                     $"Unknown method '{name}'. Known: {string.Join(", ", Methods().Select(m => m.Name))}");
 
-            var args = request["args"] as JObject ?? new JObject();
+            args ??= new JObject();
             var parameters = method.GetParameters();
             var values = new object[parameters.Length];
 

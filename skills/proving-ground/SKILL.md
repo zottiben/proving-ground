@@ -1,6 +1,6 @@
 ---
 name: proving-ground
-description: Build, verify and ship Unity games with the Proving Ground plugin. Use when working in a Unity project that has com.zottiben.provingground installed, or when asked to start a new game, iterate on an existing one, check whether a game plays or looks right, measure game feel, verify UI against a design, validate audio wiring, find level defects, or judge production readiness.
+description: Build, verify and ship Unity games with the Proving Ground plugin. Use when working in a Unity project that has com.zottiben.provingground installed, or when asked to create a game or level from scratch, build scenes or GameObjects, write gameplay code, iterate on an existing game, check whether a game plays or looks right, measure game feel, verify UI against a design, validate audio wiring, find level defects, or judge production readiness.
 ---
 
 # Proving Ground
@@ -32,6 +32,40 @@ a red test.
 either fix the game or say plainly that you think the contract is wrong and why.
 Quietly editing the spec to match the bug is the single most damaging thing you can do
 here, because it destroys the only signal anyone has.
+
+## Building things
+
+**Use a scene recipe, not two hundred calls.** `pg_scene_build` takes a JSON document
+describing the whole level and applies it in one round trip. It is idempotent, so
+re-running converges instead of duplicating; it is seeded, so procedural parts rebuild
+identically; and the recipe is the artifact that gets committed, so a change to the
+level shows up in review as a change to a file somebody can read.
+
+Creating objects one at a time with `pg_create` produces a scene that exists only as
+YAML: unreviewable, unrebuildable, and impossible to diff. Reach for `pg_create` and
+`pg_modify` when you are nudging something that already exists, and fold what you keep
+back into the recipe.
+
+`repeat` covers most of what makes a level: `{"count": 8, "ring": 12}` for a circle of
+pillars, `{"count": 9, "grid": [3, 2.2]}` for a stack of crates, `{"count": 4,
+"offset": [3,0,0]}` for a row, plus `jitter` for seeded variation.
+
+A rebuild only touches what the recipe owns. Hand-placed objects in the same scene are
+left alone, and objects the recipe no longer declares are removed.
+
+**After writing a script, wait properly.** `pg_script` already waits for compilation and
+reports the errors. Do not add a sleep. The bridge drops for a few seconds during the
+domain reload; that is expected and handled.
+
+**Check the console when something did not work.** Unity explains most failures there
+and nowhere else - a component that would not attach, a shader that did not compile, a
+null reference in someone's `OnValidate`. `pg_console` is often the difference between
+knowing why and guessing.
+
+**Run `pg_check("project")` early on a new project.** It catches the settings that make
+gameplay silently not work, most importantly an Input System package paired with the
+old Input Manager - a combination where controllers compile perfectly and never
+respond to anything.
 
 ## Starting a new game
 
@@ -66,7 +100,19 @@ existing game safe to iterate on.
 ## The loop
 
 ```
-contract  ->  change the game  ->  run  ->  diff  ->  repeat
+contract  ->  build or change the game  ->  run  ->  diff  ->  repeat
+```
+
+Building a playable slice from nothing looks like this:
+
+```
+pg_check project        catch settings that stop gameplay working
+pg_scene new            an empty scene, so nothing clashes
+pg_script write         the controller; it waits for the compile
+pg_scene_build          the level, from one recipe
+pg_scene save + add_to_build
+pg_check scene          spawns, floor holes, reachability
+pg_play  ->  pg_run_probe    does it actually play
 ```
 
 For feel: edit the controller, `pg_run_scenario jump-arc`, read the diff against
@@ -121,6 +167,13 @@ not averages.
 
 | Need | Tool |
 |---|---|
+| Build or rebuild a level | `pg_scene_build` |
+| New / save / open a scene, add to build | `pg_scene` |
+| Write gameplay code and know it compiled | `pg_script` |
+| Nudge one object | `pg_create`, `pg_modify`, `pg_delete` |
+| Add or configure a component | `pg_component` |
+| Several small edits at once | `pg_batch` |
+| What Unity said went wrong | `pg_console` |
 | What is in the scene | `pg_digest` |
 | What the camera sees | `pg_view` |
 | An image, with a legend | `pg_capture` |

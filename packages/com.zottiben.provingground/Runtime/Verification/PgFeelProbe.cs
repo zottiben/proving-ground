@@ -31,6 +31,17 @@ namespace ProvingGround.Verification
         float _currentSpeed;
 
         bool _wasGrounded = true;
+
+        /// <summary>
+        /// False until a grounded-to-airborne transition has actually been seen.
+        ///
+        /// Without it, a player that spawns slightly above the floor is airborne on the
+        /// first frame, and the landing gets measured as a jump whose apex is the spawn
+        /// height. That produces a confident, entirely fictional jump measurement on a game
+        /// where jumping does not work at all, which is worse than measuring nothing.
+        /// </summary>
+        bool _takeoffObserved;
+
         float _takeoffTime;
         float _takeoffY;
         float _apexY;
@@ -83,6 +94,7 @@ namespace ProvingGround.Verification
             _leftGroundTime = -1f;
             _hitstopStart = -1f;
             _moveCommandFrame = -1;
+            _takeoffObserved = false;
 
             if (_player != null) _lastPosition = _player.position;
             _wasGrounded = IsGrounded();
@@ -210,6 +222,7 @@ namespace ProvingGround.Verification
 
             if (_wasGrounded && !grounded)
             {
+                _takeoffObserved = true;
                 _takeoffTime = Time.time;
                 _takeoffY = position.y;
                 _apexY = position.y;
@@ -237,8 +250,9 @@ namespace ProvingGround.Verification
                 var airtime = Time.time - _takeoffTime;
                 var apexHeight = _apexY - _takeoffY;
 
-                // Ignore steps off a ledge: those are falls, not jumps.
-                if (apexHeight > 0.05f)
+                // Ignore steps off a ledge and the settle from a spawn: those are falls,
+                // not jumps.
+                if (_takeoffObserved && apexHeight > 0.05f)
                 {
                     _jumpAirtimes.Add(airtime);
                     _jumpApexHeights.Add(apexHeight);

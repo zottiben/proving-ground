@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using ProvingGround;
 
 namespace ProvingGround.EditorTools
 {
@@ -21,6 +22,7 @@ namespace ProvingGround.EditorTools
             CheckRendering(report);
             CheckBuildFlags(report);
             CheckPhysics(report);
+            CheckInputHandling(report);
 
             report.Datum("unityVersion", Application.unityVersion);
             report.Datum("buildTarget", EditorUserBuildSettings.activeBuildTarget.ToString());
@@ -112,6 +114,47 @@ namespace ProvingGround.EditorTools
 #pragma warning restore CS0618
 
             report.Datum("scriptingBackend", backend.ToString());
+        }
+
+        /// <summary>
+        /// Catches the Input System being installed while the project is still set to the
+        /// old Input Manager.
+        ///
+        /// This one is worth a dedicated check because of how it fails. Code guarded by
+        /// ENABLE_INPUT_SYSTEM silently compiles to nothing, so a controller builds without
+        /// a single error and simply never responds. Proving Ground's own scenarios and
+        /// probe bot drive the game through the Input System, so with the old handler
+        /// selected they hold input that nothing is listening for, and report a game that
+        /// does not move.
+        /// </summary>
+        static void CheckInputHandling(PgReport report)
+        {
+            var manifest = Path.Combine(PgPaths.ProjectRoot, "Packages", "manifest.json");
+            var hasPackage = File.Exists(manifest) &&
+                             File.ReadAllText(manifest).Contains("com.unity.inputsystem");
+
+            if (!hasPackage) return;
+
+            // activeInputHandler has no public API, so it is read from the settings asset:
+            // 0 = old, 1 = new, 2 = both.
+            var settings = Resources.FindObjectsOfTypeAll<PlayerSettings>().FirstOrDefault();
+            if (settings == null) return;
+
+            using var serialized = new SerializedObject(settings);
+            var handler = serialized.FindProperty("activeInputHandler");
+            if (handler == null) return;
+
+            report.Datum("activeInputHandler", handler.intValue);
+
+            if (handler.intValue != 0) return;
+
+            report.Add(PgFinding
+                .Blocker("project.inputHandlerMismatch",
+                    "The Input System package is installed but the project still uses the old Input Manager")
+                .With("Input System Package, or Both", "Input Manager (Old)")
+                .Fix("Set Project Settings > Player > Active Input Handling to 'Both' or 'Input System Package'. " +
+                     "Until then, code inside ENABLE_INPUT_SYSTEM compiles to nothing, so controllers build " +
+                     "cleanly and never respond, and Proving Ground scenarios cannot drive the game."));
         }
 
         static void CheckPhysics(PgReport report)

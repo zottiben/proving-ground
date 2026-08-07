@@ -75,10 +75,14 @@ namespace ProvingGround.EditorTools
         /// </summary>
         public static void Serve()
         {
+            // Set Serving before Port, so the port is stored in session state rather than
+            // overwriting the port the user's own Editor uses.
+            PgBridge.Serving = true;
+            PgBridge.AllowShutdownRoute = true;
+
             if (int.TryParse(Arg("pgPort", PgBridge.DefaultPort.ToString()), out var port))
                 PgBridge.Port = port;
 
-            PgBridge.AllowShutdownRoute = true;
             PgBridge.Start();
 
             if (!PgBridge.IsRunning)

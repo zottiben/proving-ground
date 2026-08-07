@@ -50,6 +50,38 @@ def _call(method: str, **args: Any) -> str:
     return response.text
 
 
+def _await_compile(timeout_seconds: int = 300) -> str:
+    """Blocks until Unity has finished compiling, and reports what broke.
+
+    Compiling reloads the app domain, which tears down the bridge and drops this
+    connection for a few seconds. A refused connection during that window means the
+    Editor is busy, not that it is gone, so it is retried rather than raised. Every
+    other Unity agent bridge papers over this with a fixed sleep, which is
+    simultaneously too long and not long enough.
+    """
+    deadline = time.time() + timeout_seconds
+    saw_disconnect = False
+
+    while time.time() < deadline:
+        try:
+            status = json.loads(_call("CompileStatus"))
+        except BridgeError:
+            saw_disconnect = True
+            time.sleep(1.0)
+            continue
+
+        if status.get("settled"):
+            if status.get("hasErrors"):
+                errors = "\n  ".join(status.get("errors", []))
+                return f"Compilation FAILED with {status['errorCount']} error(s):\n  {errors}"
+            note = " (reconnected after the domain reload)" if saw_disconnect else ""
+            return f"Compiled cleanly{note}."
+
+        time.sleep(0.5)
+
+    return f"Unity was still compiling after {timeout_seconds}s. Poll pg_compile_status."
+
+
 def _summarise(raw: str, max_findings: int = 40) -> str:
     """Renders a report as text.
 
@@ -96,6 +128,199 @@ def _summarise(raw: str, max_findings: int = 40) -> str:
         lines.append("  data: " + json.dumps(data)[:1500])
 
     return "\n".join(lines)
+
+
+# --- authoring -------------------------------------------------------------------
+
+
+@mcp.tool()
+def pg_scene_build(recipe_json: str, build: bool = True) -> str:
+    """Create or update a whole scene from a declarative recipe. This is the main way to build a level.
+
+    Pass a JSON recipe: {"name": "arena", "seed": 1, "objects": [...]}. Each object takes
+    id, primitive (Cube/Sphere/Capsule/Cylinder/Plane/Quad) or prefab, position, rotation,
+    scale, parent, tag, layer, material (asset path or #RRGGBB), components
+    ([{"type": "Rigidbody", "set": {"mass": 5}}]), and repeat
+    ({"count": 8, "ring": 10} / {"count": 9, "grid": [3, 5]} / {"count": 4, "offset": [3,0,0]}).
+
+    Prefer this over creating objects one at a time. It is a single round trip, it is
+    idempotent so re-running converges instead of duplicating, the recipe is committed and
+    diffable, and objects it no longer declares get removed. Hand-placed objects in the
+    same scene are left alone.
+    """
+    return _summarise(_call("WriteAndBuildScene", recipeJson=recipe_json, build=build))
+
+
+@mcp.tool()
+def pg_scene(action: str, path: str = "", empty: bool = True) -> str:
+    """Manage scenes. action: new, save, open, add_to_build, recipes.
+
+    'new' starts an empty scene, which avoids clashing with the default camera and light.
+    'save' needs a path like Assets/Scenes/Main.unity the first time.
+    'add_to_build' is required before a build has anything to load.
+    """
+    action = action.strip().lower()
+    if action == "new":
+        return _summarise(_call("NewScene", empty=empty))
+    if action == "save":
+        return _summarise(_call("SaveScene", path=path or None))
+    if action == "open":
+        return _summarise(_call("OpenScene", path=path))
+    if action == "add_to_build":
+        return _summarise(_call("AddSceneToBuild", scenePath=path))
+    if action == "recipes":
+        return _call("SceneRecipes")
+    return "Unknown action. Use new, save, open, add_to_build or recipes."
+
+
+@mcp.tool()
+def pg_create(
+    name: str,
+    primitive: str = "",
+    parent: str = "",
+    position: list[float] | None = None,
+    rotation: list[float] | None = None,
+    scale: list[float] | None = None,
+    prefab: str = "",
+    tag: str = "",
+    layer: str = "",
+) -> str:
+    """Create a single GameObject. For more than a couple, use pg_scene_build instead."""
+    return _summarise(_call("CreateObject", name=name, primitive=primitive or None,
+                            parent=parent or None, position=position, rotation=rotation,
+                            scale=scale, prefab=prefab or None, tag=tag or None,
+                            layer=layer or None))
+
+
+@mcp.tool()
+def pg_modify(
+    target: str,
+    position: list[float] | None = None,
+    rotation: list[float] | None = None,
+    scale: list[float] | None = None,
+    parent: str = "",
+    name: str = "",
+    active: bool | None = None,
+    tag: str = "",
+    layer: str = "",
+    world_space: bool = False,
+) -> str:
+    """Move, rotate, scale, re-parent, rename or toggle an object. Undoable in the Editor."""
+    return _summarise(_call("ModifyObject", target=target, position=position, rotation=rotation,
+                            scale=scale, parent=parent or None, name=name or None,
+                            active=active, tag=tag or None, layer=layer or None,
+                            worldSpace=world_space))
+
+
+@mcp.tool()
+def pg_delete(target: str) -> str:
+    """Delete an object from the scene."""
+    return _summarise(_call("DeleteObject", target=target))
+
+
+@mcp.tool()
+def pg_component(action: str, target: str, component: str = "",
+                 set: dict[str, Any] | None = None) -> str:
+    """Add, remove or configure a component. action: add, remove, set.
+
+    Property names are the documented API names - fieldOfView, isTrigger, mass - not
+    Unity's internal serialized names. Values are converted to the field's real type, so
+    colours accept '#RRGGBB', vectors accept [x, y, z], and enums accept their name.
+
+    'set' with no component name sets properties on the GameObject itself.
+    """
+    action = action.strip().lower()
+    if action == "add":
+        return _summarise(_call("AddComponent", target=target, component=component, set=set))
+    if action == "remove":
+        return _summarise(_call("RemoveComponent", target=target, component=component))
+    if action == "set":
+        return _summarise(_call("SetProperties", target=target, component=component or None, set=set))
+    return "Unknown action. Use add, remove or set."
+
+
+@mcp.tool()
+def pg_material(target: str, material: str) -> str:
+    """Assign a material by asset path, or a colour like '#4488FF' to generate a shared one."""
+    return _summarise(_call("SetMaterial", target=target, material=material))
+
+
+@mcp.tool()
+def pg_prefab(target: str, asset_path: str) -> str:
+    """Save a scene object as a prefab and reconnect the instance to it."""
+    return _summarise(_call("CreatePrefab", target=target, assetPath=asset_path))
+
+
+@mcp.tool()
+def pg_find(name: str = "", tag: str = "", component: str = "", max: int = 50) -> str:
+    """Search the scene by name, tag or component type."""
+    return _summarise(_call("Find", name=name or None, tag=tag or None,
+                            component=component or None, max=max))
+
+
+@mcp.tool()
+def pg_inspect(target: str) -> str:
+    """Everything on one object: transform, tag, layer, components, child count."""
+    return _summarise(_call("Inspect", target=target))
+
+
+@mcp.tool()
+def pg_script(action: str, path: str = "", contents: str = "", folder: str = "Assets",
+              wait: bool = True) -> str:
+    """Write, read, list or delete C# scripts. action: write, read, list, delete.
+
+    'write' saves the file, asks Unity to rebuild, and by default waits for compilation to
+    finish and reports any errors. Do not sleep afterwards - the wait is real, and the
+    reconnect through the domain reload is handled.
+    """
+    action = action.strip().lower()
+
+    if action == "write":
+        result = _summarise(_call("WriteScript", path=path, contents=contents))
+        if not wait:
+            return result
+        return result + "\n\n" + _await_compile()
+
+    if action == "read":
+        return _summarise(_call("ReadScript", path=path))
+    if action == "list":
+        return _summarise(_call("ListScripts", folder=folder))
+    if action == "delete":
+        return _summarise(_call("DeleteScript", path=path)) + "\n\n" + _await_compile()
+    return "Unknown action. Use write, read, list or delete."
+
+
+@mcp.tool()
+def pg_compile_status(wait: bool = True) -> str:
+    """Whether Unity has finished compiling, and what failed if anything did."""
+    if wait:
+        return _await_compile()
+    return _call("CompileStatus")
+
+
+@mcp.tool()
+def pg_console(min_severity: str = "", max: int = 60) -> str:
+    """Read the Unity console. min_severity: warning or error.
+
+    Unity reports most of its failures here and nowhere else - a component that would not
+    attach, a shader that did not compile, a null reference in OnValidate. Check it when
+    something did not work and the return value did not say why.
+    """
+    return _call("Console", minSeverity=min_severity or None, max=max)
+
+
+@mcp.tool()
+def pg_batch(operations: str, stop_on_error: bool = True) -> str:
+    """Run several operations in one round trip.
+
+    Pass a JSON array of {"method": "CreateObject", "args": {...}}. Method names are the
+    PgApi names. Use this when you have a run of small edits; use pg_scene_build when you
+    are creating a level.
+    """
+    return _summarise(_call("Batch", operations=operations, stopOnError=stop_on_error))
+
+
+# --- perception and verification ---------------------------------------------------
 
 
 @mcp.tool()

@@ -176,6 +176,33 @@ namespace ProvingGround.Tests
         }
 
         [UnityTest]
+        public IEnumerator SettlingFromASpawnIsNotMeasuredAsAJump()
+        {
+            // Regression: the player spawns slightly above the floor, so it is airborne on
+            // frame one. The probe used to treat the landing as a jump and report an apex
+            // equal to the spawn height, which produced a confident jump measurement for a
+            // game where jumping was entirely broken.
+            var probe = new PgFeelProbe();
+
+            using (new PgSession(seed: 3))
+            {
+                probe.Begin(_player.transform);
+
+                for (var frame = 0; frame < 90; frame++)
+                {
+                    probe.Tick();
+                    yield return null;
+                }
+
+                probe.Stop();
+            }
+
+            var results = probe.Results();
+            Assert.IsFalse(results.ContainsKey("jump.apexHeight"),
+                "falling to the ground from a spawn must not be reported as a jump");
+        }
+
+        [UnityTest]
         public IEnumerator RecordingALiveSessionProducesAReplayableScenario()
         {
             Assert.IsTrue(PgRecording.IsAvailable, "no recorder registered");
