@@ -1,0 +1,25 @@
+{
+  "name": "ProvingGround.Runtime.UGUI",
+  "rootNamespace": "ProvingGround.Verification",
+  "references": [
+    "ProvingGround.Runtime",
+    "UnityEngine.UI"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "PG_UGUI"
+  ],
+  "versionDefines": [
+    {
+      "name": "com.unity.ugui",
+      "expression": "1.0.0",
+      "define": "PG_UGUI"
+    }
+  ],
+  "noEngineReferences": false
+}

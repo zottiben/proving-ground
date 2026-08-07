@@ -31,6 +31,11 @@
       "name": "com.unity.modules.imageconversion",
       "expression": "1.0.0",
       "define": "PG_IMAGECONVERSION"
+    },
+    {
+      "name": "com.unity.modules.uielements",
+      "expression": "1.0.0",
+      "define": "PG_UITOOLKIT"
     }
   ],
   "noEngineReferences": false

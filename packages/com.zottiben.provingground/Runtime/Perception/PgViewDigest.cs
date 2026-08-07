@@ -90,7 +90,7 @@ namespace ProvingGround.Perception
             var centreRay = camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
             if (Physics.Raycast(centreRay, out var centreHit, 1000f))
             {
-                digest.CrosshairHit = PathOf(centreHit.collider.transform);
+                digest.CrosshairHit = PgLocate.PathOf(centreHit.collider.transform);
                 digest.CrosshairDistance = Mathf.Round(centreHit.distance * 100f) / 100f;
             }
 
@@ -123,7 +123,7 @@ namespace ProvingGround.Perception
                 found.Add(new PgVisibleObject
                 {
                     Name = renderer.gameObject.name,
-                    Path = PathOf(renderer.transform),
+                    Path = PgLocate.PathOf(renderer.transform),
                     Rect = new[]
                     {
                         Mathf.Round(rect.x), Mathf.Round(rect.y),
@@ -178,13 +178,6 @@ namespace ProvingGround.Perception
             return new Rect(x, y, Mathf.Max(width, 0f), Mathf.Max(height, 0f));
         }
 
-        internal static string PathOf(Transform transform)
-        {
-            var stack = new Stack<string>();
-            for (var current = transform; current != null; current = current.parent)
-                stack.Push(current.name);
-            return string.Join("/", stack);
-        }
 
         static float[] Round(Vector3 v) => new[]
         {

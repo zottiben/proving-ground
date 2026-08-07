@@ -72,7 +72,7 @@ namespace ProvingGround.Verification
                 {
                     report.Add(PgFinding
                         .Fail("scene.spawn.blocked", $"Spawn '{spawn.name}' is inside {overlaps[0].name}")
-                        .At(Perception.PgViewDigest.PathOf(spawn))
+                        .At(PgLocate.PathOf(spawn))
                         .Fix("Move the spawn clear of geometry; the player will be ejected or trapped."));
                 }
 
@@ -80,7 +80,7 @@ namespace ProvingGround.Verification
                 {
                     report.Add(PgFinding
                         .Fail("scene.spawn.noFloor", $"Spawn '{spawn.name}' has no floor within 50m below it")
-                        .At(Perception.PgViewDigest.PathOf(spawn))
+                        .At(PgLocate.PathOf(spawn))
                         .Fix("The player will fall on spawn. Add floor, or move the spawn."));
                 }
             }
@@ -225,7 +225,7 @@ namespace ProvingGround.Verification
                         report.Add(PgFinding
                             .Fail("scene.objective.offNavmesh",
                                 $"'{objective.name}' is more than 5m from any navigable surface")
-                            .At(Perception.PgViewDigest.PathOf(objective.transform))
+                            .At(PgLocate.PathOf(objective.transform))
                             .Fix("The player may be unable to reach it. Extend the navmesh or move the object."));
                         continue;
                     }
@@ -240,7 +240,7 @@ namespace ProvingGround.Verification
                         report.Add(PgFinding
                             .Fail("scene.objective.unreachable",
                                 $"'{objective.name}' cannot be walked to from the spawn area")
-                            .At(Perception.PgViewDigest.PathOf(objective.transform))
+                            .At(PgLocate.PathOf(objective.transform))
                             .With("PathComplete", path.status.ToString())
                             .Fix("Check for a gap in the navmesh, or a door the probe cannot open."));
                     }

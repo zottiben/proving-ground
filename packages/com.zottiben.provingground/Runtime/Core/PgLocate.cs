@@ -1,6 +1,6 @@
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using ProvingGround.Perception;
 
 namespace ProvingGround
 {
@@ -61,10 +61,23 @@ namespace ProvingGround
 
             var all = Object.FindObjectsByType<Transform>(FindObjectsInactive.Include, FindObjectsSortMode.None);
 
-            var bySuffix = all.FirstOrDefault(t => PgViewDigest.PathOf(t).EndsWith("/" + target, System.StringComparison.Ordinal));
+            var bySuffix = all.FirstOrDefault(t => PathOf(t).EndsWith("/" + target, System.StringComparison.Ordinal));
             if (bySuffix != null) return bySuffix;
 
             return all.FirstOrDefault(t => t.name == target);
+        }
+
+        /// <summary>
+        /// Full '/'-separated hierarchy path. This is the identifier every layer reports
+        /// against, so that a finding names something the reader can actually select.
+        /// </summary>
+        public static string PathOf(Transform transform)
+        {
+            if (transform == null) return null;
+            var stack = new Stack<string>();
+            for (var current = transform; current != null; current = current.parent)
+                stack.Push(current.name);
+            return string.Join("/", stack);
         }
 
         /// <summary>The camera a probe should look through: the main camera, else any enabled one.</summary>
