@@ -1,0 +1,57 @@
+name: pages
+
+# Publishes install.sh so the documented one-liner works:
+#   curl -fsSL https://zottiben.github.io/proving-ground/install.sh | sh
+#
+# GitHub Pages serves publicly. On a private repository this needs a plan that allows
+# Pages, and note that publishing the installer makes the installer itself public even
+# though the release assets stay behind auth.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - install.sh
+      - .github/workflows/pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble the site
+        run: |
+          mkdir -p site
+          cp install.sh site/install.sh
+          cat > site/index.html <<'HTML'
+          <!doctype html>
+          <meta charset="utf-8">
+          <title>Proving Ground</title>
+          <body style="font-family:system-ui;max-width:40rem;margin:4rem auto;padding:0 1rem">
+          <h1>Proving Ground</h1>
+          <p>A Unity plugin that lets AI agents build, play and verify games.</p>
+          <pre style="background:#f4f4f5;padding:1rem;border-radius:.5rem;overflow-x:auto"><code>curl -fsSL https://zottiben.github.io/proving-ground/install.sh | sh</code></pre>
+          <p><a href="https://github.com/zottiben/proving-ground">Source</a></p>
+          </body>
+          HTML
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - id: deploy
+        uses: actions/deploy-pages@v4

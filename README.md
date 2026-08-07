@@ -9,53 +9,59 @@ Works on a game started from scratch, and on one that already exists, released o
 
 ---
 
-## Getting started
+## Install
 
-Requires Unity 2022.3 or newer, and Python 3.10+ for the agent bridge.
+**macOS & Linux:**
 
-### 1. Get the plugin
-
-```bash
-git clone git@github.com:zottiben/proving-ground.git
-cd proving-ground
+```sh
+curl -fsSL https://zottiben.github.io/proving-ground/install.sh | sh
 ```
 
-### 2. Run setup
+That puts `proving-ground` (and the short alias `pg`) on your PATH. Needs Python 3.10+
+and Unity 2022.3 or newer.
 
-```bash
-tools/pg-setup
+While the repository is private the installer needs credentials for the release
+assets. It uses an authenticated `gh` automatically, or `GITHUB_TOKEN` if you set one:
+
+```sh
+gh auth login          # once
+curl -fsSL https://zottiben.github.io/proving-ground/install.sh | sh
 ```
 
-That is the whole install. It finds your Unity project, adds the package to it, builds
-the MCP server, works out which harness you use, registers the server and installs the
-skill where your harness will read it.
+Nothing changes when the repository goes public - the same one-liner just stops needing
+auth.
 
-Run it from inside your Unity project, or point it at one:
+### Set up a game
 
-```bash
-tools/pg-setup --project ~/Games/MyGame
+Go to your game and run setup. It has to be run from inside the project, and it will
+tell you plainly if you are somewhere else.
+
+```sh
+cd ~/path/to/your-game
+proving-ground setup
 ```
 
-| Flag | Effect |
-|---|---|
-| `--project PATH` | Unity project to configure. Defaults to the nearest one above the working directory. |
-| `--harness claude\|codex\|pi` | Skip detection. Comma separate to configure several. |
-| `--yes` | Accept every default, never prompt. |
-| `--skip-unity` | Configure the harness only, leave the Unity manifest alone. |
+Setup adds the Unity package to the project, works out which agent harness you use,
+registers the MCP server and installs the skill where that harness reads it. Re-running
+is safe: entries are updated in place and nothing else in your config files is touched.
 
-Re-running is safe: existing entries are updated in place, and nothing else in your
-config files is touched.
+```
+proving-ground setup --harness claude    skip detection (claude, codex, pi)
+proving-ground setup --yes               accept defaults, never prompt
+proving-ground doctor                    check the install, the project and the bridge
+proving-ground update                    install the latest release
+```
 
-### 3. Turn on the bridge in Unity
+### Turn on the bridge
 
-Open the project, then **Tools > Proving Ground > Agent Bridge > Enable**.
+Open the project in Unity, then **Tools > Proving Ground > Agent Bridge > Enable**.
 
 It binds to `127.0.0.1:8787`, stays off until you enable it, and can only invoke named
 methods on one class. There is no arbitrary code execution route.
 
-### 4. Prompt your agent
+### First prompt
 
-Start your harness in the project directory and ask for something:
+Start your agent in the project directory and ask for something:
 
 > Check the project settings, then build me a greybox first person shooter. Use a scene
 > recipe for the level and verify with Proving Ground at every step.
@@ -74,82 +80,74 @@ Nothing is hidden, and all of it is safe to edit by hand.
 | **Codex** | `.codex/config.toml` in the project | `~/.codex/skills/proving-ground/SKILL.md`, plus a pointer in `AGENTS.md` |
 | **Pi** | `.pi/mcp.json` in the project | `.agents/skills/proving-ground/SKILL.md` |
 
+Plus one line in the project's `Packages/manifest.json` pointing at the installed
+package.
+
 Codex only loads project config from trusted projects, so run `codex` in the project
 once and trust it. Its skills live in the Codex home directory rather than the project,
-which is why setup also adds a line to `AGENTS.md` pointing at the skill.
+which is why setup also adds a line to `AGENTS.md`.
+
+The package reference points at `~/.local/share/proving-ground/current`, a symlink to
+the installed version. Updating swings that symlink, so projects keep working without
+being touched.
 
 ---
 
 ## Manual setup
 
-If you would rather not run the script, or you use a harness it does not know about.
+If you would rather not run the installer.
 
-### Install the package
-
-**Unity Package Manager > + > Add package from disk...** and select
-`packages/com.zottiben.provingground/package.json`.
-
-Or add it to `Packages/manifest.json`:
-
-```json
-"com.zottiben.provingground": "file:/absolute/path/to/proving-ground/packages/com.zottiben.provingground"
-```
-
-To install from git instead of a local clone:
+Add the package in Unity with **Package Manager > + > Add package from git URL**:
 
 ```
 git@github.com:zottiben/proving-ground.git?path=/packages/com.zottiben.provingground
 ```
 
 The repository is private, so the SSH form is the one that works and it needs an SSH key
-Unity's git can use. If it is made public, `https://github.com/zottiben/proving-ground.git?path=/packages/com.zottiben.provingground`
+Unity's git can use. If it is made public,
+`https://github.com/zottiben/proving-ground.git?path=/packages/com.zottiben.provingground`
 works with no credentials.
 
-One line is enough either way. The package declares the built-in modules it needs
-(physics, audio, UI, image conversion) and pulls in `com.unity.nuget.newtonsoft-json`.
-The Input System, uGUI, UI Toolkit, NavMesh and Animation integrations compile only when
-those packages are present, so nothing breaks in a project without them.
+One line is enough. The package declares the built-in modules it needs (physics, audio,
+UI, image conversion) and pulls in `com.unity.nuget.newtonsoft-json`. The Input System,
+uGUI, UI Toolkit, NavMesh and Animation integrations compile only when those packages
+are present, so nothing breaks in a project without them.
 
-### Build the MCP server
+For the agent bridge, build the server and register it by hand:
 
-```bash
-cd mcp && uv sync
+```sh
+cd mcp && python3 -m venv .venv && .venv/bin/pip install .
 ```
 
-The launcher is then at `mcp/.venv/bin/proving-ground-mcp`. Use that absolute path
-below.
-
-### Register the server
-
-**Claude Code** - `.mcp.json` in the project root:
+**Claude Code** - `.mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "proving-ground": {
-      "command": "/absolute/path/to/proving-ground/mcp/.venv/bin/proving-ground-mcp",
+      "command": "/absolute/path/to/mcp/.venv/bin/proving-ground-mcp",
       "args": []
     }
   }
 }
 ```
 
-**Codex** - `.codex/config.toml` in the project root:
+**Codex** - `.codex/config.toml`:
 
 ```toml
 [mcp_servers.proving-ground]
-command = "/absolute/path/to/proving-ground/mcp/.venv/bin/proving-ground-mcp"
+command = "/absolute/path/to/mcp/.venv/bin/proving-ground-mcp"
 args = []
 startup_timeout_sec = 60
 ```
 
-**Pi** - `.pi/mcp.json` in the project root:
+**Pi** - `.pi/mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "proving-ground": {
-      "command": "/absolute/path/to/proving-ground/mcp/.venv/bin/proving-ground-mcp",
+      "command": "/absolute/path/to/mcp/.venv/bin/proving-ground-mcp",
       "args": [],
       "transport": "stdio",
       "lifecycle": "lazy",
@@ -159,33 +157,19 @@ startup_timeout_sec = 60
 }
 ```
 
+Then copy `skills/proving-ground/SKILL.md` to wherever your harness reads skills from.
+Without it an agent has the API but not the discipline, and will reach for screenshots
+anyway.
+
 Set `PROVING_GROUND_URL` if you moved the bridge off port 8787.
-
-### Install the skill
-
-Copy `skills/proving-ground/SKILL.md` to wherever your harness reads skills from - see
-the table above. Without it an agent has the API but not the discipline, and will reach
-for screenshots anyway.
-
-### Without MCP
-
-`tools/pg` talks to the same bridge from a shell:
-
-```bash
-export PATH="/absolute/path/to/proving-ground/tools:$PATH"
-pg health
-pg check all
-```
-
-Or call `PgApi` methods through any editor bridge you already have. Every route runs the
-same code as the menu items, so a person and an agent never get different answers.
 
 ---
 
 ## Project layout
 
-`Tools > Proving Ground > Initialise Project` (or just ask your agent) writes a
-`ProvingGround/` folder next to `Assets`. Nothing is added to the asset database.
+`proving-ground init` (or **Tools > Proving Ground > Initialise Project**, or just
+asking your agent) writes a `ProvingGround/` folder next to `Assets`. Nothing is added
+to the asset database.
 
 ```
 ProvingGround/

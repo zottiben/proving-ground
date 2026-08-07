@@ -84,3 +84,6 @@ testproject/ProvingGround/
 testproject/serve.log
 testproject/*.log
 testproject/*-results.xml
+
+# Release build output
+dist/

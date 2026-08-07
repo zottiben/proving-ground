@@ -1,0 +1,57 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Release tag to build, e.g. v0.1.0"
+        required: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "value=${{ inputs.version }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build the tarball
+        run: tools/build-release.sh "${{ steps.version.outputs.value }}" dist
+
+      - name: Smoke test the artifact
+        run: |
+          # A tarball that unpacks into the wrong shape produces an install that fails
+          # only on someone else's machine, so check the layout here.
+          tmp="$(mktemp -d)"
+          tar -xzf dist/proving-ground-${{ steps.version.outputs.value }}.tar.gz \
+            -C "$tmp" --strip-components=1
+          test -f "$tmp/package/package.json"
+          test -f "$tmp/skills/proving-ground/SKILL.md"
+          test -f "$tmp/mcp/pyproject.toml"
+          test -f "$tmp/VERSION"
+          test ! -d "$tmp/mcp/.venv"
+          python3 -m venv "$tmp/.venv"
+          "$tmp/.venv/bin/pip" install --quiet "$tmp/mcp"
+          "$tmp/.venv/bin/proving-ground" version
+
+      - name: Publish
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.version.outputs.value }}
+          files: |
+            dist/proving-ground-${{ steps.version.outputs.value }}.tar.gz
+            dist/checksums.txt
+          generate_release_notes: true
