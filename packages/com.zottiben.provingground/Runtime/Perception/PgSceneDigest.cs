@@ -271,8 +271,12 @@ namespace ProvingGround.Perception
                     return $"{typeName}(trigger={collider.isTrigger}, enabled={collider.enabled})";
                 case Renderer renderer:
                     return $"{typeName}(materials={renderer.sharedMaterials?.Length ?? 0}, visible={renderer.isVisible})";
+#if PG_ANIMATION
+                // Guarded because the Animation module is genuinely optional; a project
+                // without it should still get a scene digest, just without this one line.
                 case Animator animator:
                     return $"{typeName}(controller={(animator.runtimeAnimatorController != null ? animator.runtimeAnimatorController.name : "none")})";
+#endif
                 case AudioSource audio:
                     return $"{typeName}(clip={(audio.clip != null ? audio.clip.name : "none")}, playing={audio.isPlaying})";
                 case Canvas canvas:

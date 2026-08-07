@@ -36,6 +36,11 @@
       "name": "com.unity.modules.uielements",
       "expression": "1.0.0",
       "define": "PG_UITOOLKIT"
+    },
+    {
+      "name": "com.unity.modules.animation",
+      "expression": "1.0.0",
+      "define": "PG_ANIMATION"
     }
   ],
   "noEngineReferences": false
