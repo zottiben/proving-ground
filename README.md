@@ -38,8 +38,22 @@ is safe: entries are updated in place and nothing else in your config files is t
 proving-ground setup --harness claude    skip detection (claude, codex, pi)
 proving-ground setup --yes               accept defaults, never prompt
 proving-ground doctor                    check the install, the project and the bridge
-proving-ground update                    install the latest release
 ```
+
+### Updating
+
+```sh
+proving-ground update           # install the latest release
+proving-ground update --check   # only report whether a newer one exists
+```
+
+You do not need to remember the install command. Updating swings the `current` symlink,
+so projects already set up keep working without being touched.
+
+You will usually be told first: when a newer release exists, the CLI prints a notice
+after a command and the Editor window shows one in its panel. Both check at most once a
+day, never block, and stay quiet on failure. Turn the CLI notice off with
+`PG_NO_UPDATE_CHECK=1`, and the Editor one with its **Stop checking** button.
 
 ### Turn on the bridge
 
