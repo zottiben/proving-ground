@@ -1,0 +1,37 @@
+{
+  "name": "com.zottiben.provingground",
+  "version": "0.1.0",
+  "displayName": "Proving Ground",
+  "description": "Gives AI agents the ability to play, see, verify and ship Unity games. Emits engine ground truth instead of screenshots, injects real input, and measures the running game against machine-readable design contracts.",
+  "unity": "2022.3",
+  "documentationUrl": "https://github.com/zottiben/proving-ground",
+  "changelogUrl": "https://github.com/zottiben/proving-ground/blob/main/packages/com.zottiben.provingground/CHANGELOG.md",
+  "licensesUrl": "https://github.com/zottiben/proving-ground/blob/main/LICENSE",
+  "dependencies": {
+    "com.unity.nuget.newtonsoft-json": "3.2.1"
+  },
+  "keywords": [
+    "ai",
+    "agent",
+    "testing",
+    "playtest",
+    "automation",
+    "mcp"
+  ],
+  "author": {
+    "name": "zottiben",
+    "url": "https://github.com/zottiben"
+  },
+  "samples": [
+    {
+      "displayName": "Starter Contracts",
+      "description": "Example feel spec, UI manifest, audio contract and quality gates to copy into your project.",
+      "path": "Samples~/StarterContracts"
+    },
+    {
+      "displayName": "First Person Probe",
+      "description": "A minimal first-person controller wired to Proving Ground scenarios and feel metrics.",
+      "path": "Samples~/FirstPersonProbe"
+    }
+  ]
+}

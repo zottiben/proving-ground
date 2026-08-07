@@ -1,0 +1,25 @@
+{
+  "name": "ProvingGround.Runtime.InputSystem",
+  "rootNamespace": "ProvingGround.Actuation",
+  "references": [
+    "ProvingGround.Runtime",
+    "Unity.InputSystem"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [
+    "PG_INPUTSYSTEM"
+  ],
+  "versionDefines": [
+    {
+      "name": "com.unity.inputsystem",
+      "expression": "1.0.0",
+      "define": "PG_INPUTSYSTEM"
+    }
+  ],
+  "noEngineReferences": false
+}
