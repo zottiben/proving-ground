@@ -21,6 +21,16 @@
       "name": "com.unity.ugui",
       "expression": "1.0.0",
       "define": "PG_UGUI"
+    },
+    {
+      "name": "com.unity.modules.ai",
+      "expression": "1.0.0",
+      "define": "PG_NAVMESH"
+    },
+    {
+      "name": "com.unity.modules.imageconversion",
+      "expression": "1.0.0",
+      "define": "PG_IMAGECONVERSION"
     }
   ],
   "noEngineReferences": false
