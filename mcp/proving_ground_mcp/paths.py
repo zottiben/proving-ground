@@ -28,6 +28,21 @@ def current() -> Path:
     return data_home() / "current"
 
 
+def state_home() -> Path:
+    """
+    Where cached state lives, alongside the install it describes.
+
+    Derived from the install rather than from XDG_DATA_HOME, because the launcher pins
+    PG_HOME while XDG_DATA_HOME is usually unset at run time. Keying the cache off the
+    environment instead meant reading a different directory than the one being checked,
+    so a freshly discovered update was never seen again.
+    """
+    override = os.environ.get("PG_HOME")
+    if override:
+        return Path(os.path.abspath(os.path.expanduser(override))).parent
+    return data_home()
+
+
 def installed_root() -> Path:
     """
     The install this process is running from.

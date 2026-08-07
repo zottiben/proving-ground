@@ -418,6 +418,20 @@ def cmd_update(args: argparse.Namespace) -> int:
         command = ["sh", "-c", f"curl -fsSL {url} | sh -s -- {' '.join(forwarded)}"]
 
     env = dict(os.environ, PG_CURRENT_VERSION=paths.version())
+
+    # Reinstall where this copy actually lives. The installer otherwise derives its
+    # target from XDG_DATA_HOME, which the launcher does not set, so an update from a
+    # non-default location silently installs elsewhere and leaves the command pointing
+    # at the old version.
+    manifest = paths.installed_root() / "install-manifest"
+    if manifest.is_file():
+        for line in manifest.read_text().splitlines():
+            key, separator, value = line.partition("=")
+            if separator and key.strip() in ("PG_DATA_DIR", "PG_BIN_DIR"):
+                env[key.strip()] = value.strip()
+    else:
+        env.setdefault("PG_DATA_DIR", str(paths.state_home()))
+
     return subprocess.run(command, env=env).returncode
 
 

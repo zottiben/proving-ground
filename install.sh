@@ -14,7 +14,10 @@
 set -eu
 
 REPO="zottiben/proving-ground"
-DATA_DIR="${XDG_DATA_HOME:-$HOME/.local/share}/proving-ground"
+# PG_DATA_DIR and PG_BIN_DIR let an existing install update itself in place. Without
+# them an update run from a non-default location reinstalls to the default one, leaving
+# the launcher pointing at the old version forever.
+DATA_DIR="${PG_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/proving-ground}"
 BIN_DIR="${PG_BIN_DIR:-$HOME/.local/bin}"
 
 usage() {
@@ -226,6 +229,13 @@ echo "Building the agent bridge"
   echo "Could not install the Python dependencies." >&2
   exit 1
 }
+
+# Record where this install put itself, so `proving-ground update` can reinstall to the
+# same place rather than guessing from the environment it happens to run in.
+cat > "$TARGET/install-manifest" <<EOF
+PG_DATA_DIR=$DATA_DIR
+PG_BIN_DIR=$BIN_DIR
+EOF
 
 # `current` is what Unity project manifests point at, so an update swings one symlink
 # instead of rewriting every project that has ever been set up.

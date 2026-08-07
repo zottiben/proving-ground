@@ -5,6 +5,16 @@ All notable changes to this package are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this
 package adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-08-07
+
+### Fixed
+
+- `proving-ground update` reinstalls where the tool actually lives. It derived its
+  target from XDG_DATA_HOME, which the launcher does not set, so an update from a
+  non-default location installed elsewhere and left the command on the old version.
+- The update-check cache is stored alongside the install rather than at a path derived
+  from the environment, so a discovered update is remembered rather than re-fetched.
+
 ## [0.1.1] - 2026-08-07
 
 ### Added

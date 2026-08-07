@@ -21,7 +21,7 @@ NETWORK_TIMEOUT = 2.0
 
 
 def _cache_path() -> Path:
-    return paths.data_home() / CACHE_NAME
+    return paths.state_home() / CACHE_NAME
 
 
 def _read_cache() -> dict:
