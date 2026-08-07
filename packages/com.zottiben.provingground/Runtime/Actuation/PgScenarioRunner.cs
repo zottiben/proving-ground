@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using ProvingGround.Contracts;
@@ -399,11 +400,24 @@ namespace ProvingGround.Actuation
             var measured = Feel.Results();
             foreach (var pair in measured) Report.Datum("feel." + pair.Key, pair.Value);
 
+            // A run under a captured clock, or with no renderer, produces frame timings that
+            // describe the build machine rather than the game. Reporting them as if they were
+            // a frame rate would be worse than not measuring them.
+            var perfIsReal = Feel.PerformanceIsRepresentative;
+            if (!perfIsReal && measured.Keys.Any(k => k.StartsWith("perf.")))
+                Report.Add(PgFinding
+                    .Info("feel.perfNotRepresentative",
+                        "Frame timings were recorded but are not representative of real performance")
+                    .Fix("This run used a captured clock or had no renderer. Measure performance from the Editor or a player build."));
+
             var spec = PgFeelSpec.Load();
             if (spec != null)
             {
-                Report.AddRange(spec.Diff(measured, Scenario.Name));
-                Report.AddRange(PgGenreNorms.Compare(spec.Genre, measured));
+                var diffMetrics = perfIsReal ? measured : WithoutPerf(measured);
+                var diffSpec = perfIsReal ? spec : WithoutPerf(spec);
+
+                Report.AddRange(diffSpec.Diff(diffMetrics, Scenario.Name));
+                Report.AddRange(PgGenreNorms.Compare(spec.Genre, diffMetrics));
             }
             else if (measured.Count > 0)
             {
@@ -412,5 +426,17 @@ namespace ProvingGround.Actuation
                     .Fix($"Write {PgFeelSpec.DefaultPath}, or run the baseline capture to generate one from this run."));
             }
         }
+
+        static Dictionary<string, double> WithoutPerf(IReadOnlyDictionary<string, double> measured) =>
+            measured.Where(p => !p.Key.StartsWith("perf.")).ToDictionary(p => p.Key, p => p.Value);
+
+        static PgFeelSpec WithoutPerf(PgFeelSpec spec) => new PgFeelSpec
+        {
+            Genre = spec.Genre,
+            Note = spec.Note,
+            Metrics = (spec.Metrics ?? new Dictionary<string, PgMetricSpec>())
+                .Where(p => !p.Key.StartsWith("perf."))
+                .ToDictionary(p => p.Key, p => p.Value)
+        };
     }
 }

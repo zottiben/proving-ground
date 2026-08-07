@@ -51,7 +51,19 @@ namespace ProvingGround.Verification
         float _leftGroundTime = -1f;
         float _coyoteObserved = -1f;
 
+        // Frame time is taken from a real clock rather than from Time.unscaledDeltaTime,
+        // because a run under a captured clock reports whatever step it was told to use and
+        // would otherwise show a flawless frame rate on a game that stutters.
+        readonly System.Diagnostics.Stopwatch _frameTimer = new System.Diagnostics.Stopwatch();
+        double _lastFrameMs;
+
         public bool IsRunning { get; private set; }
+
+        /// <summary>
+        /// True when the clock was driven by frame count during the run, which makes the
+        /// gameplay timings exact and the performance numbers unrepresentative.
+        /// </summary>
+        public bool TimeWasCaptured { get; private set; }
 
         public void Begin(Transform player = null)
         {
@@ -74,6 +86,10 @@ namespace ProvingGround.Verification
 
             if (_player != null) _lastPosition = _player.position;
             _wasGrounded = IsGrounded();
+            TimeWasCaptured = Time.captureDeltaTime > 0f;
+
+            _frameTimer.Restart();
+            _lastFrameMs = 0;
             IsRunning = true;
         }
 
@@ -84,8 +100,14 @@ namespace ProvingGround.Verification
         {
             if (!IsRunning) return;
 
-            var dt = Time.unscaledDeltaTime;
-            if (dt > 0f) _frameTimes.Add(dt * 1000f);
+            var elapsedMs = _frameTimer.Elapsed.TotalMilliseconds;
+            var frameMs = elapsedMs - _lastFrameMs;
+            _lastFrameMs = elapsedMs;
+            if (frameMs > 0) _frameTimes.Add((float)frameMs);
+
+            // Gameplay timings still come from the game's own clock, which is what the
+            // player experiences and what the feel spec is written against.
+            var dt = Time.deltaTime;
 
             TrackHitstop();
 
@@ -272,6 +294,12 @@ namespace ProvingGround.Verification
 
             return results;
         }
+
+        /// <summary>
+        /// Frame timings only describe what a player would see when the run was not driven
+        /// by a captured clock, and when the renderer was actually running.
+        /// </summary>
+        public bool PerformanceIsRepresentative => !TimeWasCaptured && !Application.isBatchMode;
 
         internal static float Percentile(IReadOnlyList<float> sortedAscending, float percentile)
         {
