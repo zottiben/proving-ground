@@ -81,9 +81,36 @@ if [ -z "$CURRENT" ] && [ -f "$DATA_DIR/current/VERSION" ]; then
   CURRENT="$(cat "$DATA_DIR/current/VERSION")"
 fi
 
+# GitHub returns pretty-printed JSON, so fields of the same object land on different
+# lines. Correlating them with grep and sed silently picks the wrong value; python is
+# already a hard requirement, so use it.
+json_field() {
+  "$PYTHON" -c '
+import json, sys
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+print(data.get(sys.argv[1], "") or "")
+' "$1" 2>/dev/null || true
+}
+
+asset_id() {
+  "$PYTHON" -c '
+import json, sys
+try:
+    data = json.load(sys.stdin)
+except Exception:
+    sys.exit(0)
+for asset in data.get("assets", []):
+    if asset.get("name") == sys.argv[1]:
+        print(asset.get("id", ""))
+        break
+' "$1" 2>/dev/null || true
+}
+
 if [ -z "$VERSION" ]; then
-  RELEASE_JSON="$(api "https://api.github.com/repos/${REPO}/releases/latest" 2>/dev/null || true)"
-  VERSION="$(printf '%s' "$RELEASE_JSON" | sed -n 's/.*"tag_name": *"\([^"]*\)".*/\1/p' | head -1)"
+  VERSION="$(api "https://api.github.com/repos/${REPO}/releases/latest" 2>/dev/null | json_field tag_name)"
 
   if [ -z "$VERSION" ]; then
     echo "Could not find a release for ${REPO}." >&2
@@ -119,17 +146,19 @@ echo "Downloading Proving Ground $VERSION"
 DOWNLOADED=0
 if [ -n "$TOKEN" ]; then
   # A private repo's assets are only reachable through the API, by asset id.
-  ASSETS_JSON="$(api "https://api.github.com/repos/${REPO}/releases/tags/${VERSION}" || true)"
-  ASSET_ID="$(printf '%s' "$ASSETS_JSON" \
-    | tr '{' '\n' \
-    | grep -F "\"name\": \"${TARBALL}\"" \
-    | sed -n 's/.*"id": *\([0-9]*\).*/\1/p' \
-    | head -1)"
+  ASSET_ID="$(api "https://api.github.com/repos/${REPO}/releases/tags/${VERSION}" 2>/dev/null | asset_id "$TARBALL")"
 
   if [ -n "$ASSET_ID" ]; then
     curl -fsSL -H "Authorization: Bearer $TOKEN" -H "Accept: application/octet-stream" \
       "https://api.github.com/repos/${REPO}/releases/assets/${ASSET_ID}" -o "$TMP/$TARBALL" \
       && DOWNLOADED=1
+
+    CHECKSUM_ID="$(api "https://api.github.com/repos/${REPO}/releases/tags/${VERSION}" 2>/dev/null | asset_id checksums.txt)"
+    if [ -n "$CHECKSUM_ID" ]; then
+      curl -fsSL -H "Authorization: Bearer $TOKEN" -H "Accept: application/octet-stream" \
+        "https://api.github.com/repos/${REPO}/releases/assets/${CHECKSUM_ID}" \
+        -o "$TMP/checksums.txt" 2>/dev/null || true
+    fi
   fi
 fi
 
@@ -137,13 +166,18 @@ if [ "$DOWNLOADED" = "0" ]; then
   curl -fsSL "https://github.com/${REPO}/releases/download/${VERSION}/${TARBALL}" \
     -o "$TMP/$TARBALL" || {
       echo "Could not download $TARBALL." >&2
-      [ -z "$TOKEN" ] && echo "If the repository is private, run 'gh auth login' or set GITHUB_TOKEN." >&2
+      if [ -z "$TOKEN" ]; then
+        echo "If the repository is private, run 'gh auth login' or set GITHUB_TOKEN." >&2
+      else
+        echo "The release exists but the asset could not be fetched. Check your token's scope." >&2
+      fi
       exit 1
     }
+  curl -fsSL "https://github.com/${REPO}/releases/download/${VERSION}/checksums.txt" \
+    -o "$TMP/checksums.txt" 2>/dev/null || true
 fi
 
-if curl -fsSL "https://github.com/${REPO}/releases/download/${VERSION}/checksums.txt" \
-     -o "$TMP/checksums.txt" 2>/dev/null; then
+if [ -f "$TMP/checksums.txt" ]; then
   if command -v shasum >/dev/null 2>&1; then
     (cd "$TMP" && grep -F "$TARBALL" checksums.txt | shasum -a 256 -c - >/dev/null 2>&1) \
       && echo "Checksum verified" \
@@ -172,9 +206,13 @@ ln -sfn "$TARGET" "$DATA_DIR/current"
 
 mkdir -p "$BIN_DIR"
 for name in proving-ground pg; do
+  # PG_HOME is baked in rather than recomputed from XDG_DATA_HOME at run time, so the
+  # command keeps working whatever environment it is later invoked from.
   cat > "$BIN_DIR/$name" <<EOF
 #!/bin/sh
-exec "$DATA_DIR/current/.venv/bin/proving-ground" "\$@"
+PG_HOME="\${PG_HOME:-$DATA_DIR/current}"
+export PG_HOME
+exec "\$PG_HOME/.venv/bin/proving-ground" "\$@"
 EOF
   chmod +x "$BIN_DIR/$name"
 done
