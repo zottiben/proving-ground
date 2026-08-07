@@ -285,6 +285,20 @@ def pg_watch_audio() -> str:
 
 
 @mcp.tool()
+def pg_record(start: bool = True, name: str = "recorded") -> str:
+    """Record a live play session and save it as a replayable scenario.
+
+    Call with start=True, ask the user to play until the thing they are describing
+    happens, then call with start=False. The result is a deterministic scenario file
+    that reproduces the sequence, which is far more useful than a prose description of
+    a bug. Requires play mode.
+    """
+    if start:
+        return _call("StartRecording")
+    return _summarise(_call("StopRecording", name=name))
+
+
+@mcp.tool()
 def pg_capture_baseline(overwrite: bool = False) -> str:
     """Write contracts describing the game as it currently behaves.
 

@@ -277,6 +277,44 @@ namespace ProvingGround.EditorTools
         /// <summary>Audio event wiring, diffed against the contract, from the last run.</summary>
         public static string CheckAudio() => Emit(PgAudio.Check());
 
+        /// <summary>
+        /// Starts recording live play. Play until the thing you care about happens, then call
+        /// <see cref="StopRecording"/> to get a scenario that reproduces it.
+        /// </summary>
+        public static string StartRecording()
+        {
+            if (!Application.isPlaying)
+                return "{\"ok\":false,\"error\":\"Recording captures live play, so it needs play mode.\"}";
+
+            if (!Actuation.PgRecording.IsAvailable)
+                return "{\"ok\":false,\"error\":\"Recording needs com.unity.inputsystem.\"}";
+
+            Actuation.PgRecording.Start();
+            return "{\"ok\":true,\"recording\":true}";
+        }
+
+        /// <summary>Ends the recording and saves it as a runnable scenario.</summary>
+        public static string StopRecording(string name = "recorded")
+        {
+            var report = new PgReport("recording");
+
+            if (!Actuation.PgRecording.IsAvailable || !Actuation.PgRecording.IsRecording)
+                return Emit(report.Failed("Nothing is being recorded."));
+
+            var scenario = Actuation.PgRecording.Stop(name);
+            if (scenario == null) return Emit(report.Failed("The recording produced no scenario."));
+
+            var path = Actuation.PgScenario.PathFor(name);
+            scenario.Save(path);
+
+            report.Add(PgFinding
+                .Info("recording.saved", $"Recorded {scenario.Steps.Count} steps as '{name}'")
+                .At(PgPaths.Relative(path))
+                .Fix("Add assert steps to turn the reproduction into a test that stays green."));
+
+            return Emit(report);
+        }
+
         /// <summary>Genre norm values, for tuning against something other than a guess.</summary>
         public static string Norms(string genre)
         {

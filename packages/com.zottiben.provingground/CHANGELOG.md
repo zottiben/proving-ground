@@ -18,6 +18,7 @@ First release.
   occlusion, annotated screenshot capture with a legend, and a bounded frame-stamped
   event log.
 - **Actuation.** Input injection through the Input System, deterministic sessions,
+  live session recording into replayable scenarios,
   JSON-defined scenarios with an extensible step and assertion set, and a heuristic
   probe bot.
 - **Verification.** Feel metrics derived from observed motion, UI conformance diffing,

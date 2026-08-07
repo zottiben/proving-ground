@@ -1,6 +1,7 @@
 #if PG_INPUTSYSTEM
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -172,6 +173,60 @@ namespace ProvingGround.Tests
             Assert.IsTrue(bot.Report.Ok, bot.Report.Error);
             Assert.IsTrue(bot.Report.Passed,
                 "a flat plane with a working controller should produce no failures:\n" + bot.Report.ToConsole());
+        }
+
+        [UnityTest]
+        public IEnumerator RecordingALiveSessionProducesAReplayableScenario()
+        {
+            Assert.IsTrue(PgRecording.IsAvailable, "no recorder registered");
+
+            using (new PgSession(seed: 7))
+            {
+                PgInput.Begin();
+                PgRecording.Start();
+
+                // Walk forward, then jump: two distinct intents the recorder should separate.
+                PgInput.Move(new Vector2(0, 1));
+                for (var frame = 0; frame < 40; frame++)
+                {
+                    PgInput.Flush();
+                    yield return null;
+                }
+
+                PgInput.Press("jump");
+                for (var frame = 0; frame < 10; frame++)
+                {
+                    PgInput.Flush();
+                    yield return null;
+                }
+
+                PgInput.Release("jump");
+                PgInput.Move(Vector2.zero);
+                for (var frame = 0; frame < 20; frame++)
+                {
+                    PgInput.Flush();
+                    yield return null;
+                }
+
+                var recorded = PgRecording.Stop("test-recording");
+                PgInput.End();
+
+                Assert.IsNotNull(recorded, "the recorder returned no scenario");
+                Assert.Greater(recorded.Steps.Count, 0, "the recording captured nothing");
+
+                var verbs = recorded.Steps.Select(s => s.Do).ToList();
+                CollectionAssert.Contains(verbs, "move");
+                CollectionAssert.Contains(verbs, "press");
+
+                var moved = recorded.Steps.First(s => s.Do == "move");
+                Assert.Greater(moved.Y ?? 0f, 0.5f, "forward movement was not captured as forward");
+
+                // The recorded scenario has to be runnable, or it is a log rather than a repro.
+                var replay = new PgScenarioRunner(recorded);
+                yield return replay.Run();
+
+                Assert.IsTrue(replay.Report.Ok, "the recorded scenario failed to replay: " + replay.Report.Error);
+            }
         }
 
         /// <summary>Drives a movement-then-jump sequence and exposes what the probe measured.</summary>

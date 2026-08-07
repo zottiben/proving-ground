@@ -136,7 +136,7 @@ intentions.
 |---|---|
 | **0 Contracts** | Design intent as JSON: feel spec, UI manifest, audio contract, content rules, quality gates |
 | **1 Perception** | Scene digest, camera view, annotated capture, frame-stamped event timeline |
-| **2 Actuation** | Input injection, deterministic sessions, scenarios, probe bots, record and replay |
+| **2 Actuation** | Input injection, deterministic sessions, scenarios, probe bots, session recording and deterministic replay |
 | **3 Verification** | Feel metrics, UI conformance, visual regression, scene truth, audio wiring, content and project audits, balance simulation |
 | **4 Judgment** | Accessibility heuristics, genre norm library, batched review |
 | **5 Process** | Evidence-gated milestones, living design docs, greenfield and brownfield paths |

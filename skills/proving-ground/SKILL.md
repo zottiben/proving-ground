@@ -93,6 +93,13 @@ actually measured, and usually what to do about it.
 `data` holds the measurements. When you have changed something and want to know
 whether it moved, the numbers are there.
 
+## When the user describes a bug
+
+Do not try to reconstruct it from the description. `pg_record` starts recording, they
+play until it happens, and stopping writes a deterministic scenario that reproduces it.
+Now you have something to iterate against, and something to keep afterwards: add an
+`assert` step and the reproduction becomes a test that stays green.
+
 ## What this cannot tell you
 
 It cannot tell you whether the game is fun, whether the art is good, or whether a
@@ -126,6 +133,7 @@ not averages.
 | Reference values for a genre | `pg_norms` |
 | Describe an unfamiliar project | `pg_survey` |
 | Turn an existing game into a spec | `pg_capture_baseline` |
+| Capture a bug the user can reproduce | `pg_record` |
 
 Without MCP, the same surface is available as `tools/pg` on the command line, as menu
 items under **Tools > Proving Ground**, and as static methods on `PgApi` for any

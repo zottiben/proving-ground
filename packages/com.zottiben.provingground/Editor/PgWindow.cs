@@ -17,6 +17,7 @@ namespace ProvingGround.EditorTools
         Vector2 _scroll;
         PgReport _report;
         string _selectedScenario;
+        string _recordingName = "recorded";
         float _probeSeconds = 30f;
         PgSeverity _minSeverity = PgSeverity.Info;
 
@@ -176,6 +177,27 @@ namespace ProvingGround.EditorTools
                 PgAudio.Watch();
                 Debug.Log("[ProvingGround] Audio watcher attached. Play through the systems you want captured.");
             }
+
+            EditorGUILayout.Space(4);
+            EditorGUILayout.LabelField("Record a session", EditorStyles.miniBoldLabel);
+
+            if (!PgRecording.IsAvailable)
+            {
+                EditorGUILayout.HelpBox("Recording needs com.unity.inputsystem.", MessageType.None);
+                return;
+            }
+
+            if (PgRecording.IsRecording)
+            {
+                _recordingName = EditorGUILayout.TextField("Save as", _recordingName);
+                if (GUILayout.Button("Stop and save")) Run(PgJson.Read<PgReport>(SaveRecording()));
+                Repaint();
+            }
+            else if (GUILayout.Button("Start recording"))
+            {
+                PgRecording.Start();
+                Debug.Log("[ProvingGround] Recording. Play until the thing you want to reproduce happens.");
+            }
         }
 
         void DrawPerception()
@@ -250,9 +272,17 @@ namespace ProvingGround.EditorTools
 
         void Run(PgReport report)
         {
+            if (report == null) return;
             _report = report;
             PgApi.Emit(report);
             Repaint();
+        }
+
+        /// <summary>Stops the recording and returns the path of the report it wrote.</summary>
+        string SaveRecording()
+        {
+            PgApi.StopRecording(_recordingName);
+            return PgPaths.Report("recording");
         }
 
         void LoadLatestReport()
