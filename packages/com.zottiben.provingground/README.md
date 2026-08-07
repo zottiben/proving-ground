@@ -29,12 +29,6 @@ only, and has no arbitrary code execution route.
 | `ProvingGround/Design` | Pillars, one-pager, GDD, milestones | Yes |
 | `ProvingGround/Artifacts` | Run output | No |
 
-## Samples
-
-- **Starter Contracts** - fuller example contracts to read.
-- **First Person Probe** - a working controller and test arena wired to scenarios,
-  including a deliberate hole in the floor for the probe bot to find.
-
 ## Optional integrations
 
 Each compiles only when the package is present, so nothing breaks without them.

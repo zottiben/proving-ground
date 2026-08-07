@@ -161,14 +161,14 @@ pg scenario smoke      # drive it
 pg milestone prototype # judged on evidence, not on your say-so
 ```
 
-`tools/demo_fps.py` and `tools/demo_play.py` run exactly this end to end against a live
-Editor: empty scene, write a controller, await the compile, build a 23-object arena from
-a recipe, rebuild to prove idempotency, save it, add it to the build settings, verify the
-level, then enter play mode and turn the probe bot loose.
+This sequence has been run end to end against a live Editor: empty scene, write a
+controller, await the compile, build a 23-object arena from a recipe, rebuild to prove
+idempotency, save it, add it to the build settings, verify the level, then enter play
+mode and turn the probe bot loose.
 
-The last run reported `moveSpeed 6.0001` against a recipe asking for 6.0,
-`timeToApex 0.335` against a controller configured for 0.35, `input.moveLatency` of one
-frame, and a probe that passed clean.
+It reported `moveSpeed 6.0001` against a recipe asking for 6.0, `timeToApex 0.335`
+against a controller configured for 0.35, `input.moveLatency` of one frame, and a probe
+that passed clean.
 
 ### A game that already exists
 

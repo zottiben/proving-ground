@@ -25,17 +25,5 @@
   "author": {
     "name": "zottiben",
     "url": "https://github.com/zottiben"
-  },
-  "samples": [
-    {
-      "displayName": "Starter Contracts",
-      "description": "Example feel spec, UI manifest, audio contract and quality gates to copy into your project.",
-      "path": "Samples~/StarterContracts"
-    },
-    {
-      "displayName": "First Person Probe",
-      "description": "A minimal first-person controller wired to Proving Ground scenarios and feel metrics.",
-      "path": "Samples~/FirstPersonProbe"
-    }
-  ]
+  }
 }
