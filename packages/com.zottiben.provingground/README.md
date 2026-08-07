@@ -15,9 +15,13 @@ Full documentation: https://github.com/zottiben/proving-ground
 
 ## Connecting an agent
 
-**Tools > Proving Ground > Agent Bridge > Enable** opens a loopback endpoint on port
-8787 that invokes named `PgApi` methods. It is off by default, bound to `127.0.0.1`
-only, and has no arbitrary code execution route.
+Run `tools/pg-setup` from the cloned repository. It registers the MCP server with your
+harness and installs the skill, for Claude Code, Codex or Pi. See the repository README
+for the manual equivalent.
+
+Then in Unity: **Tools > Proving Ground > Agent Bridge > Enable**. That opens a loopback
+endpoint on port 8787 that invokes named `PgApi` methods. It is off by default, bound to
+`127.0.0.1` only, and has no arbitrary code execution route.
 
 ## Where things live
 

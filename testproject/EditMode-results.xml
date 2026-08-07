@@ -1,381 +1,381 @@
 <?xml version="1.0" encoding="utf-8"?>
-<test-run id="2" testcasecount="54" result="Passed" total="54" passed="54" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:32Z" duration="0.4220641">
-  <test-suite type="TestSuite" id="1000" name="testproject" fullname="testproject" runstate="Runnable" testcasecount="54" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:32Z" duration="0.422064" total="54" passed="54" failed="0" inconclusive="0" skipped="0" asserts="0">
+<test-run id="2" testcasecount="54" result="Passed" total="54" passed="54" failed="0" inconclusive="0" skipped="0" asserts="0" engine-version="3.5.0.0" clr-version="4.0.30319.42000" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.3970128">
+  <test-suite type="TestSuite" id="1000" name="testproject" fullname="testproject" runstate="Runnable" testcasecount="54" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.397013" total="54" passed="54" failed="0" inconclusive="0" skipped="0" asserts="0">
     <properties>
       <property name="platform" value="EditMode" />
     </properties>
-    <test-suite type="Assembly" id="1067" name="ProvingGround.Tests.Editor.dll" fullname="/Users/medusa/Developer/unity-plugin/testproject/Library/ScriptAssemblies/ProvingGround.Tests.Editor.dll" runstate="Runnable" testcasecount="54" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:32Z" duration="0.417792" total="54" passed="54" failed="0" inconclusive="0" skipped="0" asserts="0">
+    <test-suite type="Assembly" id="1067" name="ProvingGround.Tests.Editor.dll" fullname="/Users/medusa/Developer/unity-plugin/testproject/Library/ScriptAssemblies/ProvingGround.Tests.Editor.dll" runstate="Runnable" testcasecount="54" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.392955" total="54" passed="54" failed="0" inconclusive="0" skipped="0" asserts="0">
       <properties>
-        <property name="_PID" value="2921" />
+        <property name="_PID" value="26234" />
         <property name="_APPDOMAIN" value="Unity Child Domain" />
         <property name="platform" value="EditMode" />
         <property name="EditorOnly" value="True" />
       </properties>
-      <test-suite type="TestSuite" id="1068" name="ProvingGround" fullname="ProvingGround" runstate="Runnable" testcasecount="54" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:32Z" duration="0.417656" total="54" passed="54" failed="0" inconclusive="0" skipped="0" asserts="0">
+      <test-suite type="TestSuite" id="1068" name="ProvingGround" fullname="ProvingGround" runstate="Runnable" testcasecount="54" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.392838" total="54" passed="54" failed="0" inconclusive="0" skipped="0" asserts="0">
         <properties />
-        <test-suite type="TestSuite" id="1069" name="Tests" fullname="ProvingGround.Tests" runstate="Runnable" testcasecount="54" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:32Z" duration="0.417543" total="54" passed="54" failed="0" inconclusive="0" skipped="0" asserts="0">
+        <test-suite type="TestSuite" id="1069" name="Tests" fullname="ProvingGround.Tests" runstate="Runnable" testcasecount="54" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.392730" total="54" passed="54" failed="0" inconclusive="0" skipped="0" asserts="0">
           <properties />
-          <test-suite type="TestFixture" id="1057" name="PgBalanceSimTests" fullname="ProvingGround.Tests.PgBalanceSimTests" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.021340" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1057" name="PgBalanceSimTests" fullname="ProvingGround.Tests.PgBalanceSimTests" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.021312" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1058" name="ADeterministicDuelMatchesTheHandCalculatedTimeToKill" fullname="ProvingGround.Tests.PgBalanceSimTests.ADeterministicDuelMatchesTheHandCalculatedTimeToKill" methodname="ADeterministicDuelMatchesTheHandCalculatedTimeToKill" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" seed="747978720" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.008995" asserts="0">
+            <test-case id="1058" name="ADeterministicDuelMatchesTheHandCalculatedTimeToKill" fullname="ProvingGround.Tests.PgBalanceSimTests.ADeterministicDuelMatchesTheHandCalculatedTimeToKill" methodname="ADeterministicDuelMatchesTheHandCalculatedTimeToKill" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" seed="717694983" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.008282" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1060" name="ArmorReducesDamageAndCanNeutraliseAWeakAttack" fullname="ProvingGround.Tests.PgBalanceSimTests.ArmorReducesDamageAndCanNeutraliseAWeakAttack" methodname="ArmorReducesDamageAndCanNeutraliseAWeakAttack" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" seed="343460445" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000132" asserts="0">
+            <test-case id="1060" name="ArmorReducesDamageAndCanNeutraliseAWeakAttack" fullname="ProvingGround.Tests.PgBalanceSimTests.ArmorReducesDamageAndCanNeutraliseAWeakAttack" methodname="ArmorReducesDamageAndCanNeutraliseAWeakAttack" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" seed="1626272222" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000117" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1062" name="DistributionPercentilesAreOrdered" fullname="ProvingGround.Tests.PgBalanceSimTests.DistributionPercentilesAreOrdered" methodname="DistributionPercentilesAreOrdered" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" seed="902249616" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.001719" asserts="0">
+            <test-case id="1062" name="DistributionPercentilesAreOrdered" fullname="ProvingGround.Tests.PgBalanceSimTests.DistributionPercentilesAreOrdered" methodname="DistributionPercentilesAreOrdered" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" seed="45679867" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001723" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1061" name="TheBalanceMatrixFlagsLoadoutsOutsideTheIntendedWindow" fullname="ProvingGround.Tests.PgBalanceSimTests.TheBalanceMatrixFlagsLoadoutsOutsideTheIntendedWindow" methodname="TheBalanceMatrixFlagsLoadoutsOutsideTheIntendedWindow" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" seed="1229668345" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.003373" asserts="0">
+            <test-case id="1061" name="TheBalanceMatrixFlagsLoadoutsOutsideTheIntendedWindow" fullname="ProvingGround.Tests.PgBalanceSimTests.TheBalanceMatrixFlagsLoadoutsOutsideTheIntendedWindow" methodname="TheBalanceMatrixFlagsLoadoutsOutsideTheIntendedWindow" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" seed="789341869" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.003238" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1059" name="TheSameSeedProducesTheSameResult" fullname="ProvingGround.Tests.PgBalanceSimTests.TheSameSeedProducesTheSameResult" methodname="TheSameSeedProducesTheSameResult" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" seed="300235638" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000960" asserts="0">
+            <test-case id="1059" name="TheSameSeedProducesTheSameResult" fullname="ProvingGround.Tests.PgBalanceSimTests.TheSameSeedProducesTheSameResult" methodname="TheSameSeedProducesTheSameResult" classname="ProvingGround.Tests.PgBalanceSimTests" runstate="Runnable" seed="1692575620" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000954" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1025" name="PgBridgeTests" fullname="ProvingGround.Tests.PgBridgeTests" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.173696" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1025" name="PgBridgeTests" fullname="ProvingGround.Tests.PgBridgeTests" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.165033" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
             <output><![CDATA[[ProvingGround] Agent bridge listening on http://127.0.0.1:8799
 ]]></output>
-            <test-case id="1030" name="AnUnknownMethodIsRejectedWithTheAvailableNames" fullname="ProvingGround.Tests.PgBridgeTests.AnUnknownMethodIsRejectedWithTheAvailableNames" methodname="AnUnknownMethodIsRejectedWithTheAvailableNames" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="1492137381" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.122259" asserts="0">
+            <test-case id="1030" name="AnUnknownMethodIsRejectedWithTheAvailableNames" fullname="ProvingGround.Tests.PgBridgeTests.AnUnknownMethodIsRejectedWithTheAvailableNames" methodname="AnUnknownMethodIsRejectedWithTheAvailableNames" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="1769757044" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.121265" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1031" name="ArgumentsAreBoundToNamedParameters" fullname="ProvingGround.Tests.PgBridgeTests.ArgumentsAreBoundToNamedParameters" methodname="ArgumentsAreBoundToNamedParameters" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="1543133778" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.006187" asserts="0">
+            <test-case id="1031" name="ArgumentsAreBoundToNamedParameters" fullname="ProvingGround.Tests.PgBridgeTests.ArgumentsAreBoundToNamedParameters" methodname="ArgumentsAreBoundToNamedParameters" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="1557107760" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.006490" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1029" name="CallRunsARealCheckAndReturnsItsReport" fullname="ProvingGround.Tests.PgBridgeTests.CallRunsARealCheckAndReturnsItsReport" methodname="CallRunsARealCheckAndReturnsItsReport" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="1882305329" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.021687" asserts="0">
+            <test-case id="1029" name="CallRunsARealCheckAndReturnsItsReport" fullname="ProvingGround.Tests.PgBridgeTests.CallRunsARealCheckAndReturnsItsReport" methodname="CallRunsARealCheckAndReturnsItsReport" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="1768578438" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.017624" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1027" name="HealthReportsTheEditorState" fullname="ProvingGround.Tests.PgBridgeTests.HealthReportsTheEditorState" methodname="HealthReportsTheEditorState" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="1484907636" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.004514" asserts="0">
+            <test-case id="1027" name="HealthReportsTheEditorState" fullname="ProvingGround.Tests.PgBridgeTests.HealthReportsTheEditorState" methodname="HealthReportsTheEditorState" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="1483743982" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.005855" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1028" name="MethodsListsTheCallableSurface" fullname="ProvingGround.Tests.PgBridgeTests.MethodsListsTheCallableSurface" methodname="MethodsListsTheCallableSurface" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="1378909604" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.007184" asserts="0">
+            <test-case id="1028" name="MethodsListsTheCallableSurface" fullname="ProvingGround.Tests.PgBridgeTests.MethodsListsTheCallableSurface" methodname="MethodsListsTheCallableSurface" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="1717605589" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.006019" asserts="0">
               <properties>
                 <property name="_JOINTYPE" value="UnityCombinatorial" />
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1026" name="TheBridgeBindsItsPort" fullname="ProvingGround.Tests.PgBridgeTests.TheBridgeBindsItsPort" methodname="TheBridgeBindsItsPort" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="584951288" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000133" asserts="0">
+            <test-case id="1026" name="TheBridgeBindsItsPort" fullname="ProvingGround.Tests.PgBridgeTests.TheBridgeBindsItsPort" methodname="TheBridgeBindsItsPort" classname="ProvingGround.Tests.PgBridgeTests" runstate="Runnable" seed="422126561" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000086" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1049" name="PgColorTests" fullname="ProvingGround.Tests.PgColorTests" classname="ProvingGround.Tests.PgColorTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.001209" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1049" name="PgColorTests" fullname="ProvingGround.Tests.PgColorTests" classname="ProvingGround.Tests.PgColorTests" runstate="Runnable" testcasecount="4" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001149" total="4" passed="4" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1051" name="AColourAgainstItselfHasNoContrast" fullname="ProvingGround.Tests.PgColorTests.AColourAgainstItselfHasNoContrast" methodname="AColourAgainstItselfHasNoContrast" classname="ProvingGround.Tests.PgColorTests" runstate="Runnable" seed="899893684" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000416" asserts="0">
+            <test-case id="1051" name="AColourAgainstItselfHasNoContrast" fullname="ProvingGround.Tests.PgColorTests.AColourAgainstItselfHasNoContrast" methodname="AColourAgainstItselfHasNoContrast" classname="ProvingGround.Tests.PgColorTests" runstate="Runnable" seed="586301200" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000381" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1050" name="BlackOnWhiteIsTheMaximumWcagRatio" fullname="ProvingGround.Tests.PgColorTests.BlackOnWhiteIsTheMaximumWcagRatio" methodname="BlackOnWhiteIsTheMaximumWcagRatio" classname="ProvingGround.Tests.PgColorTests" runstate="Runnable" seed="1774109760" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000097" asserts="0">
+            <test-case id="1050" name="BlackOnWhiteIsTheMaximumWcagRatio" fullname="ProvingGround.Tests.PgColorTests.BlackOnWhiteIsTheMaximumWcagRatio" methodname="BlackOnWhiteIsTheMaximumWcagRatio" classname="ProvingGround.Tests.PgColorTests" runstate="Runnable" seed="1310636573" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000096" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1052" name="CompositingATranslucentForegroundMovesItTowardTheBackground" fullname="ProvingGround.Tests.PgColorTests.CompositingATranslucentForegroundMovesItTowardTheBackground" methodname="CompositingATranslucentForegroundMovesItTowardTheBackground" classname="ProvingGround.Tests.PgColorTests" runstate="Runnable" seed="1818298516" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000158" asserts="0">
+            <test-case id="1052" name="CompositingATranslucentForegroundMovesItTowardTheBackground" fullname="ProvingGround.Tests.PgColorTests.CompositingATranslucentForegroundMovesItTowardTheBackground" methodname="CompositingATranslucentForegroundMovesItTowardTheBackground" classname="ProvingGround.Tests.PgColorTests" runstate="Runnable" seed="1919743288" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000151" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1053" name="ContrastIsSymmetric" fullname="ProvingGround.Tests.PgColorTests.ContrastIsSymmetric" methodname="ContrastIsSymmetric" classname="ProvingGround.Tests.PgColorTests" runstate="Runnable" seed="1857517392" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000080" asserts="0">
+            <test-case id="1053" name="ContrastIsSymmetric" fullname="ProvingGround.Tests.PgColorTests.ContrastIsSymmetric" methodname="ContrastIsSymmetric" classname="ProvingGround.Tests.PgColorTests" runstate="Runnable" seed="301307705" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000079" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1063" name="PgEconomySimTests" fullname="ProvingGround.Tests.PgEconomySimTests" classname="ProvingGround.Tests.PgEconomySimTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.002795" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1063" name="PgEconomySimTests" fullname="ProvingGround.Tests.PgEconomySimTests" classname="ProvingGround.Tests.PgEconomySimTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.002409" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1066" name="ABalancedEconomyPasses" fullname="ProvingGround.Tests.PgEconomySimTests.ABalancedEconomyPasses" methodname="ABalancedEconomyPasses" classname="ProvingGround.Tests.PgEconomySimTests" runstate="Runnable" seed="1829161791" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.001980" asserts="0">
+            <test-case id="1066" name="ABalancedEconomyPasses" fullname="ProvingGround.Tests.PgEconomySimTests.ABalancedEconomyPasses" methodname="ABalancedEconomyPasses" classname="ProvingGround.Tests.PgEconomySimTests" runstate="Runnable" seed="1156554123" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001703" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1064" name="AnEconomyThatSpendsMoreThanItEarnsGoesBankrupt" fullname="ProvingGround.Tests.PgEconomySimTests.AnEconomyThatSpendsMoreThanItEarnsGoesBankrupt" methodname="AnEconomyThatSpendsMoreThanItEarnsGoesBankrupt" classname="ProvingGround.Tests.PgEconomySimTests" runstate="Runnable" seed="590710941" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000273" asserts="0">
+            <test-case id="1064" name="AnEconomyThatSpendsMoreThanItEarnsGoesBankrupt" fullname="ProvingGround.Tests.PgEconomySimTests.AnEconomyThatSpendsMoreThanItEarnsGoesBankrupt" methodname="AnEconomyThatSpendsMoreThanItEarnsGoesBankrupt" classname="ProvingGround.Tests.PgEconomySimTests" runstate="Runnable" seed="2081057818" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000221" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1065" name="CompoundingIncomeIsCaughtAsRunaway" fullname="ProvingGround.Tests.PgEconomySimTests.CompoundingIncomeIsCaughtAsRunaway" methodname="CompoundingIncomeIsCaughtAsRunaway" classname="ProvingGround.Tests.PgEconomySimTests" runstate="Runnable" seed="1936468929" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000134" asserts="0">
+            <test-case id="1065" name="CompoundingIncomeIsCaughtAsRunaway" fullname="ProvingGround.Tests.PgEconomySimTests.CompoundingIncomeIsCaughtAsRunaway" methodname="CompoundingIncomeIsCaughtAsRunaway" classname="ProvingGround.Tests.PgEconomySimTests" runstate="Runnable" seed="927867031" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000124" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1038" name="PgFeelSpecTests" fullname="ProvingGround.Tests.PgFeelSpecTests" classname="ProvingGround.Tests.PgFeelSpecTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.002945" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1038" name="PgFeelSpecTests" fullname="ProvingGround.Tests.PgFeelSpecTests" classname="ProvingGround.Tests.PgFeelSpecTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.002326" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1041" name="AMetricThatWasNotMeasuredIsReportedRatherThanSilentlyPassing" fullname="ProvingGround.Tests.PgFeelSpecTests.AMetricThatWasNotMeasuredIsReportedRatherThanSilentlyPassing" methodname="AMetricThatWasNotMeasuredIsReportedRatherThanSilentlyPassing" classname="ProvingGround.Tests.PgFeelSpecTests" runstate="Runnable" seed="505236403" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.001435" asserts="0">
+            <test-case id="1041" name="AMetricThatWasNotMeasuredIsReportedRatherThanSilentlyPassing" fullname="ProvingGround.Tests.PgFeelSpecTests.AMetricThatWasNotMeasuredIsReportedRatherThanSilentlyPassing" methodname="AMetricThatWasNotMeasuredIsReportedRatherThanSilentlyPassing" classname="ProvingGround.Tests.PgFeelSpecTests" runstate="Runnable" seed="51739866" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001453" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1039" name="ConformingMeasurementsProduceNoFindings" fullname="ProvingGround.Tests.PgFeelSpecTests.ConformingMeasurementsProduceNoFindings" methodname="ConformingMeasurementsProduceNoFindings" classname="ProvingGround.Tests.PgFeelSpecTests" runstate="Runnable" seed="801007962" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000830" asserts="0">
+            <test-case id="1039" name="ConformingMeasurementsProduceNoFindings" fullname="ProvingGround.Tests.PgFeelSpecTests.ConformingMeasurementsProduceNoFindings" methodname="ConformingMeasurementsProduceNoFindings" classname="ProvingGround.Tests.PgFeelSpecTests" runstate="Runnable" seed="91314696" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000357" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1040" name="EveryDeviationIsReportedInOnePassRatherThanTheFirstOnly" fullname="ProvingGround.Tests.PgFeelSpecTests.EveryDeviationIsReportedInOnePassRatherThanTheFirstOnly" methodname="EveryDeviationIsReportedInOnePassRatherThanTheFirstOnly" classname="ProvingGround.Tests.PgFeelSpecTests" runstate="Runnable" seed="1382238571" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000153" asserts="0">
+            <test-case id="1040" name="EveryDeviationIsReportedInOnePassRatherThanTheFirstOnly" fullname="ProvingGround.Tests.PgFeelSpecTests.EveryDeviationIsReportedInOnePassRatherThanTheFirstOnly" methodname="EveryDeviationIsReportedInOnePassRatherThanTheFirstOnly" classname="ProvingGround.Tests.PgFeelSpecTests" runstate="Runnable" seed="2005812707" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000115" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1045" name="PgGlobTests" fullname="ProvingGround.Tests.PgGlobTests" classname="ProvingGround.Tests.PgGlobTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.002558" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1045" name="PgGlobTests" fullname="ProvingGround.Tests.PgGlobTests" classname="ProvingGround.Tests.PgGlobTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.002371" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1047" name="DoubleStarCrossesDirectoriesAndAlsoMatchesNone" fullname="ProvingGround.Tests.PgGlobTests.DoubleStarCrossesDirectoriesAndAlsoMatchesNone" methodname="DoubleStarCrossesDirectoriesAndAlsoMatchesNone" classname="ProvingGround.Tests.PgGlobTests" runstate="Runnable" seed="484854140" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.001996" asserts="0">
+            <test-case id="1047" name="DoubleStarCrossesDirectoriesAndAlsoMatchesNone" fullname="ProvingGround.Tests.PgGlobTests.DoubleStarCrossesDirectoriesAndAlsoMatchesNone" methodname="DoubleStarCrossesDirectoriesAndAlsoMatchesNone" classname="ProvingGround.Tests.PgGlobTests" runstate="Runnable" seed="1763684520" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001923" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1048" name="NonMatchingPathsAreRejected" fullname="ProvingGround.Tests.PgGlobTests.NonMatchingPathsAreRejected" methodname="NonMatchingPathsAreRejected" classname="ProvingGround.Tests.PgGlobTests" runstate="Runnable" seed="919527032" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000063" asserts="0">
+            <test-case id="1048" name="NonMatchingPathsAreRejected" fullname="ProvingGround.Tests.PgGlobTests.NonMatchingPathsAreRejected" methodname="NonMatchingPathsAreRejected" classname="ProvingGround.Tests.PgGlobTests" runstate="Runnable" seed="261045995" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000054" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1046" name="SingleStarDoesNotCrossDirectories" fullname="ProvingGround.Tests.PgGlobTests.SingleStarDoesNotCrossDirectories" methodname="SingleStarDoesNotCrossDirectories" classname="ProvingGround.Tests.PgGlobTests" runstate="Runnable" seed="1506895892" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000078" asserts="0">
+            <test-case id="1046" name="SingleStarDoesNotCrossDirectories" fullname="ProvingGround.Tests.PgGlobTests.SingleStarDoesNotCrossDirectories" methodname="SingleStarDoesNotCrossDirectories" classname="ProvingGround.Tests.PgGlobTests" runstate="Runnable" seed="2066834867" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000073" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1032" name="PgMetricSpecTests" fullname="ProvingGround.Tests.PgMetricSpecTests" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.001609" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1032" name="PgMetricSpecTests" fullname="ProvingGround.Tests.PgMetricSpecTests" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" testcasecount="5" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001137" total="5" passed="5" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1037" name="AnEmptySpecNeverProducesAFinding" fullname="ProvingGround.Tests.PgMetricSpecTests.AnEmptySpecNeverProducesAFinding" methodname="AnEmptySpecNeverProducesAFinding" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" seed="1881613350" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000125" asserts="0">
+            <test-case id="1037" name="AnEmptySpecNeverProducesAFinding" fullname="ProvingGround.Tests.PgMetricSpecTests.AnEmptySpecNeverProducesAFinding" methodname="AnEmptySpecNeverProducesAFinding" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" seed="316743571" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000090" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1036" name="EvaluateReturnsNullWhenConformingAndAFindingWhenNot" fullname="ProvingGround.Tests.PgMetricSpecTests.EvaluateReturnsNullWhenConformingAndAFindingWhenNot" methodname="EvaluateReturnsNullWhenConformingAndAFindingWhenNot" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" seed="972934069" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000555" asserts="0">
+            <test-case id="1036" name="EvaluateReturnsNullWhenConformingAndAFindingWhenNot" fullname="ProvingGround.Tests.PgMetricSpecTests.EvaluateReturnsNullWhenConformingAndAFindingWhenNot" methodname="EvaluateReturnsNullWhenConformingAndAFindingWhenNot" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" seed="683928295" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000469" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1035" name="RangeRejectsBelowMinimumAndAboveMaximum" fullname="ProvingGround.Tests.PgMetricSpecTests.RangeRejectsBelowMinimumAndAboveMaximum" methodname="RangeRejectsBelowMinimumAndAboveMaximum" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" seed="1043281522" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000092" asserts="0">
+            <test-case id="1035" name="RangeRejectsBelowMinimumAndAboveMaximum" fullname="ProvingGround.Tests.PgMetricSpecTests.RangeRejectsBelowMinimumAndAboveMaximum" methodname="RangeRejectsBelowMinimumAndAboveMaximum" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" seed="1461978651" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000066" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1033" name="TargetWithToleranceAcceptsValuesInsideTheBand" fullname="ProvingGround.Tests.PgMetricSpecTests.TargetWithToleranceAcceptsValuesInsideTheBand" methodname="TargetWithToleranceAcceptsValuesInsideTheBand" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" seed="2128194878" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000059" asserts="0">
+            <test-case id="1033" name="TargetWithToleranceAcceptsValuesInsideTheBand" fullname="ProvingGround.Tests.PgMetricSpecTests.TargetWithToleranceAcceptsValuesInsideTheBand" methodname="TargetWithToleranceAcceptsValuesInsideTheBand" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" seed="1381277742" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000059" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1034" name="TargetWithToleranceRejectsValuesOutsideTheBand" fullname="ProvingGround.Tests.PgMetricSpecTests.TargetWithToleranceRejectsValuesOutsideTheBand" methodname="TargetWithToleranceRejectsValuesOutsideTheBand" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" seed="1429527301" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000069" asserts="0">
+            <test-case id="1034" name="TargetWithToleranceRejectsValuesOutsideTheBand" fullname="ProvingGround.Tests.PgMetricSpecTests.TargetWithToleranceRejectsValuesOutsideTheBand" methodname="TargetWithToleranceRejectsValuesOutsideTheBand" classname="ProvingGround.Tests.PgMetricSpecTests" runstate="Runnable" seed="244547529" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000051" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1005" name="PgPropertyBinderTests" fullname="ProvingGround.Tests.PgPropertyBinderTests" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.008649" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1005" name="PgPropertyBinderTests" fullname="ProvingGround.Tests.PgPropertyBinderTests" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" testcasecount="6" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.008742" total="6" passed="6" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1011" name="ReportsUnconvertibleValues" fullname="ProvingGround.Tests.PgPropertyBinderTests.ReportsUnconvertibleValues" methodname="ReportsUnconvertibleValues" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="919279969" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.003686" asserts="0">
+            <test-case id="1011" name="ReportsUnconvertibleValues" fullname="ProvingGround.Tests.PgPropertyBinderTests.ReportsUnconvertibleValues" methodname="ReportsUnconvertibleValues" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="1989458946" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.004306" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1010" name="ReportsUnknownPropertiesRatherThanFailingSilently" fullname="ProvingGround.Tests.PgPropertyBinderTests.ReportsUnknownPropertiesRatherThanFailingSilently" methodname="ReportsUnknownPropertiesRatherThanFailingSilently" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="935443589" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000766" asserts="0">
+            <test-case id="1010" name="ReportsUnknownPropertiesRatherThanFailingSilently" fullname="ProvingGround.Tests.PgPropertyBinderTests.ReportsUnknownPropertiesRatherThanFailingSilently" methodname="ReportsUnknownPropertiesRatherThanFailingSilently" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="1204651125" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000672" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1009" name="SetsColoursFromHex" fullname="ProvingGround.Tests.PgPropertyBinderTests.SetsColoursFromHex" methodname="SetsColoursFromHex" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="1587805072" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.001363" asserts="0">
+            <test-case id="1009" name="SetsColoursFromHex" fullname="ProvingGround.Tests.PgPropertyBinderTests.SetsColoursFromHex" methodname="SetsColoursFromHex" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="1672626358" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001156" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1008" name="SetsEnumsByName" fullname="ProvingGround.Tests.PgPropertyBinderTests.SetsEnumsByName" methodname="SetsEnumsByName" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="33769545" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000280" asserts="0">
+            <test-case id="1008" name="SetsEnumsByName" fullname="ProvingGround.Tests.PgPropertyBinderTests.SetsEnumsByName" methodname="SetsEnumsByName" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="524056331" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000243" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1006" name="SetsFloatsIntsAndBools" fullname="ProvingGround.Tests.PgPropertyBinderTests.SetsFloatsIntsAndBools" methodname="SetsFloatsIntsAndBools" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="677278553" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000513" asserts="0">
+            <test-case id="1006" name="SetsFloatsIntsAndBools" fullname="ProvingGround.Tests.PgPropertyBinderTests.SetsFloatsIntsAndBools" methodname="SetsFloatsIntsAndBools" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="757429090" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000494" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1007" name="SetsVectorsFromArrays" fullname="ProvingGround.Tests.PgPropertyBinderTests.SetsVectorsFromArrays" methodname="SetsVectorsFromArrays" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="1733394141" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.001182" asserts="0">
+            <test-case id="1007" name="SetsVectorsFromArrays" fullname="ProvingGround.Tests.PgPropertyBinderTests.SetsVectorsFromArrays" methodname="SetsVectorsFromArrays" classname="ProvingGround.Tests.PgPropertyBinderTests" runstate="Runnable" seed="828544072" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001123" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1042" name="PgQualityGatesTests" fullname="ProvingGround.Tests.PgQualityGatesTests" classname="ProvingGround.Tests.PgQualityGatesTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.002621" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1042" name="PgQualityGatesTests" fullname="ProvingGround.Tests.PgQualityGatesTests" classname="ProvingGround.Tests.PgQualityGatesTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.002471" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1044" name="AReportWithOnlyWarningsPasses" fullname="ProvingGround.Tests.PgQualityGatesTests.AReportWithOnlyWarningsPasses" methodname="AReportWithOnlyWarningsPasses" classname="ProvingGround.Tests.PgQualityGatesTests" runstate="Runnable" seed="1901854124" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000430" asserts="0">
+            <test-case id="1044" name="AReportWithOnlyWarningsPasses" fullname="ProvingGround.Tests.PgQualityGatesTests.AReportWithOnlyWarningsPasses" methodname="AReportWithOnlyWarningsPasses" classname="ProvingGround.Tests.PgQualityGatesTests" runstate="Runnable" seed="1912466603" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000379" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1043" name="SuppressedFindingsAreDowngradedAndKeptRatherThanDeleted" fullname="ProvingGround.Tests.PgQualityGatesTests.SuppressedFindingsAreDowngradedAndKeptRatherThanDeleted" methodname="SuppressedFindingsAreDowngradedAndKeptRatherThanDeleted" classname="ProvingGround.Tests.PgQualityGatesTests" runstate="Runnable" seed="1492573461" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000212" asserts="0">
+            <test-case id="1043" name="SuppressedFindingsAreDowngradedAndKeptRatherThanDeleted" fullname="ProvingGround.Tests.PgQualityGatesTests.SuppressedFindingsAreDowngradedAndKeptRatherThanDeleted" methodname="SuppressedFindingsAreDowngradedAndKeptRatherThanDeleted" classname="ProvingGround.Tests.PgQualityGatesTests" runstate="Runnable" seed="670654042" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000199" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1054" name="PgReportTests" fullname="ProvingGround.Tests.PgReportTests" classname="ProvingGround.Tests.PgReportTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.009201" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1054" name="PgReportTests" fullname="ProvingGround.Tests.PgReportTests" classname="ProvingGround.Tests.PgReportTests" runstate="Runnable" testcasecount="2" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.010869" total="2" passed="2" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1056" name="AFailedOperationIsDistinctFromAnOperationThatFoundFailures" fullname="ProvingGround.Tests.PgReportTests.AFailedOperationIsDistinctFromAnOperationThatFoundFailures" methodname="AFailedOperationIsDistinctFromAnOperationThatFoundFailures" classname="ProvingGround.Tests.PgReportTests" runstate="Runnable" seed="145306815" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.000079" asserts="0">
+            <test-case id="1056" name="AFailedOperationIsDistinctFromAnOperationThatFoundFailures" fullname="ProvingGround.Tests.PgReportTests.AFailedOperationIsDistinctFromAnOperationThatFoundFailures" methodname="AFailedOperationIsDistinctFromAnOperationThatFoundFailures" classname="ProvingGround.Tests.PgReportTests" runstate="Runnable" seed="1584174823" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000073" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1055" name="ReportsSurviveAJsonRoundTripWithSeveritiesIntact" fullname="ProvingGround.Tests.PgReportTests.ReportsSurviveAJsonRoundTripWithSeveritiesIntact" methodname="ReportsSurviveAJsonRoundTripWithSeveritiesIntact" classname="ProvingGround.Tests.PgReportTests" runstate="Runnable" seed="1372520423" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:31Z" duration="0.008824" asserts="0">
+            <test-case id="1055" name="ReportsSurviveAJsonRoundTripWithSeveritiesIntact" fullname="ProvingGround.Tests.PgReportTests.ReportsSurviveAJsonRoundTripWithSeveritiesIntact" methodname="ReportsSurviveAJsonRoundTripWithSeveritiesIntact" classname="ProvingGround.Tests.PgReportTests" runstate="Runnable" seed="1611384321" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.010503" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1012" name="PgSceneBuilderTests" fullname="ProvingGround.Tests.PgSceneBuilderTests" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:32Z" duration="0.186462" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1012" name="PgSceneBuilderTests" fullname="ProvingGround.Tests.PgSceneBuilderTests" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" testcasecount="12" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.172289" total="12" passed="12" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1023" name="AnUnknownComponentIsReportedWithSuggestions" fullname="ProvingGround.Tests.PgSceneBuilderTests.AnUnknownComponentIsReportedWithSuggestions" methodname="AnUnknownComponentIsReportedWithSuggestions" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="346809401" result="Passed" start-time="2026-08-07 04:32:31Z" end-time="2026-08-07 04:32:32Z" duration="0.174037" asserts="0">
+            <test-case id="1023" name="AnUnknownComponentIsReportedWithSuggestions" fullname="ProvingGround.Tests.PgSceneBuilderTests.AnUnknownComponentIsReportedWithSuggestions" methodname="AnUnknownComponentIsReportedWithSuggestions" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="59946744" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.160453" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1013" name="BuildsObjectsWithTransformsAndComponents" fullname="ProvingGround.Tests.PgSceneBuilderTests.BuildsObjectsWithTransformsAndComponents" methodname="BuildsObjectsWithTransformsAndComponents" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="273619071" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.002082" asserts="0">
+            <test-case id="1013" name="BuildsObjectsWithTransformsAndComponents" fullname="ProvingGround.Tests.PgSceneBuilderTests.BuildsObjectsWithTransformsAndComponents" methodname="BuildsObjectsWithTransformsAndComponents" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="9710919" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001960" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1022" name="ChildrenAreParentedRegardlessOfDeclarationOrder" fullname="ProvingGround.Tests.PgSceneBuilderTests.ChildrenAreParentedRegardlessOfDeclarationOrder" methodname="ChildrenAreParentedRegardlessOfDeclarationOrder" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="2020685127" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.001484" asserts="0">
+            <test-case id="1022" name="ChildrenAreParentedRegardlessOfDeclarationOrder" fullname="ProvingGround.Tests.PgSceneBuilderTests.ChildrenAreParentedRegardlessOfDeclarationOrder" methodname="ChildrenAreParentedRegardlessOfDeclarationOrder" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="725818399" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001513" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1018" name="ObjectsDroppedFromTheRecipeAreRemoved" fullname="ProvingGround.Tests.PgSceneBuilderTests.ObjectsDroppedFromTheRecipeAreRemoved" methodname="ObjectsDroppedFromTheRecipeAreRemoved" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="506618209" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.001136" asserts="0">
+            <test-case id="1018" name="ObjectsDroppedFromTheRecipeAreRemoved" fullname="ProvingGround.Tests.PgSceneBuilderTests.ObjectsDroppedFromTheRecipeAreRemoved" methodname="ObjectsDroppedFromTheRecipeAreRemoved" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="1605468508" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001232" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1017" name="RebuildingAppliesChangedValues" fullname="ProvingGround.Tests.PgSceneBuilderTests.RebuildingAppliesChangedValues" methodname="RebuildingAppliesChangedValues" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="878618397" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.000352" asserts="0">
+            <test-case id="1017" name="RebuildingAppliesChangedValues" fullname="ProvingGround.Tests.PgSceneBuilderTests.RebuildingAppliesChangedValues" methodname="RebuildingAppliesChangedValues" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="198231414" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000364" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1014" name="RebuildingConvergesInsteadOfDuplicating" fullname="ProvingGround.Tests.PgSceneBuilderTests.RebuildingConvergesInsteadOfDuplicating" methodname="RebuildingConvergesInsteadOfDuplicating" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="1254865462" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.000387" asserts="0">
+            <test-case id="1014" name="RebuildingConvergesInsteadOfDuplicating" fullname="ProvingGround.Tests.PgSceneBuilderTests.RebuildingConvergesInsteadOfDuplicating" methodname="RebuildingConvergesInsteadOfDuplicating" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="749825358" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000388" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1015" name="RebuildingKeepsThePrimitivesOwnRendererAndCollider" fullname="ProvingGround.Tests.PgSceneBuilderTests.RebuildingKeepsThePrimitivesOwnRendererAndCollider" methodname="RebuildingKeepsThePrimitivesOwnRendererAndCollider" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="816668651" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.001305" asserts="0">
+            <test-case id="1015" name="RebuildingKeepsThePrimitivesOwnRendererAndCollider" fullname="ProvingGround.Tests.PgSceneBuilderTests.RebuildingKeepsThePrimitivesOwnRendererAndCollider" methodname="RebuildingKeepsThePrimitivesOwnRendererAndCollider" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="1436588007" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001177" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1016" name="RebuildingRemovesComponentsDroppedFromTheRecipe" fullname="ProvingGround.Tests.PgSceneBuilderTests.RebuildingRemovesComponentsDroppedFromTheRecipe" methodname="RebuildingRemovesComponentsDroppedFromTheRecipe" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="961134508" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.001317" asserts="0">
+            <test-case id="1016" name="RebuildingRemovesComponentsDroppedFromTheRecipe" fullname="ProvingGround.Tests.PgSceneBuilderTests.RebuildingRemovesComponentsDroppedFromTheRecipe" methodname="RebuildingRemovesComponentsDroppedFromTheRecipe" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="2052939623" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001129" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1020" name="RepeatExpandsIntoNumberedCopies" fullname="ProvingGround.Tests.PgSceneBuilderTests.RepeatExpandsIntoNumberedCopies" methodname="RepeatExpandsIntoNumberedCopies" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="1368938752" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.001061" asserts="0">
+            <test-case id="1020" name="RepeatExpandsIntoNumberedCopies" fullname="ProvingGround.Tests.PgSceneBuilderTests.RepeatExpandsIntoNumberedCopies" methodname="RepeatExpandsIntoNumberedCopies" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="1571543071" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000882" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1021" name="RingRepeatPlacesCopiesAroundACircle" fullname="ProvingGround.Tests.PgSceneBuilderTests.RingRepeatPlacesCopiesAroundACircle" methodname="RingRepeatPlacesCopiesAroundACircle" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="727339577" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.000754" asserts="0">
+            <test-case id="1021" name="RingRepeatPlacesCopiesAroundACircle" fullname="ProvingGround.Tests.PgSceneBuilderTests.RingRepeatPlacesCopiesAroundACircle" methodname="RingRepeatPlacesCopiesAroundACircle" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="1958238983" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000674" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1024" name="SeededJitterIsReproducible" fullname="ProvingGround.Tests.PgSceneBuilderTests.SeededJitterIsReproducible" methodname="SeededJitterIsReproducible" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="408090003" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.000925" asserts="0">
+            <test-case id="1024" name="SeededJitterIsReproducible" fullname="ProvingGround.Tests.PgSceneBuilderTests.SeededJitterIsReproducible" methodname="SeededJitterIsReproducible" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="464386372" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000923" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1019" name="UnmanagedObjectsSurviveARebuild" fullname="ProvingGround.Tests.PgSceneBuilderTests.UnmanagedObjectsSurviveARebuild" methodname="UnmanagedObjectsSurviveARebuild" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="2124416252" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.000233" asserts="0">
+            <test-case id="1019" name="UnmanagedObjectsSurviveARebuild" fullname="ProvingGround.Tests.PgSceneBuilderTests.UnmanagedObjectsSurviveARebuild" methodname="UnmanagedObjectsSurviveARebuild" classname="ProvingGround.Tests.PgSceneBuilderTests" runstate="Runnable" seed="875820662" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000217" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
           </test-suite>
-          <test-suite type="TestFixture" id="1001" name="PgTypesTests" fullname="ProvingGround.Tests.PgTypesTests" classname="ProvingGround.Tests.PgTypesTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.001525" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
+          <test-suite type="TestFixture" id="1001" name="PgTypesTests" fullname="ProvingGround.Tests.PgTypesTests" classname="ProvingGround.Tests.PgTypesTests" runstate="Runnable" testcasecount="3" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.001598" total="3" passed="3" failed="0" inconclusive="0" skipped="0" asserts="0">
             <properties />
-            <test-case id="1002" name="ResolvesBuiltInComponentsByShortName" fullname="ProvingGround.Tests.PgTypesTests.ResolvesBuiltInComponentsByShortName" methodname="ResolvesBuiltInComponentsByShortName" classname="ProvingGround.Tests.PgTypesTests" runstate="Runnable" seed="1873625669" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.000106" asserts="0">
+            <test-case id="1002" name="ResolvesBuiltInComponentsByShortName" fullname="ProvingGround.Tests.PgTypesTests.ResolvesBuiltInComponentsByShortName" methodname="ResolvesBuiltInComponentsByShortName" classname="ProvingGround.Tests.PgTypesTests" runstate="Runnable" seed="607115940" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000084" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1003" name="ResolvesByFullyQualifiedName" fullname="ProvingGround.Tests.PgTypesTests.ResolvesByFullyQualifiedName" methodname="ResolvesByFullyQualifiedName" classname="ProvingGround.Tests.PgTypesTests" runstate="Runnable" seed="2017838396" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.000049" asserts="0">
+            <test-case id="1003" name="ResolvesByFullyQualifiedName" fullname="ProvingGround.Tests.PgTypesTests.ResolvesByFullyQualifiedName" methodname="ResolvesByFullyQualifiedName" classname="ProvingGround.Tests.PgTypesTests" runstate="Runnable" seed="358392234" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000038" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />
               </properties>
             </test-case>
-            <test-case id="1004" name="UnknownTypesReturnNullAndOfferSuggestions" fullname="ProvingGround.Tests.PgTypesTests.UnknownTypesReturnNullAndOfferSuggestions" methodname="UnknownTypesReturnNullAndOfferSuggestions" classname="ProvingGround.Tests.PgTypesTests" runstate="Runnable" seed="2015200528" result="Passed" start-time="2026-08-07 04:32:32Z" end-time="2026-08-07 04:32:32Z" duration="0.000139" asserts="0">
+            <test-case id="1004" name="UnknownTypesReturnNullAndOfferSuggestions" fullname="ProvingGround.Tests.PgTypesTests.UnknownTypesReturnNullAndOfferSuggestions" methodname="UnknownTypesReturnNullAndOfferSuggestions" classname="ProvingGround.Tests.PgTypesTests" runstate="Runnable" seed="1097755992" result="Passed" start-time="2026-08-07 04:41:58Z" end-time="2026-08-07 04:41:58Z" duration="0.000120" asserts="0">
               <properties>
                 <property name="retryIteration" value="0" />
                 <property name="repeatIteration" value="0" />

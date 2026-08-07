@@ -9,91 +9,193 @@ Works on a game started from scratch, and on one that already exists, released o
 
 ---
 
-## Why
+## Getting started
 
-Every AI tool shipping for Unity today is an *authoring* layer. They create and modify
-scenes, GameObjects, scripts and assets. Not one of them closes the loop on whether the
-result is any good. Authoring is commoditised. Perception, actuation, verification and
-judgment are not.
+Requires Unity 2022.3 or newer, and Python 3.10+ for the agent bridge.
 
-The research is unusually direct about the cause. *See, Symbolize, Act* (AAAI 2026
-LMReasoning workshop) tested vision-language agents across Atari, VizDoom and AI2-THOR
-with four input pipelines, and found that agents benefit from symbolic scene
-representations **only when those symbols are accurate** - while agents left to extract
-symbols from raw frames themselves degrade sharply as scenes get complex. It names
-perception quality as the central bottleneck.
+### 1. Get the plugin
 
-A game engine already holds the ground truth. Proving Ground's job is to stop the agent
-guessing from screenshots and hand it what the engine already knows.
+```bash
+git clone git@github.com:zottiben/proving-ground.git
+cd proving-ground
+```
+
+### 2. Run setup
+
+```bash
+tools/pg-setup
+```
+
+That is the whole install. It finds your Unity project, adds the package to it, builds
+the MCP server, works out which harness you use, registers the server and installs the
+skill where your harness will read it.
+
+Run it from inside your Unity project, or point it at one:
+
+```bash
+tools/pg-setup --project ~/Games/MyGame
+```
+
+| Flag | Effect |
+|---|---|
+| `--project PATH` | Unity project to configure. Defaults to the nearest one above the working directory. |
+| `--harness claude\|codex\|pi` | Skip detection. Comma separate to configure several. |
+| `--yes` | Accept every default, never prompt. |
+| `--skip-unity` | Configure the harness only, leave the Unity manifest alone. |
+
+Re-running is safe: existing entries are updated in place, and nothing else in your
+config files is touched.
+
+### 3. Turn on the bridge in Unity
+
+Open the project, then **Tools > Proving Ground > Agent Bridge > Enable**.
+
+It binds to `127.0.0.1:8787`, stays off until you enable it, and can only invoke named
+methods on one class. There is no arbitrary code execution route.
+
+### 4. Prompt your agent
+
+Start your harness in the project directory and ask for something:
+
+> Check the project settings, then build me a greybox first person shooter. Use a scene
+> recipe for the level and verify with Proving Ground at every step.
+
+Tag your player `Player` so the harness can find it. That is the only convention.
 
 ---
 
-## Install
+## What setup writes
 
-Requires Unity 2022.3 or newer. Developed and tested against Unity 6000.3.
+Nothing is hidden, and all of it is safe to edit by hand.
 
-**Unity Package Manager > Add package from git URL:**
+| Harness | MCP server | Skill |
+|---|---|---|
+| **Claude Code** | `.mcp.json` in the project | `.claude/skills/proving-ground/SKILL.md` |
+| **Codex** | `.codex/config.toml` in the project | `~/.codex/skills/proving-ground/SKILL.md`, plus a pointer in `AGENTS.md` |
+| **Pi** | `.pi/mcp.json` in the project | `.agents/skills/proving-ground/SKILL.md` |
+
+Codex only loads project config from trusted projects, so run `codex` in the project
+once and trust it. Its skills live in the Codex home directory rather than the project,
+which is why setup also adds a line to `AGENTS.md` pointing at the skill.
+
+---
+
+## Manual setup
+
+If you would rather not run the script, or you use a harness it does not know about.
+
+### Install the package
+
+**Unity Package Manager > + > Add package from disk...** and select
+`packages/com.zottiben.provingground/package.json`.
+
+Or add it to `Packages/manifest.json`:
+
+```json
+"com.zottiben.provingground": "file:/absolute/path/to/proving-ground/packages/com.zottiben.provingground"
+```
+
+To install from git instead of a local clone:
 
 ```
 git@github.com:zottiben/proving-ground.git?path=/packages/com.zottiben.provingground
 ```
 
-Or add it to `Packages/manifest.json` directly:
+The repository is private, so the SSH form is the one that works and it needs an SSH key
+Unity's git can use. If it is made public, `https://github.com/zottiben/proving-ground.git?path=/packages/com.zottiben.provingground`
+works with no credentials.
 
-```json
-"com.zottiben.provingground": "git@github.com:zottiben/proving-ground.git?path=/packages/com.zottiben.provingground"
+One line is enough either way. The package declares the built-in modules it needs
+(physics, audio, UI, image conversion) and pulls in `com.unity.nuget.newtonsoft-json`.
+The Input System, uGUI, UI Toolkit, NavMesh and Animation integrations compile only when
+those packages are present, so nothing breaks in a project without them.
+
+### Build the MCP server
+
+```bash
+cd mcp && uv sync
 ```
 
-The repository is currently private, so the SSH form above is the one that works, and
-it needs an SSH key Unity's git can use. If the repository is made public, swap it for
-`https://github.com/zottiben/proving-ground.git?path=/packages/com.zottiben.provingground`,
-which needs no credentials.
+The launcher is then at `mcp/.venv/bin/proving-ground-mcp`. Use that absolute path
+below.
 
-That single line is enough. The package declares the built-in modules it needs
-(physics, audio, UI, image conversion) and pulls in `com.unity.nuget.newtonsoft-json`,
-so they resolve on their own. The Input System, uGUI, UI Toolkit, NavMesh and
-Animation integrations each compile only when that package is present, so nothing
-breaks in a project that does not use them - those assemblies are simply skipped.
+### Register the server
 
-Then in Unity: **Tools > Proving Ground > Initialise Project**.
-
-That writes a `ProvingGround/` folder next to `Assets`, containing starter contracts, a
-smoke scenario and design templates. Nothing is added to the asset database.
-
-```
-ProvingGround/
-  Contracts/     feel.json, ui.json, audio.json, gates.json, content.json
-  Scenarios/     reproducible play sessions
-  Baselines/     reference images and captured baselines
-  Design/        pillars, one-pager, GDD, milestones
-  Artifacts/     run output; regenerated, not committed
-```
-
-### Connect an agent
-
-**Tools > Proving Ground > Agent Bridge > Enable.** It binds to `127.0.0.1:8787`, is
-off until you turn it on, and can only invoke named methods on one class. There is no
-arbitrary code execution route.
-
-Then either register the MCP server:
+**Claude Code** - `.mcp.json` in the project root:
 
 ```json
 {
   "mcpServers": {
     "proving-ground": {
-      "command": "uv",
-      "args": ["run", "--directory", "/path/to/proving-ground/mcp", "proving-ground-mcp"]
+      "command": "/absolute/path/to/proving-ground/mcp/.venv/bin/proving-ground-mcp",
+      "args": []
     }
   }
 }
 ```
 
-or use `tools/pg` from a shell, or call `PgApi` methods through an editor bridge you
-already have. All three run the same code as the menu items, so a person and an agent
-never get different answers.
+**Codex** - `.codex/config.toml` in the project root:
 
-Copy `skills/proving-ground/SKILL.md` into your harness so the agent knows the
-discipline, not just the API.
+```toml
+[mcp_servers.proving-ground]
+command = "/absolute/path/to/proving-ground/mcp/.venv/bin/proving-ground-mcp"
+args = []
+startup_timeout_sec = 60
+```
+
+**Pi** - `.pi/mcp.json` in the project root:
+
+```json
+{
+  "mcpServers": {
+    "proving-ground": {
+      "command": "/absolute/path/to/proving-ground/mcp/.venv/bin/proving-ground-mcp",
+      "args": [],
+      "transport": "stdio",
+      "lifecycle": "lazy",
+      "directTools": true
+    }
+  }
+}
+```
+
+Set `PROVING_GROUND_URL` if you moved the bridge off port 8787.
+
+### Install the skill
+
+Copy `skills/proving-ground/SKILL.md` to wherever your harness reads skills from - see
+the table above. Without it an agent has the API but not the discipline, and will reach
+for screenshots anyway.
+
+### Without MCP
+
+`tools/pg` talks to the same bridge from a shell:
+
+```bash
+export PATH="/absolute/path/to/proving-ground/tools:$PATH"
+pg health
+pg check all
+```
+
+Or call `PgApi` methods through any editor bridge you already have. Every route runs the
+same code as the menu items, so a person and an agent never get different answers.
+
+---
+
+## Project layout
+
+`Tools > Proving Ground > Initialise Project` (or just ask your agent) writes a
+`ProvingGround/` folder next to `Assets`. Nothing is added to the asset database.
+
+```
+ProvingGround/
+  Contracts/     feel.json, ui.json, audio.json, gates.json, content.json
+  Scenes/        scene recipes
+  Scenarios/     reproducible play sessions
+  Baselines/     reference images and captured baselines
+  Design/        pillars, one-pager, GDD, milestones
+  Artifacts/     run output; regenerated, not committed
+```
 
 ---
 
@@ -161,15 +263,6 @@ pg scenario smoke      # drive it
 pg milestone prototype # judged on evidence, not on your say-so
 ```
 
-This sequence has been run end to end against a live Editor: empty scene, write a
-controller, await the compile, build a 23-object arena from a recipe, rebuild to prove
-idempotency, save it, add it to the build settings, verify the level, then enter play
-mode and turn the probe bot loose.
-
-It reported `moveSpeed 6.0001` against a recipe asking for 6.0, `timeToApex 0.335`
-against a controller configured for 0.35, `input.moveLatency` of one frame, and a probe
-that passed clean.
-
 ### A game that already exists
 
 This is the harder half, and the order matters.
@@ -226,35 +319,6 @@ any aesthetic.
 **Balance is simulated, not played.** Ten thousand fights run headless in less time than
 one fight takes in the Editor, and the answer comes back as a distribution rather than
 an anecdote.
-
----
-
-## Verification
-
-```bash
-tools/test.sh all     # EditMode 33/33, PlayMode 9/9
-tools/compile.sh      # compile only
-```
-
-The PlayMode suite is the one that matters. It builds an ordinary character controller
-that knows nothing about Proving Ground, drives it through injected input, and asserts
-that the feel probe measures the speed and jump arc it actually has. If that suite
-passes, the central claim of this package holds.
-
-### One finding worth repeating
-
-Unity runs batch mode frames unthrottled, so the real interval between them rounds to
-zero and `Time.deltaTime` comes back as `0`. Any controller that multiplies by delta
-time then does not move, the probe measures a stationary player, and the run reports
-nothing wrong.
-
-`PgSession` pins the clock to the frame count with `Time.captureDeltaTime` to prevent
-it, and there is a regression test guarding it. Frame timings are taken from a real
-stopwatch instead, and are excluded from the feel diff when the clock was captured,
-because they would otherwise report a flawless frame rate on a game that stutters.
-
-Any headless verification tool without a controlled clock is measuring nothing. Worth
-checking in whatever else you use.
 
 ---
 
