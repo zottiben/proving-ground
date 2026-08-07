@@ -1,0 +1,23 @@
+[project]
+name = "proving-ground-mcp"
+version = "0.1.0"
+description = "MCP server for Proving Ground, the Unity verification harness for AI agents."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "mcp>=1.2.0",
+    "httpx>=0.27",
+]
+
+# Works with both the 1.x FastMCP API and the 2.x MCPServer API; see server.py.
+
+[project.scripts]
+proving-ground-mcp = "proving_ground_mcp.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["proving_ground_mcp"]

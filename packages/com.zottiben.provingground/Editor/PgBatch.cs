@@ -66,6 +66,32 @@ namespace ProvingGround.EditorTools
             Finish(PgProcess.Evaluate(id));
         }
 
+        /// <summary>
+        /// Starts the agent bridge and keeps the Editor alive serving it.
+        ///
+        /// Run with <c>-batchmode</c> and without <c>-quit</c>. Useful for CI, and for
+        /// driving a project on a machine with no display. Play-mode operations still work,
+        /// because Unity's main loop runs in batch mode.
+        /// </summary>
+        public static void Serve()
+        {
+            if (int.TryParse(Arg("pgPort", PgBridge.DefaultPort.ToString()), out var port))
+                PgBridge.Port = port;
+
+            PgBridge.AllowShutdownRoute = true;
+            PgBridge.Start();
+
+            if (!PgBridge.IsRunning)
+            {
+                Console.Error.WriteLine("[ProvingGround] The bridge did not start.");
+                EditorApplication.Exit(2);
+                return;
+            }
+
+            Console.WriteLine($"[ProvingGround] Serving on http://127.0.0.1:{PgBridge.Port} " +
+                              "(POST /shutdown to stop)");
+        }
+
         static void Finish(PgReport report)
         {
             if (report == null)

@@ -54,6 +54,12 @@ namespace ProvingGround.EditorTools
 
         public static bool IsRunning => _listener != null && _listener.IsListening;
 
+        /// <summary>
+        /// Enables POST /shutdown. Only set by the headless serve entry point: an Editor a
+        /// person is working in should not be closable from a socket.
+        /// </summary>
+        public static bool AllowShutdownRoute { get; set; }
+
         static PgBridge()
         {
             EditorApplication.update += PumpMainThread;
@@ -154,6 +160,13 @@ namespace ProvingGround.EditorTools
             if (path == "health")
             {
                 RespondFromMainThread(context, Health);
+                return;
+            }
+
+            if (path == "shutdown" && AllowShutdownRoute)
+            {
+                Respond(context, 200, "{\"ok\":true,\"shuttingDown\":true}");
+                MainThread.Enqueue(() => EditorApplication.Exit(0));
                 return;
             }
 
