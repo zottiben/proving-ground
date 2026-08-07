@@ -47,16 +47,43 @@ need() {
 need curl
 need tar
 
+# macOS still ships Python 3.9 at /usr/bin/python3, so finding "a python3" is not
+# enough. Check the usual places a newer one lives before giving up, since a working
+# interpreter is almost always present just not first on PATH.
+usable_python() {
+  [ -x "$1" ] || command -v "$1" >/dev/null 2>&1 || return 1
+  "$1" -c 'import sys; sys.exit(0 if sys.version_info >= (3,10) else 1)' 2>/dev/null
+}
+
 PYTHON=""
-for candidate in python3 python; do
-  if command -v "$candidate" >/dev/null 2>&1; then
-    if "$candidate" -c 'import sys; sys.exit(0 if sys.version_info >= (3,10) else 1)' 2>/dev/null; then
-      PYTHON="$candidate"
-      break
-    fi
+for candidate in \
+  python3 python3.13 python3.12 python3.11 python3.10 python \
+  /opt/homebrew/bin/python3 /usr/local/bin/python3
+do
+  if usable_python "$candidate"; then
+    PYTHON="$candidate"
+    break
   fi
 done
-[ -n "$PYTHON" ] || { echo "Proving Ground needs Python 3.10 or newer." >&2; exit 1; }
+
+if [ -z "$PYTHON" ] && command -v uv >/dev/null 2>&1; then
+  UV_PYTHON="$(uv python find 2>/dev/null || true)"
+  usable_python "$UV_PYTHON" && PYTHON="$UV_PYTHON"
+fi
+
+if [ -z "$PYTHON" ]; then
+  cat >&2 <<'MSG'
+Proving Ground needs Python 3.10 or newer, and could not find one.
+
+macOS ships 3.9, which is too old. Install a newer one with either:
+
+    brew install python
+    curl -LsSf https://astral.sh/uv/install.sh | sh   # then: uv python install 3.12
+
+Then run the installer again.
+MSG
+  exit 1
+fi
 
 # The repository may be private, in which case the API and the asset download both need
 # a token. An authenticated gh is the least effort for the person running this; an
