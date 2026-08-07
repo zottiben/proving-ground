@@ -1,0 +1,35 @@
+{
+  "name": "ProvingGround.Editor",
+  "rootNamespace": "ProvingGround.EditorTools",
+  "references": [
+    "ProvingGround.Runtime",
+    "Newtonsoft.Json"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [
+    {
+      "name": "com.unity.inputsystem",
+      "expression": "1.0.0",
+      "define": "PG_INPUTSYSTEM"
+    },
+    {
+      "name": "com.unity.ugui",
+      "expression": "1.0.0",
+      "define": "PG_UGUI"
+    },
+    {
+      "name": "com.unity.modules.ai",
+      "expression": "1.0.0",
+      "define": "PG_NAVMESH"
+    }
+  ],
+  "noEngineReferences": false
+}
