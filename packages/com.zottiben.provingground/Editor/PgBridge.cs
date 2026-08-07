@@ -163,6 +163,9 @@ namespace ProvingGround.EditorTools
                 return;
             }
 
+            // GET as well as POST: HttpListener rejects a bodyless POST with 411 before the
+            // request ever reaches here, which makes `curl -X POST /shutdown` fail in a way
+            // that looks like the route is broken.
             if (path == "shutdown" && AllowShutdownRoute)
             {
                 Respond(context, 200, "{\"ok\":true,\"shuttingDown\":true}");
