@@ -1,0 +1,44 @@
+{
+  "tool": "project",
+  "schema": "provingground/report@1",
+  "startedUtc": "2026-08-07T02:07:56.2600810Z",
+  "durationMs": 0.0,
+  "ok": true,
+  "summary": "project failed: 1 blocker, 0 failures, 3 warnings",
+  "findings": [
+    {
+      "id": "project.noScenes",
+      "severity": "Blocker",
+      "message": "No scenes are enabled in the build settings",
+      "remedy": "A build would launch into nothing. Add at least the entry scene."
+    },
+    {
+      "id": "project.defaultCompany",
+      "severity": "Warn",
+      "message": "Company name is still DefaultCompany",
+      "remedy": "This ends up in the save path, the registry keys and the executable metadata."
+    },
+    {
+      "id": "project.defaultBundleId",
+      "severity": "Warn",
+      "message": "Application identifier is still a default ('com.DefaultCompany.testproject')",
+      "remedy": "Stores reject duplicates, and changing it later orphans existing saves."
+    },
+    {
+      "id": "project.colorSpace",
+      "severity": "Warn",
+      "message": "The project renders in gamma colour space",
+      "expected": "Linear",
+      "actual": "Gamma",
+      "remedy": "Linear is correct for anything with real lighting. Switching late changes how every asset looks."
+    }
+  ],
+  "data": {
+    "qualityLevels": 6,
+    "scriptingBackend": "Mono2x",
+    "fixedTimestep": 0.0199999921,
+    "unityVersion": "6000.3.16f1",
+    "buildTarget": "StandaloneOSX"
+  },
+  "passed": false
+}

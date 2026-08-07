@@ -178,6 +178,105 @@ namespace ProvingGround.EditorTools
             }));
         }
 
+        /// <summary>Enters play mode. Returns immediately; poll <see cref="RunStatus"/> until playing.</summary>
+        public static string EnterPlayMode()
+        {
+            if (Application.isPlaying) return RunStatus();
+            EditorApplication.EnterPlaymode();
+            return "{\"state\":\"entering\"}";
+        }
+
+        public static string ExitPlayMode()
+        {
+            if (!Application.isPlaying) return RunStatus();
+            EditorApplication.ExitPlaymode();
+            return "{\"state\":\"exiting\"}";
+        }
+
+        /// <summary>
+        /// Starts a scenario and returns at once. A scenario spans many frames, so it cannot
+        /// complete inside a single call; poll <see cref="RunStatus"/> for the report.
+        /// </summary>
+        public static string RunScenario(string name)
+        {
+            if (!Application.isPlaying)
+                return Emit(new PgReport("scenario:" + name)
+                    .Failed("Scenarios drive the running game. Call EnterPlayMode first."));
+
+            if (Actuation.PgRunner.IsBusy)
+                return "{\"state\":\"busy\"}";
+
+            var scenario = Actuation.PgScenario.LoadByName(name);
+            if (scenario == null)
+                return Emit(new PgReport("scenario:" + name)
+                    .Failed($"No scenario named '{name}' in {PgPaths.Relative(PgPaths.Scenarios)}."));
+
+            Actuation.PgRunner.Play(scenario, report => Emit(report));
+            return "{\"state\":\"running\"}";
+        }
+
+        /// <summary>Starts the probe bot. Poll <see cref="RunStatus"/> for the report.</summary>
+        public static string RunProbe(float seconds = 60f, int seed = 12345)
+        {
+            if (!Application.isPlaying)
+                return Emit(new PgReport("probe")
+                    .Failed("The probe drives the running game. Call EnterPlayMode first."));
+
+            if (Actuation.PgRunner.IsBusy) return "{\"state\":\"busy\"}";
+
+            Actuation.PgRunner.Probe(seconds, seed, report => Emit(report));
+            return "{\"state\":\"running\"}";
+        }
+
+        /// <summary>Whether a run is in progress, and the report from the last one.</summary>
+        public static string RunStatus()
+        {
+            var report = Actuation.PgRunner.LastReport;
+            return PgJson.Stringify(new
+            {
+                isPlaying = Application.isPlaying,
+                isCompiling = EditorApplication.isCompiling,
+                busy = Actuation.PgRunner.IsBusy,
+                lastReport = report
+            });
+        }
+
+        /// <summary>
+        /// Writes contracts describing the game as it currently behaves. Play mode only, and
+        /// only meaningful after a run has exercised the systems being captured.
+        /// </summary>
+        public static string CaptureBaseline(bool overwrite = false)
+        {
+            var metrics = new System.Collections.Generic.Dictionary<string, double>();
+            var last = Actuation.PgRunner.LastReport;
+
+            if (last?.Data != null)
+                foreach (var pair in last.Data)
+                {
+                    if (!pair.Key.StartsWith("feel.")) continue;
+                    if (double.TryParse(pair.Value?.ToString(), out var value))
+                        metrics[pair.Key.Substring("feel.".Length)] = value;
+                }
+
+            return Emit(PgBaseline.Capture(metrics, PgFeelSpec.Load()?.Genre, overwrite));
+        }
+
+        /// <summary>
+        /// Starts inferring audio events from AudioSource activity, for a game with no
+        /// explicit instrumentation.
+        /// </summary>
+        public static string WatchAudio()
+        {
+            if (!Application.isPlaying)
+                return "{\"ok\":false,\"error\":\"Play mode only.\"}";
+
+            PgAudio.Watch();
+            return "{\"ok\":true,\"watching\":true}";
+        }
+
+        /// <summary>Audio event wiring, diffed against the contract, from the last run.</summary>
+        public static string CheckAudio() => Emit(PgAudio.Check());
+
         /// <summary>Genre norm values, for tuning against something other than a guess.</summary>
         public static string Norms(string genre)
         {

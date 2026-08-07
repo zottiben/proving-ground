@@ -1,0 +1,18 @@
+{
+  "schema": "provingground/scenario@1",
+  "name": "reach-objective",
+  "note": "Walks from the spawn to the objective and asserts arrival. This is the shape most gameplay scenarios take: drive input, then assert something the engine can answer.",
+  "seed": 12345,
+  "fixedDeltaTime": 0.0166666,
+  "timeoutSeconds": 60,
+  "failOnError": true,
+  "measureFeel": true,
+  "steps": [
+    { "do": "wait", "seconds": 0.5, "note": "let the arena settle and the player land" },
+    { "do": "look", "x": -0.5, "y": 0, "seconds": 0.6, "note": "turn toward the objective" },
+    { "do": "move", "x": 0, "y": 1, "seconds": 4.0 },
+    { "do": "capture", "name": "approach" },
+    { "do": "assert", "that": "reached", "target": "Objective", "within": 6 },
+    { "do": "assert", "that": "exists", "target": "Objective" }
+  ]
+}

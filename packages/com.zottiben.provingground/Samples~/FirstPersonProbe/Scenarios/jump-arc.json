@@ -1,0 +1,25 @@
+{
+  "schema": "provingground/scenario@1",
+  "name": "jump-arc",
+  "note": "Jumps repeatedly from flat ground so the feel probe gets a clean read on apex height, time to apex and airtime. Nothing here asserts anything directly: the assertions come from diffing the measurements against feel.json.",
+  "seed": 12345,
+  "fixedDeltaTime": 0.0166666,
+  "timeoutSeconds": 45,
+  "measureFeel": true,
+  "steps": [
+    { "do": "wait", "seconds": 0.5 },
+    { "do": "measure", "name": "start" },
+
+    { "do": "tap", "action": "jump", "frames": 6 },
+    { "do": "wait", "seconds": 1.2 },
+    { "do": "tap", "action": "jump", "frames": 6 },
+    { "do": "wait", "seconds": 1.2 },
+    { "do": "tap", "action": "jump", "frames": 6 },
+    { "do": "wait", "seconds": 1.2 },
+
+    { "do": "move", "x": 0, "y": 1, "seconds": 1.5, "note": "measure acceleration from a standstill" },
+    { "do": "wait", "seconds": 1.0, "note": "and deceleration back to rest" },
+
+    { "do": "measure", "name": "stop" }
+  ]
+}

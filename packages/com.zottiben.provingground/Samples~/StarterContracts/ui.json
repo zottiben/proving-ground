@@ -1,0 +1,50 @@
+{
+  "schema": "provingground/ui@1",
+  "note": "The design system as data. Tokens are the palette and scale; elements are held to it. Reference a token from an expectation with $name, so changing a token moves every element that uses it.",
+  "tokens": {
+    "color.ink": "#12121AFF",
+    "color.paper": "#F5F3EFFF",
+    "color.brand": "#3D7BFFFF",
+    "color.danger": "#D6453BFF",
+    "color.panel": "#1B1B24FF",
+    "size.body": "18",
+    "size.heading": "32",
+    "size.caption": "14"
+  },
+  "elements": {
+    "healthLabel": {
+      "match": "HealthLabel",
+      "required": true,
+      "note": "Held against the panel it sits on, so the contrast check compares it to what is really behind it.",
+      "contrastAgainst": "HudPanel",
+      "expect": {
+        "color": "$color.paper",
+        "fontSize": "$size.body"
+      }
+    },
+    "hudPanel": {
+      "match": "HudPanel",
+      "required": false,
+      "expect": {
+        "backgroundColor": "$color.panel"
+      }
+    },
+    "primaryButton": {
+      "match": "PlayButton",
+      "required": false,
+      "expect": {
+        "backgroundColor": "$color.brand",
+        "color": "$color.paper"
+      }
+    }
+  },
+  "global": {
+    "minHitTargetPx": 44,
+    "minFontSizePx": 16,
+    "minContrastRatio": 4.5,
+    "minContrastRatioLargeText": 3.0,
+    "forbidClippedText": true,
+    "forbidOverlappingInteractables": true,
+    "enforceSafeArea": true
+  }
+}
