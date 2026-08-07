@@ -32,13 +32,20 @@ namespace ProvingGround.Contracts
         [JsonProperty("minLengthSeconds", NullValueHandling = NullValueHandling.Ignore)]
         public double? MinLengthSeconds;
 
-        /// <summary>Integrated loudness window, in LUFS. Negative values, e.g. -23 to -14.</summary>
-        [JsonProperty("loudnessLufs", NullValueHandling = NullValueHandling.Ignore)]
-        public PgMetricSpec LoudnessLufs;
+        /// <summary>
+        /// Acceptable RMS level window in dBFS, e.g. -24 to -12.
+        ///
+        /// This is RMS, not BS.1770 integrated loudness. LUFS requires K-weighting that
+        /// this package does not implement, and reporting an unweighted measurement under
+        /// the LUFS name would be wrong in a way nobody would catch. RMS is enough to hold
+        /// a set of one-shots to a consistent level, which is what the check is for.
+        /// </summary>
+        [JsonProperty("loudnessRmsDbfs", NullValueHandling = NullValueHandling.Ignore)]
+        public PgMetricSpec LoudnessRmsDbfs;
 
-        /// <summary>True peak ceiling in dBFS. -1.0 is the usual mastering ceiling.</summary>
-        [JsonProperty("maxTruePeakDbfs", NullValueHandling = NullValueHandling.Ignore)]
-        public double? MaxTruePeakDbfs = -1.0;
+        /// <summary>Sample peak ceiling in dBFS. -1.0 leaves headroom for codec overshoot.</summary>
+        [JsonProperty("maxPeakDbfs", NullValueHandling = NullValueHandling.Ignore)]
+        public double? MaxPeakDbfs = -1.0;
 
         /// <summary>Clip must loop cleanly: start and end samples must match within a threshold.</summary>
         [JsonProperty("mustLoop")] public bool MustLoop;

@@ -1,0 +1,26 @@
+{
+  "name": "ProvingGround.Tests.Editor",
+  "rootNamespace": "ProvingGround.Tests",
+  "references": [
+    "ProvingGround.Runtime",
+    "ProvingGround.Editor",
+    "Newtonsoft.Json",
+    "UnityEngine.TestRunner",
+    "UnityEditor.TestRunner"
+  ],
+  "includePlatforms": [
+    "Editor"
+  ],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": [
+    "nunit.framework.dll"
+  ],
+  "autoReferenced": false,
+  "defineConstraints": [
+    "UNITY_INCLUDE_TESTS"
+  ],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
