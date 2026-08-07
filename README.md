@@ -35,18 +35,25 @@ Requires Unity 2022.3 or newer. Developed and tested against Unity 6000.3.
 **Unity Package Manager > Add package from git URL:**
 
 ```
-https://github.com/zottiben/proving-ground.git?path=/packages/com.zottiben.provingground
+git@github.com:zottiben/proving-ground.git?path=/packages/com.zottiben.provingground
 ```
 
 Or add it to `Packages/manifest.json` directly:
 
 ```json
-"com.zottiben.provingground": "https://github.com/zottiben/proving-ground.git?path=/packages/com.zottiben.provingground"
+"com.zottiben.provingground": "git@github.com:zottiben/proving-ground.git?path=/packages/com.zottiben.provingground"
 ```
 
-`com.unity.nuget.newtonsoft-json` resolves automatically. The Input System, uGUI, UI
-Toolkit and NavMesh integrations each compile only when that package is present, so
-nothing breaks in a project that does not use them.
+The repository is currently private, so the SSH form above is the one that works, and
+it needs an SSH key Unity's git can use. If the repository is made public, swap it for
+`https://github.com/zottiben/proving-ground.git?path=/packages/com.zottiben.provingground`,
+which needs no credentials.
+
+That single line is enough. The package declares the built-in modules it needs
+(physics, audio, UI, image conversion) and pulls in `com.unity.nuget.newtonsoft-json`,
+so they resolve on their own. The Input System, uGUI, UI Toolkit, NavMesh and
+Animation integrations each compile only when that package is present, so nothing
+breaks in a project that does not use them - those assemblies are simply skipped.
 
 Then in Unity: **Tools > Proving Ground > Initialise Project**.
 
