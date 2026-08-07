@@ -5,6 +5,18 @@ All notable changes to this package are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this
 package adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.3] - 2026-08-07
+
+### Added
+
+- `proving-ground setup` offers to create the Unity project when there is not one yet,
+  instead of stopping at "this is not a Unity project". A project it creates has the
+  Input System installed and Active Input Handling set to Both, so agent-written
+  controllers respond rather than compiling to nothing.
+- Setup finds a project kept in a subdirectory. A repository with the game beside docs
+  and design folders is an ordinary layout, and only looking upward turned it into a
+  dead end.
+
 ## [0.1.2] - 2026-08-07
 
 ### Fixed

@@ -15,7 +15,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from . import paths, updates
+from . import paths, unity, updates
 
 HARNESSES = ("claude", "codex", "pi")
 
@@ -80,17 +80,89 @@ def find_project(start: Path) -> Path | None:
     return None
 
 
-def describe_not_a_project(cwd: Path) -> None:
-    bad(f"{cwd} is not a Unity project.")
-    print(f"""
-  Run this from inside your game, next to {BOLD}Assets/{OFF} and {BOLD}ProjectSettings/{OFF}:
+def find_nested_projects(start: Path, depth: int = 3) -> list[Path]:
+    """
+    Unity projects below `start`.
 
-      cd ~/path/to/your-game
-      proving-ground setup
+    Plenty of repositories keep the game in a subdirectory next to docs and design
+    folders, so refusing to look down turns an ordinary layout into a dead end.
+    """
+    skip = {
+        "Library", "Temp", "Logs", "obj", "Build", "Builds", "node_modules",
+        "Assets", "Packages", "ProjectSettings",
+    }
+    found: list[Path] = []
 
-  If you have not created the Unity project yet, make one in Unity Hub first.
-  Proving Ground configures an existing project; it does not create one.
+    def walk(directory: Path, level: int) -> None:
+        if level > depth or len(found) >= 10:
+            return
+        try:
+            children = [c for c in directory.iterdir() if c.is_dir()]
+        except OSError:
+            return
+
+        for child in children:
+            if child.name in skip or child.name.startswith("."):
+                continue
+            if is_unity_project(child):
+                found.append(child)
+                continue  # no point descending into a project we already matched
+            walk(child, level + 1)
+
+    walk(start, 1)
+    return found
+
+
+def offer_to_create(cwd: Path, assume_yes: bool, editor_override: str | None) -> Path | None:
+    """No project here. Offer to make one rather than leaving someone at a dead end."""
+    # Not a failure yet: there is a good chance we are about to create one.
+    note(f"No Unity project in {cwd}.")
+
+    editors = [Path(editor_override)] if editor_override else unity.editor_candidates()
+    editors = [e for e in editors if e.exists()]
+
+    if not editors:
+        bad("No Unity editor was found either.")
+        print(f"""
+  There is nothing here to create a project with.
+
+  Install Unity {BOLD}2022.3 or newer{OFF} through Unity Hub, then run this again:
+      {DIM}https://unity.com/download{OFF}
+
+  If your game already exists somewhere else, run setup from inside it:
+      cd ~/path/to/your-game && proving-ground setup
 """)
+        return None
+
+    editor = editors[0]
+    version = unity.version_of(editor)
+
+    print(f"""
+  A Unity project is a folder with {BOLD}Assets/{OFF} and {BOLD}ProjectSettings/{OFF} in it.
+  There is not one here yet, but Unity {BOLD}{version}{OFF} is installed.
+""")
+
+    if not assume_yes and not confirm(f"Create a new Unity project in {cwd.name}?"):
+        print(f"""
+  Nothing was changed. Create one with Unity Hub (New project > 3D), then:
+      cd ~/path/to/your-game && proving-ground setup
+""")
+        return None
+
+    print(f"       {DIM}Creating the project with Unity {version}. This takes a minute or two.{OFF}")
+    created, message = unity.create_project(editor, cwd)
+
+    if not created:
+        bad(message)
+        return None
+
+    ok(f"Created a Unity {version} project")
+
+    # A default project cannot be driven by an agent until this is fixed.
+    for change in unity.prepare_for_agents(cwd):
+        ok(change)
+
+    return cwd
 
 
 # --- unity package -------------------------------------------------------------------
@@ -255,8 +327,27 @@ def cmd_setup(args: argparse.Namespace) -> int:
     project = find_project(cwd)
 
     if project is None:
-        describe_not_a_project(cwd)
-        return 1
+        # A game kept in a subdirectory next to docs and design folders is an ordinary
+        # layout, so look down before concluding there is nothing here.
+        nested = find_nested_projects(cwd)
+        if len(nested) == 1:
+            project = nested[0]
+            ok(f"Found the Unity project in {project.relative_to(cwd)}/")
+        elif len(nested) > 1:
+            ok(f"Found {len(nested)} Unity projects below here:")
+            for index, candidate in enumerate(nested, 1):
+                print(f"       {index}. {candidate.relative_to(cwd)}")
+            answer = "1" if args.yes else prompt("Which one?", "1")
+            try:
+                project = nested[int(answer) - 1]
+            except (ValueError, IndexError):
+                bad(f"'{answer}' is not one of the options.")
+                return 1
+
+    if project is None:
+        project = offer_to_create(cwd, args.yes or args.create, args.unity)
+        if project is None:
+            return 1
 
     ok(f"Unity project: {project}")
     if (project / ".git").is_dir():
@@ -631,6 +722,9 @@ def main() -> int:
     p.add_argument("--project", help="Use this project instead of the working directory.")
     p.add_argument("--harness", help=f"Comma separated: {', '.join(HARNESSES)}.")
     p.add_argument("--yes", action="store_true", help="Accept defaults, never prompt.")
+    p.add_argument("--create", action="store_true",
+                   help="Create a Unity project here when there is not one already.")
+    p.add_argument("--unity", help="Path to a specific Unity editor executable.")
     p.set_defaults(func=cmd_setup)
 
     p = sub.add_parser("doctor", help="Check the install, the project wiring and the bridge.")

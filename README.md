@@ -22,13 +22,30 @@ and Unity 2022.3 or newer.
 
 ### Set up a game
 
-Go to your game and run setup. It has to be run from inside the project, and it will
-tell you plainly if you are somewhere else.
+Go to your game and run setup, from inside the project directory.
 
 ```sh
 cd ~/path/to/your-game
 proving-ground setup
 ```
+
+**Starting a brand new game?** Make an empty directory and run setup there. When there
+is no Unity project yet, it offers to create one:
+
+```sh
+mkdir ~/Games/my-game && cd ~/Games/my-game
+git init
+proving-ground setup
+```
+
+A project created this way comes with the Input System installed and Active Input
+Handling set to Both. That combination matters more than it sounds: with the default
+setting, input code compiles to nothing, so a controller an agent writes will build
+without a single error and never respond to anything.
+
+You can equally make the project in Unity Hub (**New project > 3D**) and run setup
+inside it afterwards. Setup also finds a project kept in a subdirectory, which is a
+common layout when a repository holds design docs alongside the game.
 
 Setup adds the Unity package to the project, works out which agent harness you use,
 registers the MCP server and installs the skill where that harness reads it. Re-running
