@@ -86,7 +86,15 @@ Start your agent in the project directory and ask for something:
 > Check the project settings, then build me a greybox first person shooter. Use a scene
 > recipe for the level and verify with Proving Ground at every step.
 
-Tag your player `Player` so the harness can find it. That is the only convention.
+If the project is new, there is nothing else to do: your agent creates the player and
+marks it as it builds.
+
+If you are pointing this at an existing game, tell Proving Ground which object is the
+player so it can drive it and measure how it feels. Select the player in the Hierarchy
+and set the **Tag** dropdown at the top of the Inspector to **Player** - it is one of
+Unity's built-in tags, so it is just a dropdown choice. You can skip even that if the
+player has a CharacterController or Rigidbody above your main camera, which is found
+automatically.
 
 ---
 

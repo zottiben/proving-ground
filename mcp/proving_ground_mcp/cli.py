@@ -398,17 +398,45 @@ def cmd_setup(args: argparse.Namespace) -> int:
         note("No harness configured. See the README for the manual steps.")
 
     heading("Next")
+
+    # A brand new project has no player to point at yet, and telling someone to tag one
+    # is confusing when there is nothing in the scene. Only existing games need that step.
+    has_content = any((project / "Assets").rglob("*.unity"))
+
     print(f"""
-  1. Open {project.name} in Unity. The package compiles on import.
-  2. {BOLD}Tools > Proving Ground > Agent Bridge > Enable{OFF}
-  3. Start your agent in this directory and prompt it, for example:
+  1. Open {BOLD}{project.name}{OFF} in Unity. The package compiles on import.
+  2. Turn on the bridge: {BOLD}Tools > Proving Ground > Agent Bridge > Enable{OFF}""")
+
+    if has_content:
+        print(f"""  3. Show Proving Ground which object is the player, so it can drive it and
+     measure how it feels:
+
+       - select your player in the {BOLD}Hierarchy{OFF}
+       - at the top of the {BOLD}Inspector{OFF}, set the {BOLD}Tag{OFF} dropdown to {BOLD}Player{OFF}
+
+     Unity has that tag built in, so it is just a dropdown choice, and you only
+     do it once. You can skip it if your player already has the tag, or if it has
+     a CharacterController or Rigidbody above your main camera, which is found
+     automatically.
+
+  4. Start your agent in this directory and ask for something:
+
+     {DIM}Survey the project, capture a baseline while it runs, then help me
+     improve it.{OFF}
+""")
+    else:
+        print(f"""  3. Start your agent in this directory and ask for something:
 
      {DIM}Check the project settings, then build me a greybox first person
      shooter. Use a scene recipe for the level and verify with Proving
      Ground at every step.{OFF}
 
-  Tag your player {BOLD}Player{OFF} so the harness can find it. Check the wiring any
-  time with {BOLD}proving-ground doctor{OFF}.
+  There is nothing else to configure. The project is empty, so your agent will
+  create the player and mark it for you as it builds.
+""")
+
+    print(f"""  If something stops working, {BOLD}proving-ground doctor{OFF} checks the install, this
+  project and whether Unity is reachable, and tells you what to fix.
 """)
     return 0
 

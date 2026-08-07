@@ -1,6 +1,6 @@
 {
   "name": "com.zottiben.provingground",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "displayName": "Proving Ground",
   "description": "Gives AI agents the ability to play, see, verify and ship Unity games. Emits engine ground truth instead of screenshots, injects real input, and measures the running game against machine-readable design contracts.",
   "unity": "2022.3",

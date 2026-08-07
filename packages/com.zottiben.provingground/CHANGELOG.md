@@ -5,6 +5,15 @@ All notable changes to this package are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this
 package adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.4] - 2026-08-07
+
+### Changed
+
+- Setup's closing instructions now depend on what the project actually contains. A new
+  and empty project is told there is nothing left to configure, because the agent
+  creates and marks the player itself. An existing game gets the actual clicks for
+  pointing Proving Ground at its player, and is told when it can skip them.
+
 ## [0.1.3] - 2026-08-07
 
 ### Added
