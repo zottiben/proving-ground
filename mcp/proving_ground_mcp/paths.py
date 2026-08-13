@@ -74,9 +74,15 @@ def unity_package(root: Path | None = None) -> Path:
     return root / "packages" / PACKAGE_ID
 
 
-def skill_source(root: Path | None = None) -> Path:
+def skills_root(root: Path | None = None) -> Path:
+    """The shelf of skill packs an install ships."""
     root = root or installed_root()
-    return root / "skills" / SERVER_NAME / "SKILL.md"
+    return root / "skills"
+
+
+def skill_source(root: Path | None = None) -> Path:
+    """The core skill. Without it an agent has the API but not the discipline."""
+    return skills_root(root) / SERVER_NAME / "SKILL.md"
 
 
 def mcp_launcher(root: Path | None = None) -> Path:

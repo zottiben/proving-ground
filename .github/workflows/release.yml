@@ -40,6 +40,11 @@ jobs:
             -C "$tmp" --strip-components=1
           test -f "$tmp/package/package.json"
           test -f "$tmp/skills/proving-ground/SKILL.md"
+          # The craft skills ship alongside the core one, references included. A tarball
+          # with only the core skill installs an agent that has the discipline and no
+          # craft knowledge, and nothing else would notice.
+          test "$(find "$tmp/skills" -name SKILL.md | wc -l)" -gt 10
+          test -f "$tmp/skills/game-production/references/phases.md"
           test -f "$tmp/mcp/pyproject.toml"
           test -f "$tmp/VERSION"
           test ! -d "$tmp/mcp/.venv"

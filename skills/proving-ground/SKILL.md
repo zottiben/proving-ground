@@ -163,6 +163,37 @@ says so when that is the case. Measure performance from the Editor or a player b
 and gate on the 95th percentile rather than the mean, because players feel spikes and
 not averages.
 
+## The rest of the shelf
+
+This skill is the discipline: how to see, drive and verify a game you cannot look at.
+It does not carry the craft knowledge for each domain. That is installed alongside it,
+and each pack ends with the `pg_` calls that prove its claims.
+
+| Working on | Load |
+|---|---|
+| What to build next, phases, scope, metrics to lock | `game-production` |
+| Layout, blockout, pacing, encounters | `level-design` |
+| Juice, hitstop, shake, why it feels weak | `game-feel` |
+| Controls, buffering, coyote time, rebinding | `input-systems` |
+| Follow, orbit, first-person look, clipping | `camera-systems` |
+| Enemies, NavMesh, perception, squad behaviour | `game-ai` |
+| Jitter, tunnelling, timestep, determinism | `physics-tuning` |
+| HUD, menus, legibility, the UI manifest | `game-ui-ux` |
+| Sound effects, mixing, adaptive music | `audio-design` |
+| Saving, versioning, migration, checkpoints | `save-systems` |
+| Generated levels, noise, seeds, validation | `procedural-gen` |
+| Conversations, choices, barks, subtitles | `dialogue-systems` |
+| C# lifecycle, serialization, ScriptableObjects | `unity-scripting` |
+| Animator, blend trees, root motion, Timeline | `unity-animation` |
+| Particles, VFX Graph, impacts, overdraw | `unity-vfx` |
+| URP, lighting, materials, post-processing | `unity-rendering` |
+| Builds, stripping, Addressables, CI | `unity-build` |
+| Stutter, hitches, frame budgets, memory | `performance-optimization` |
+
+Read the pack for the domain before working in it. The numbers in them are what the
+contracts should be set to, and most of them are the reason a check has a threshold at
+all.
+
 ## Tools
 
 | Need | Tool |

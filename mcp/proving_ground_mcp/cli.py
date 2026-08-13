@@ -200,22 +200,36 @@ def detect_harnesses(project: Path) -> list[str]:
     return found
 
 
-def install_skill(destination: Path, project: Path, source: Path) -> None:
-    if not source.is_file():
-        bad(f"Skill missing at {source}")
+def skill_packs(source: Path) -> list[Path]:
+    """Every directory under the shelf that is actually a skill."""
+    if not source.is_dir():
+        return []
+    return sorted(p for p in source.iterdir() if (p / "SKILL.md").is_file())
+
+
+def install_skills(destination: Path, project: Path, source: Path) -> None:
+    """
+    Copy the whole shelf to wherever this harness reads skills from.
+
+    Files are overwritten in place rather than the directory being replaced, so a skill
+    somebody wrote themselves, alongside ours, survives every update.
+    """
+    packs = skill_packs(source)
+    if not packs:
+        bad(f"Skills missing at {source}")
         return
 
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(source, destination)
+    for pack in packs:
+        shutil.copytree(pack, destination / pack.name, dirs_exist_ok=True)
 
     try:
         shown = destination.relative_to(project)
     except ValueError:
         shown = destination
-    ok(f"Skill installed at {shown}")
+    ok(f"{len(packs)} skills installed at {shown}/")
 
 
-def configure_claude(project: Path, launcher: Path, skill: Path) -> None:
+def configure_claude(project: Path, launcher: Path, skills: Path) -> None:
     config = project / ".mcp.json"
     data = json.loads(config.read_text()) if config.is_file() else {}
     data.setdefault("mcpServers", {})[paths.SERVER_NAME] = {
@@ -225,10 +239,10 @@ def configure_claude(project: Path, launcher: Path, skill: Path) -> None:
     config.write_text(json.dumps(data, indent=2) + "\n")
     ok("MCP server registered in .mcp.json")
 
-    install_skill(project / ".claude" / "skills" / paths.SERVER_NAME / "SKILL.md", project, skill)
+    install_skills(project / ".claude" / "skills", project, skills)
 
 
-def configure_pi(project: Path, launcher: Path, skill: Path) -> None:
+def configure_pi(project: Path, launcher: Path, skills: Path) -> None:
     config = project / ".pi" / "mcp.json"
     config.parent.mkdir(parents=True, exist_ok=True)
     data = json.loads(config.read_text()) if config.is_file() else {}
@@ -242,10 +256,10 @@ def configure_pi(project: Path, launcher: Path, skill: Path) -> None:
     config.write_text(json.dumps(data, indent=2) + "\n")
     ok("MCP server registered in .pi/mcp.json")
 
-    install_skill(project / ".agents" / "skills" / paths.SERVER_NAME / "SKILL.md", project, skill)
+    install_skills(project / ".agents" / "skills", project, skills)
 
 
-def configure_codex(project: Path, launcher: Path, skill: Path) -> None:
+def configure_codex(project: Path, launcher: Path, skills: Path) -> None:
     config = project / ".codex" / "config.toml"
     config.parent.mkdir(parents=True, exist_ok=True)
     existing = config.read_text() if config.is_file() else ""
@@ -275,7 +289,7 @@ def configure_codex(project: Path, launcher: Path, skill: Path) -> None:
 
     # Codex reads skills from its home directory, not from the project.
     codex_home = Path(os.environ.get("CODEX_HOME", Path.home() / ".codex"))
-    install_skill(codex_home / "skills" / paths.SERVER_NAME / "SKILL.md", project, skill)
+    install_skills(codex_home / "skills", project, skills)
 
     agents = project / "AGENTS.md"
     marker = "<!-- proving-ground -->"
@@ -288,7 +302,9 @@ def configure_codex(project: Path, launcher: Path, skill: Path) -> None:
         (text + "\n\n" if text else "")
         + f"{marker}\n## Proving Ground\n\n"
         "This project uses the Proving Ground plugin for Unity. Load the `proving-ground` "
-        "skill before building, changing or verifying anything in the game.\n"
+        "skill before building, changing or verifying anything in the game, and the "
+        "craft skill for whatever you are working on - `game-feel`, `level-design`, "
+        "`unity-scripting` and the rest of the shelf are installed alongside it.\n"
     )
     ok(f"{'Updated' if text else 'Created'} AGENTS.md")
 
@@ -302,7 +318,7 @@ CONFIGURE = {"claude": configure_claude, "codex": configure_codex, "pi": configu
 def cmd_setup(args: argparse.Namespace) -> int:
     root = paths.installed_root()
     package = paths.unity_package(root)
-    skill = paths.skill_source(root)
+    skills = paths.skills_root(root)
     launcher = paths.mcp_launcher(root)
 
     print(f"\n{BOLD}Proving Ground setup{OFF}  {DIM}{paths.version(root)}{OFF}")
@@ -382,7 +398,7 @@ def cmd_setup(args: argparse.Namespace) -> int:
 
     for harness in chosen:
         print(f"\n       {BOLD}{harness}{OFF}")
-        CONFIGURE[harness](project, launcher, skill)
+        CONFIGURE[harness](project, launcher, skills)
 
     if not chosen:
         note("No harness configured. See the README for the manual steps.")
@@ -453,10 +469,11 @@ def cmd_doctor(args: argparse.Namespace) -> int:
         bad(f"MCP server not built: {launcher}")
         healthy = False
 
+    packs = skill_packs(paths.skills_root(root))
     if paths.skill_source(root).is_file():
-        ok("Skill present")
+        ok(f"Skills: {len(packs)} on the shelf")
     else:
-        bad("Skill missing")
+        bad("The proving-ground skill is missing")
         healthy = False
 
     heading("Project")

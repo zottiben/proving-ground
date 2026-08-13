@@ -48,8 +48,9 @@ inside it afterwards. Setup also finds a project kept in a subdirectory, which i
 common layout when a repository holds design docs alongside the game.
 
 Setup adds the Unity package to the project, works out which agent harness you use,
-registers the MCP server and installs the skill where that harness reads it. Re-running
-is safe: entries are updated in place and nothing else in your config files is touched.
+registers the MCP server and installs the skills where that harness reads them.
+Re-running is safe: entries are updated in place, skills you wrote yourself are left
+alone, and nothing else in your config files is touched.
 
 ```
 proving-ground setup --harness claude    skip detection (claude, codex, pi)
@@ -106,11 +107,11 @@ automatically.
 
 Nothing is hidden, and all of it is safe to edit by hand.
 
-| Harness | MCP server | Skill |
+| Harness | MCP server | Skills |
 |---|---|---|
-| **Claude Code** | `.mcp.json` in the project | `.claude/skills/proving-ground/SKILL.md` |
-| **Codex** | `.codex/config.toml` in the project | `~/.codex/skills/proving-ground/SKILL.md`, plus a pointer in `AGENTS.md` |
-| **Pi** | `.pi/mcp.json` in the project | `.agents/skills/proving-ground/SKILL.md` |
+| **Claude Code** | `.mcp.json` in the project | `.claude/skills/` |
+| **Codex** | `.codex/config.toml` in the project | `~/.codex/skills/`, plus a pointer in `AGENTS.md` |
+| **Pi** | `.pi/mcp.json` in the project | `.agents/skills/` |
 
 Plus one line in the project's `Packages/manifest.json` pointing at the installed
 package.
@@ -184,9 +185,10 @@ startup_timeout_sec = 60
 }
 ```
 
-Then copy `skills/proving-ground/SKILL.md` to wherever your harness reads skills from.
-Without it an agent has the API but not the discipline, and will reach for screenshots
-anyway.
+Then copy the contents of `skills/` to wherever your harness reads skills from. Without
+`proving-ground` an agent has the API but not the discipline, and will reach for
+screenshots anyway; without the rest it has the discipline but no craft knowledge to
+apply it to.
 
 Set `PROVING_GROUND_URL` to override the address entirely. You do not need it just
 because the bridge is on another port - that is discovered.
@@ -331,6 +333,40 @@ any aesthetic.
 **Balance is simulated, not played.** Ten thousand fights run headless in less time than
 one fight takes in the Editor, and the answer comes back as a distribution rather than
 an anecdote.
+
+---
+
+## The skills
+
+A verification tool tells an agent whether the game does what the contracts say. It does
+not tell it what the contracts should say, or how a professional would have built the
+thing in the first place. So setup installs a shelf of craft skills next to the plugin's
+own, and every one of them ends with the `pg_` calls that prove its claims.
+
+| | |
+|---|---|
+| `proving-ground` | the discipline: ask the engine, run it, contract it, never widen a tolerance |
+| `game-production` | phases and their evidence gates, the level pipeline, metrics to lock, content scope, subagent lanes, how density is really achieved |
+| `level-design` | metrics-driven layout, blockout from a recipe, pacing, gating, encounters |
+| `game-feel` | hitstop, trauma-based shake, easing, tiers, and the timings that decide weight |
+| `input-systems` | the Input System, buffering, coyote time, rebinding, the latency budget |
+| `camera-systems` | follow, deadzones, orbit and occlusion, Cinemachine 3, and why cameras jitter |
+| `game-ai` | NavMesh, perception with limits, state machines and trees, squad coordination |
+| `physics-tuning` | the fixed-step model, interpolation, CCD, solver settings, determinism |
+| `game-ui-ux` | uGUI and UI Toolkit, scaling, safe area, the manifest, accessibility floors |
+| `audio-design` | mixer structure, variation, spatialisation, ducking, adaptive music |
+| `save-systems` | atomic writes, stable identity, versioning and migration, corruption recovery |
+| `procedural-gen` | seeded streams, noise, layout algorithms, and validating generated output |
+| `dialogue-systems` | Ink and Yarn, a runner that survives a format change, subtitles, barks |
+| `unity-scripting` | lifecycle and execution order, serialization rules, the fake-null trap |
+| `unity-animation` | Animator setup, blend trees, transitions, root motion, IK, Timeline |
+| `unity-vfx` | Particle System and VFX Graph, lifecycle, pooling, the overdraw budget |
+| `unity-rendering` | URP, lighting order, probes, materials, post-processing, colour space |
+| `unity-build` | scripting backends, stripping, Addressables, headless builds and CI |
+| `performance-optimization` | profiling before guessing, CPU or GPU bound, allocation, budgets |
+
+They are plain Markdown in `skills/`, they are safe to edit, and a skill you write
+yourself in the same directory is left alone by every future update.
 
 ---
 
