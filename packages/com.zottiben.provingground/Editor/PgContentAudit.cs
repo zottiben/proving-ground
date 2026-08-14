@@ -100,7 +100,14 @@ namespace ProvingGround.EditorTools
                 // An id with no resolvable object is a reference whose target is gone.
                 // A genuinely empty field has neither.
                 if (property.objectReferenceValue != null) continue;
+#if UNITY_6000_5_OR_NEWER
+                // 6.5 retired instance ids on SerializedProperty in favour of EntityId, and
+                // retired them as an error rather than a warning, so the old spelling does
+                // not merely warn there - it fails the compile.
+                if (property.objectReferenceEntityIdValue == default) continue;
+#else
                 if (property.objectReferenceInstanceIDValue == 0) continue;
+#endif
 
                 report.Add(PgFinding
                     .Fail("content.brokenReference",
