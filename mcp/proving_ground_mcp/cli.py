@@ -211,8 +211,12 @@ def install_skills(destination: Path, project: Path, source: Path) -> None:
     """
     Copy the whole shelf to wherever this harness reads skills from.
 
-    Files are overwritten in place rather than the directory being replaced, so a skill
-    somebody wrote themselves, alongside ours, survives every update.
+    A pack we ship is replaced outright; a pack we do not ship is never touched, so a
+    skill somebody wrote themselves alongside ours survives every update.
+
+    Replacing rather than merging matters: merging leaves behind a reference file we
+    renamed between versions, and an orphaned page of advice is worse than a missing
+    one, because nothing links to it and so nothing ever corrects it.
     """
     packs = skill_packs(source)
     if not packs:
@@ -220,7 +224,10 @@ def install_skills(destination: Path, project: Path, source: Path) -> None:
         return
 
     for pack in packs:
-        shutil.copytree(pack, destination / pack.name, dirs_exist_ok=True)
+        target = destination / pack.name
+        if target.exists():
+            shutil.rmtree(target)
+        shutil.copytree(pack, target)
 
     try:
         shown = destination.relative_to(project)

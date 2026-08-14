@@ -47,6 +47,23 @@ def test_installs_every_pack_with_its_references(tmp_path, capsys):
     assert "2 skills installed" in capsys.readouterr().out
 
 
+def test_reinstalling_clears_files_an_older_version_left_in_our_packs(tmp_path):
+    """A reference file renamed between versions must not linger as orphaned advice."""
+    shelf = make_shelf(tmp_path)
+    project = make_project(tmp_path)
+    installed = project / ".claude" / "skills"
+
+    cli.install_skills(installed, project, shelf)
+
+    stale = installed / "game-feel" / "references" / "renamed-away.md"
+    stale.write_text("advice from a previous version that nothing links to\n")
+
+    cli.install_skills(installed, project, shelf)
+
+    assert not stale.exists()
+    assert (installed / "game-feel" / "references" / "depth.md").is_file()
+
+
 def test_reinstalling_updates_in_place_and_keeps_skills_we_did_not_write(tmp_path):
     shelf = make_shelf(tmp_path)
     project = make_project(tmp_path)
